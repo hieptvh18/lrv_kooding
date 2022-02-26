@@ -7,5 +7,9 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    //
+    //màn hình trang chủ
+    public function index(){
+
+        return view('client.homepage.index');
+    }
 }

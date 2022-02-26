@@ -1,13 +1,13 @@
 <head>
     <!-- ico -->
-    <link rel="shortcut icon" type="image/png" href="./public/images/layout/kooding-app-icon.ico"/>
+    <link rel="shortcut icon" type="image/png" href="{{asset('assets/images/layout/kooding-app-icon.ico')}}"/>
     <!-- lib album -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.8.3/dist/css/lightgallery.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css">
     <!-- jq-ui -->
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
     <!-- custom checkbox -->
-    <link rel="stylesheet" href="public/css/lib/checkboxes.min.css">
+    <link rel="stylesheet" href="{{asset('assets/css/lib/checkboxes.min.css')}}">
     <!--  -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css">
     <!-- slick slider -->
@@ -23,11 +23,11 @@
     <!-- js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <!-- css -->
-    <link rel="stylesheet" href="public/css/style_layout.css">
-    <link rel="stylesheet" href="public/css/style.css">
-    <link rel="stylesheet" href="public/css/album.css">
+    <link rel="stylesheet" href="{{asset('css/style_layout.css')}}public/">
+    <link rel="stylesheet" href="{{asset('css/style.css')}}">
+    <link rel="stylesheet" href="{{asset('css/album.css')}}">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thời trang Hàn Quốc/Trang chủ</title>
+    <title>@yield('page-title')</title>
 </head>

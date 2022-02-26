@@ -7,16 +7,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Login admin</title>
   <!-- plugins:css -->
-  <link rel="stylesheet" href="./public/vendors/feather/feather.css">
-  <link rel="stylesheet" href="./public/vendors/ti-icons/css/themify-icons.css">
-  <link rel="stylesheet" href="./public/vendors/css/vendor.bundle.base.css">
+  <link rel="stylesheet" href="{{asset('assets/vendors/feather/feather.css')}}">
+  <link rel="stylesheet" href="{{asset('assets/vendors/ti-icons/css/themify-icons.css')}}">
+  <link rel="stylesheet" href="{{asset('assets/vendors/css/vendor.bundle.base.css')}}">
   <!-- endinject -->
   <!-- Plugin css for this page -->
   <!-- End plugin css for this page -->
   <!-- inject:css -->
-  <link rel="stylesheet" href="./public/css/vertical-layout-light/style.css">
+  <link rel="stylesheet" href="{{asset('assets/css/vertical-layout-light/style.css')}}">
   <!-- endinject -->
-  <link rel="shortcut icon" href="./public/images/favicon.png" />
+  <link rel="shortcut icon" href="{{asset('assets/images/favicon.png')}}" />
 </head>
 
 <body>
@@ -35,16 +35,12 @@
               <h6 class="font-weight-light">Đăng nhập quản trị.</h6>
               <form action="?action=loginAdmin" method="POST" class="pt-3">
                 <div class="form-group">
-                  <input type="email" name="email" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Email" value="<?= save_value('email') ?><?= isset($_COOKIE['emailAdmin'])?$_COOKIE['emailAdmin']:'' ?>" required>
+                  <input type="email" name="email" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Email" value="{{old('email')}}" required>
                 </div>
                 <div class="form-group">
-                  <input type="password" name="password" class="form-control form-control-lg" id="exampleInputPassword1" value="<?= isset($_COOKIE['emailAdmin'])?$_COOKIE['passwordAdmin']:'' ?>" placeholder="Password">
+                  <input type="password" name="password" class="form-control form-control-lg" id="exampleInputPassword1" value="" placeholder="Password">
                 </div>
-                <?php if(!empty($data['err'])):?>
-                  <div class="text-danger">
-                    <?php echo $data['err']?>
-                  </div>
-                  <?php endif;?>
+                
                 <div class="mt-3">
                   <button type="submit" name="btnLogin" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" >ĐĂNG NHẬP</button>
                 </div>
@@ -75,11 +71,11 @@
   <!-- Plugin js for this page -->
   <!-- End plugin js for this page -->
   <!-- inject:js -->
-  <script src="./public/js/jsadmin/off-canvas.js"></script>
-  <script src="./public/js/jsadmin/hoverable-collapse.js"></script>
-  <script src="./public/js/jsadmin/template.js"></script>
-  <script src="./public/js/jsadmin/settings.js"></script>
-  <script src="./public/js/jsadmin/todolist.js"></script>
+  <script src="{{asset('assets/js/jsadmin/off-canvas.js')}}"></script>
+  <script src="{{asset('assets/js/jsadmin/hoverable-collapse.js')}}"></script>
+  <script src="{{asset('assets/js/jsadmin/template.js')}}"></script>
+  <script src="{{asset('assets/js/jsadmin/settings.js')}}"></script>
+  <script src="{{asset('assets/js/jsadmin/todolist.js')}}"></script>
   <!-- endinject -->
 </body>
 

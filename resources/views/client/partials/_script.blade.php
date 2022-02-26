@@ -9,24 +9,24 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js" integrity="sha512-37T7leoNS06R80c8Ulq7cdCDU5MNQBwlYoy1TX/WUsLFC2eYNqtKlV0QjH7r8JpG/S0GUMZwebnVFLPd6SU5yg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <!-- js -->
-<script src="./public/js/layout/main.js"></script>
-<script src="./public/js/layout/backtop.js"></script>
-<script src="./public/js/layout/popupLogin.js"></script>
+<script src="{{asset('assets/js/layout/main.js')}}"></script>
+<script src="{{asset('assets/js/layout/backtop.js')}}"></script>
+<script src="{{asset('assets/js/layout/popupLogin.js')}}"></script>
 <!-- pro -->
-<script src="./public/js/layout/products.js"></script>
-<script src="./public/js/layout/filter_product.js"></script>
-<script src="./public/js/layout/checkout.js"></script>
-<script src="./public/js/layout/product-details.js"></script>
-<script src="./public/js/layout/profile.js"></script>
-<script src="./public/js/layout/mess.js"></script>
+<script src="{{asset('assets/js/layout/products.js')}}"></script>
+<script src="{{asset('assets/js/layout/filter_product.js')}}"></script>
+<script src="{{asset('assets/js/layout/checkout.js')}}"></script>
+<script src="{{asset('assets/js/layout/product-details.js')}}"></script>
+<script src="{{asset('assets/js/layout/profile.js')}}"></script>
+<script src="{{asset('assets/js/layout/mess.js')}}"></script>
 <!-- <script src="./public/js/layout/client.js"></script> -->
 
 <!-- validate form -->
-<script src="./public/js/validate/validatorClients/validator__profile.js"></script>
-<script src="./public/js/validate/validatorClients/validator_register.js"></script>
+<script src="{{asset('assets/js/validate/validatorClients/validator__profile.js')}}"></script>
+<script src="{{asset('assets/js/validate/validatorClients/validator_register.js')}}"></script>
 <!-- Swiper JS -->
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-<script src="public/js/layout/slide_lib.js"></script>
+<script src="{{asset('assets/js/layout/slide_lib.js')}}"></script>
 <script type='text/javascript'>
     $(document).ready(function() {
 

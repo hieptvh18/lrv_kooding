@@ -1,3 +1,8 @@
+@extends('layouts.layout-client');
+
+@section('page-title','Trang chủ | Kooding')
+@section('main')
+
 <main class="body__index">
     <?php if (isset($_GET['msg'])) : ?>
         <div class="alert alert-success"><?= $_GET['msg'] ?></div>
@@ -328,45 +333,5 @@
 </main>
 <!-- end main -->
 
+@endsection
 <!-- js -->
-<script>
-    // var action = "filterTrending";
-    $(document).ready(function() {
-        filterData()
-
-        // bắt sk click nút checkbox
-        $('#filter_new').click(function(){
-            filterData()
-        })
-
-        function filterData() {
-            var action = "filterTopPros";
-            // default là lọc nam
-            if ($('#filter_new').prop('checked')) {
-                // nếu check thì lọc sp nữ =2
-                genderTop = 2;
-            } else {
-                // lọc sp nam =1
-                genderTop = 1;
-
-            }
-            // console.log(check)
-
-            // $.ajax({
-            //     url: "indexClient",
-            //     method: 'GET',
-            //     data: {
-            //         action: action,
-            //         genderTop: genderTop
-            //     },
-            //     success: function(data) {
-            //         $('#slide-top-pros').html(data)
-            //     }
-            // })
-
-
-        }
-       
-
-    })
-</script>
