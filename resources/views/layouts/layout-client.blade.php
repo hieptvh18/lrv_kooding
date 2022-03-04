@@ -20,7 +20,7 @@
 
     @include('client.partials._script')
 
-    @yield('script')
+    @yield('plugin-script')
 </body>
 
 </html>

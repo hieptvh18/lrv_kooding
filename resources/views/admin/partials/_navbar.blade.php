@@ -1,7 +1,7 @@
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
   <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-    <a class="navbar-brand brand-logo mr-5" href="index.html"><img src="./public/images/layout/logo-main.png" class="mr-2" alt="logo" width="70%"/></a>
-    <a class="navbar-brand brand-logo-mini" href="index.html"><img src="./public/images/layout/logo-main.png" alt="logo" width="30%"/></a>
+    <a class="navbar-brand brand-logo mr-5" href="index.html"><img src="{{asset('assets/images/layout/logo-main.png')}}" class="mr-2" alt="logo" width="70%"/></a>
+    <a class="navbar-brand brand-logo-mini" href="index.html"><img src="{{asset('assets/images/layout/logo-main.png')}}" alt="logo" width="30%"/></a>
   </div>
   <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
     <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -70,17 +70,23 @@
       </li>
       <li class="nav-item nav-profile dropdown">
         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-          <img src="./public/images/upload/a.jpg" alt="profile" />
+          {{-- <img src="./public/images/upload/a.jpg" alt="profile" /> --}}
+          <span>{{Auth::user()->email}}</span>
         </a>
         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
           <a href="profile" class="dropdown-item">
             <i class="ti-settings text-primary"></i>
             Hồ sơ
           </a>
-          <a class="dropdown-item" href="account?action=logout">
-            <i class="ti-power-off text-primary"></i>
-            Đăng xuất
-          </a>
+          <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        <i class="ti-power-off text-primary"></i>
+                                        Đăng xuất
+                                    </a>
+            <form action="{{route('logout')}}" method="POST" id="logout-form">
+              @csrf
+            </form>
         </div>
       </li>
       <li class="nav-item nav-settings d-none d-lg-flex">

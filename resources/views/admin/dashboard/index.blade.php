@@ -1,10 +1,15 @@
+@extends('layouts.layout-admin')
+
+@section('page-title','Dashboard | KOODING')
+
+@section('main')
 <div class="content-wrapper">
   <div class="row">
     <div class="col-md-12 grid-margin">
       <div class="row">
         <div class="col-12 col-xl-8 mb-4 mb-xl-0">
-          <h3 class="font-weight-bold">Welcome <?= $_SESSION['admin']['fullname'] ?></h3>
-          <h6 class="font-weight-normal mb-0">Chào mừng admin quay lại!<span class="text-primary">!</span></h6>
+          <h3 class="font-weight-bold">Welcome </h3>
+          <h6 class="font-weight-normal mb-0">Chào mừng admin {{Auth::user()->name}} quay lại!<span class="text-primary">!</span></h6>
         </div>
         <div class="col-12 col-xl-4">
           <div class="justify-content-end d-flex">
@@ -28,7 +33,7 @@
     <div class="col-md-6 grid-margin stretch-card">
       <div class="card tale-bg">
         <div class="card-people mt-auto">
-          <img src="./public/images/admin/mua_ha_noi.jpg" alt="people">
+          <img src="{{asset('assets/images/admin/mua_ha_noi.jpg')}}" alt="people">
           <div class="weather-info">
             <div class="d-flex">
               <div>
@@ -49,7 +54,7 @@
           <div class="card card-tale">
             <div class="card-body">
               <p class="mb-4">Tổng đơn hàng</p>
-              <p class="fs-30 mb-2"><?= $data['total_orders'] ?></p>
+              <p class="fs-30 mb-2">5</p>
               <!-- <p>10.00% (30 days)</p> -->
             </div>
           </div>
@@ -58,8 +63,8 @@
           <div class="card card-dark-blue">
             <div class="card-body">
               <p class="mb-4">Đơn hàng chưa xử lí</p>
-              <p class="fs-30 mb-2"><?= $data['unprocess_order'] ?></p>
-              <p><?= $data['percent_un_order'] ?>% (Tổng đơn hàng)</p>
+              <p class="fs-30 mb-2">5</p>
+              <p>33% (Tổng đơn hàng)</p>
             </div>
           </div>
         </div>
@@ -69,7 +74,7 @@
           <div class="card card-light-blue">
             <div class="card-body">
               <p class="mb-4">Tổng doanh thu (năm <?= date('Y') ?>)</p>
-              <p class="fs-30 mb-2"><?= number_format($data['doanh_thu_nam'], 0, ',') ?>đ</p>
+              <p class="fs-30 mb-2">@php number_format(3000000, 0, ',') @endphp đ</p>
               <!-- <p>2.00% (30 days)</p> -->
             </div>
           </div>
@@ -78,7 +83,7 @@
           <div class="card card-light-danger">
             <div class="card-body">
               <p class="mb-4">Số lượng sản phẩm</p>
-              <p class="fs-30 mb-2"><?= $data['qty_all_pros']; ?></p>
+              <p class="fs-30 mb-2">111</p>
               <!-- <p>0.22% (30 days)</p> -->
             </div>
           </div>
@@ -152,23 +157,23 @@
           <div class="d-flex flex-wrap mb-5">
           <div class="mr-5 mt-3">
             <p class="text-muted">Tổng đơn hàng</p>
-            <h3 class="text-primary fs-30 font-weight-medium"><?= $data['total_orders_year'] ?></h3>
+            <h3 class="text-primary fs-30 font-weight-medium">1</h3>
           </div>
           <div class="mr-5 mt-3">
             <p class="text-muted">Đơn đã hủy</p>
-            <h3 class="text-primary fs-30 font-weight-medium"><?= $data['cancel_order'] ?></h3>
+            <h3 class="text-primary fs-30 font-weight-medium">1</h3>
           </div>
           <div class="mr-5 mt-3">
             <p class="text-muted">Đơn chờ xác nhận</p>
-            <h3 class="text-primary fs-30 font-weight-medium"><?= $data['unprocess_order'] ?></h3>
+            <h3 class="text-primary fs-30 font-weight-medium">1</h3>
           </div>
           <div class="mr-5 mt-3">
             <p class="text-muted">Đơn đang xử lí</p>
-            <h3 class="text-primary fs-30 font-weight-medium"><?= $data['processing_order'] ?></h3>
+            <h3 class="text-primary fs-30 font-weight-medium">1</h3>
           </div>
           <div class="mt-3">
             <p class="text-muted">Đơn đã gửi đi</p>
-            <h3 class="text-primary fs-30 font-weight-medium"><?= $data['sent_order'] ?></h3>
+            <h3 class="text-primary fs-30 font-weight-medium">1</h3>
           </div>
         </div>
           <canvas id="donhang" width="400" height="100"></canvas>
@@ -181,3 +186,7 @@
   
   <!-- content-wrapper ends -->
   <!-- partial:partials/_footer.html -->
+@endsection
+@section('script')
+    
+@endsection
