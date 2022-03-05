@@ -15,10 +15,6 @@ use  App\Http\Controllers\Backend\DashboardController;
 Route::get('/', [HomeController::class,'index'])->name('client.home');
 Route::get('/trang-chu', [HomeController::class,'index'])->name('client.home');
 
-// ================== ROUTE AUTH===============
-// Route::get('admin', [LoginAdminController::class,'login'])->name('login.display');
-// Route::post('admin', [LoginAdminController::class,'postLogin'])->name('login.handle');
-
 
 // ===============ROUTE ADMIN===================
 Route::prefix('admin')->group(function(){
@@ -41,6 +37,8 @@ Route::prefix('admin')->group(function(){
 
 
 });
+
+// ================ajax================
     
 Auth::routes();
 

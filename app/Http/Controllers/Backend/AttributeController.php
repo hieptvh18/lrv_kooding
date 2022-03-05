@@ -18,7 +18,9 @@ class AttributeController extends Controller
     {
         //get data
         $listAttr = Attribute::all();
-        $list_attr_value = AttributeValue::all();
+        $list_attr_value = AttributeValue::select('attr_values.*','attributes.name as attr_name')
+                                            ->join('attributes','attributes.id','attr_values.attr_id')
+                                            ->get();
         return view('admin.attribute.list', compact('listAttr','list_attr_value'));
     }
 
@@ -96,5 +98,7 @@ class AttributeController extends Controller
     public function destroy($id)
     {
         //
+        Attribute::destroy($id);
+        return redirect()->route('attribute.index')->with('msg','Xóa thành công 1 thuộc tính');
     }
 }

@@ -27,8 +27,16 @@
                                 <td>{{ $val->name }}</td>
                                 <td>
                                     <a href="#update"><i class="fas fa-pen-square text-warning fa-2x "></i></a>
-                                    <a href="#del" onclick="return confirm('Bạn chắc chắn muốn xóa sản phẩm?')"><i
-                                            class="fas fa-trash-alt text-danger fa-2x"></i></a>
+                                    <a href="{{ route('attribute.destroy', $val->id) }}" onclick="
+                                                        event.preventDefault();
+                                                        document.querySelector('#form-del-attr{{ $key }}').submit()
+                                                "><i class="fas fa-trash-alt text-danger fa-2x"></i></a>
+
+                                    <form id="form-del-attr{{ $key }}"
+                                        action="{{ route('attribute.destroy', $val->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
@@ -76,8 +84,8 @@
 
                     <!-- Modal body -->
                     <div class="modal-body">
-                        <form id="form-add-attr_value" action="{{ route('attributeValue.store') }}" class="forms-sample" method="POST"
-                            enctype="multipart/form-data">
+                        <form id="form-add-attr_value" action="{{ route('attributeValue.store') }}" class="forms-sample"
+                            method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <label for="exampleInputName1">Thuộc tính</label>
@@ -88,25 +96,22 @@
                                 </select>
                             </div>
 
-                            {{-- input-other --}}
-                            <div class="form-group input-other" id="input-value">
+                            {{-- color --}}
+                            <div class="form-group" id="input-value-color">
                                 <label for="">Giá trị</label>
-                                <input type="text" class="form-control" name="value"
-                                    placeholder="Nhập màu giá trị của thuộc tính(M, l, đỏ cam...)">
+                                <input type="text" class="form-control" name="value" placeholder="Nhập giá trị ">
+                                <span class="erValue text-danger"></span>
                             </div>
-
-                                {{-- color --}}
-                                <div class="color-value">
-                              
-                                </div>
 
                             <div class="form-group" id="">
                                 <label for="">Tên gọi</label>
-                                <input type="text" class="form-control" name="name"
+                                <input type="text" class="form-control" name="value_name"
                                     placeholder="Nhập tên gọi của giá trị (đỏ cam đỏ đậm...)">
+                                <span class="erName text-danger"></span>
                             </div>
 
-                            <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                            <button type="submit" class="btn btn-primary mr-2"
+                                class="btn-sb-form-attr-value">Submit</button>
                             <a href="" class="btn btn-light">Hủy</a>
                         </form>
                     </div>
@@ -127,22 +132,31 @@
                     <thead>
                         <tr>
                             <th>STT</th>
-                            <th>Tên thuộc tính</th>
+                            <th>Thuộc tính</th>
                             <th>Giá trị</th>
+                            <th>Tên gọi</th>
                             <th>Chức năng</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($list_attr_value as $key => $item)
-                            : ?>
                             <tr>
                                 <td>{{ $key + 1 }}</td>
-                                <td>{{ $item->name }}</td>
+                                <td>{{ $item->attr_name }}</td>
                                 <td>{{ $item->value }}</td>
+                                <td>{{ $item->name }}</td>
                                 <td>
 
-                                    <a href="" onclick="return confirm('Bạn chắc chắn muốn xóa sản phẩm?')"><i
-                                            class="fas fa-trash-alt text-danger fa-2x"></i></a>
+                                    <a href="{{ route('attributeValue.destroy', $val->id) }}" onclick="
+                                            event.preventDefault();
+                                            document.querySelector('#form-del-attr-value{{ $key }}').submit()
+                                    "><i class="fas fa-trash-alt text-danger fa-2x"></i></a>
+
+                                    <form id="form-del-attr-value{{ $key }}"
+                                        action="{{ route('attributeValue.destroy', $val->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
@@ -160,56 +174,92 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <script>
-        $(document).ready(function(){
-            const color_input = `
-            <div class="color-value-box">
-                                    <div class="form-group" id="input-value-color">
-                                        <label for="">Giá trị</label>
-                                        <input type="color" class="form-control" name="value">
-                                    </div>
+        $(document).ready(function() {
 
-                                  
-                               </div>
-            `;
-            if($('select[name="attr_id"]').val() == 1){
-                $('.color-value').append(color_input);
+            if ($('select[name="attr_id"]').val() == 1) {
+                $('input[name="value"]').attr('type', 'color');
+            } else {
+                $('input[name="value"]').attr('type', 'text');
+                $('input[name="value"]').attr('value', '');
             }
 
-            $('#attr_id').change(function(){
+            $('#attr_id').change(function() {
                 var attr_value = $('#attr_id').val()
-                if(attr_value == 1){
+                if (attr_value == 1) {
                     // color
-                    $('.color-value').append(color_input);
-
-                    $('.input-other').hide()
-                }else{
+                    $('input[name="value"]').attr('type', 'color');
+                } else {
                     // size and chất vải
-                    $('.color-value-box').remove();
-                    $('.input-other').show()
+                    $('input[name="value"]').attr('type', 'text');
+                    $('input[name="value"]').attr('value', '');
                 }
             });
 
             // validate with jqr validation
-            $('#form-add-attr_value').validate([
-                // define rules and message
-                rules:{
-                    name:{
-                        'required':true,
-                    },
-                    value:{
-                        'required':true
-                    }
-                },
-                messages:{
-                    name:{
-                       required: "Vui lòng nhập tên giá trị"
-                    },
-                    value:{
-                        required: "Vui lòng nhập giá trị"
-                    }
+            $('#btn-sb-form-attr-value').click(function(e) {
+                e.preventDefault();
+
+                if ($('input[name="value_name"]').val() == '') {
+                    $('input[name="value_name"]').css('border', '2px solid red');
+                    $('.erName').html('Nhập thông tin')
+                } else {
+                    $('input[name="value_name"]').css('border', '2px solid #07E454');
+                    $('.erName').html('')
                 }
 
-            ]);
-        })
+                if ($('input[name="value"]').val() == '') {
+
+                    $('input[name="value"]').css('border', '2px solid red');
+                    $('.erValue').html('Nhập thông tin')
+                } else {
+                    $('input[name="value"]').css('border', '2px solid #07E454');
+                    $('.erValue').html('')
+                }
+                if ($('input[name="value_name"]').val() != '' && $('input[name="value"]').val() != '') {
+                    $('input[name="value_name"]').css('border', '2px solid #07E454');
+                    $('input[name="value"]').css('border', '2px solid #07E454');
+                    $('.erName').html('')
+                    $('.erValue').html('')
+
+
+                    // check giá trị đã tồn tại
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    });
+                    $.ajax({
+                        url: "{{ route('ajax.attr-value-exist') }}",
+                        type: 'POST',
+                        data: {
+                            'name': $('input[name="value_name"]').val(),
+                            'value': $('input[name="value"]').val(),
+                            'attr_id': $('select[name="attr_id"]').val(),
+                        },
+                        success: function(data) {
+                            console.log(data)
+                            if (data == 0) {
+                                // ko tồn tại
+                                $('input[name="value_name"]').css('border',
+                                '2px solid #07E454');
+                                $('.erValue').html('')
+                                $('#form-add-attr_value').submit();
+                                return;
+                            } else {
+                                // tồn tại
+                                console.log('đã tồn tại value cuả attr -> err')
+                                $('input[name="value_name"]').css('border', '2px solid red');
+                                $('.erValue').html('Giá trị của thuộc tính đã tồn tại!')
+                            }
+                        },
+                        error: function(er) {
+                            // console.log(er)
+                        }
+                    });
+                }
+
+            });
+        });
     </script>
+
 @endsection

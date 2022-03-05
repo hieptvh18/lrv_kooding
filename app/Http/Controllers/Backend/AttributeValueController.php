@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use App\Models\AttributeValue;
+
 class AttributeValueController extends Controller
 {
     /**
@@ -36,7 +38,12 @@ class AttributeValueController extends Controller
     public function store(Request $request)
     {
         // thêm giá trị của thuộc tính sản phẩm
-        
+        $model = new AttributeValue();
+
+        $model->fill($request->all());
+        $model->save();
+
+        return redirect(route('attribute.index'))->with('msg','Thêm thành công giá trị mới!');
         
     }
 
@@ -83,5 +90,8 @@ class AttributeValueController extends Controller
     public function destroy($id)
     {
         //
+        AttributeValue::destroy($id);
+
+        return redirect(route('attribute.index'))->with('msg','Xóa thành công giá trị');
     }
 }
