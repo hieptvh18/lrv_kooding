@@ -2,7 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use Laravel\Socialite\Facades\Socialite;
+use App\Http\Controllers\Api\GoogleController;
 
 use App\Http\Controllers\Api\AjaxController;
 /*
@@ -22,3 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // handle ajax request
 Route::any('ajax/get-attr-value-exist',[AjaxController::class,'attrValueExist'])->name('ajax.attr-value-exist');
+
+// // Google Sign In
+// Route::get('/google',[GoogleController::class,'redirectToGoogle'])->name('login.google');
+// Route::get('/google/callback',[GoogleController::class,'googleCallback'])->name('login.callback');

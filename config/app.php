@@ -69,7 +69,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Ho_Chi_Minh',
 
     /*
     |--------------------------------------------------------------------------
@@ -177,6 +177,9 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        // socialite
+        Laravel\Socialite\SocialiteServiceProvider::class,
+
     ],
 
     /*
@@ -192,6 +195,8 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // ...
+        'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+
     ])->toArray(),
 
 ];

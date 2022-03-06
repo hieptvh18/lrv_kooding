@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use  App\Http\Controllers\Frontend\HomeController;
 
 // auth
+use App\Http\Controllers\Api\GoogleController;
 // use  App\Http\Controllers\Auth\LoginAdminController;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,6 +16,9 @@ use  App\Http\Controllers\Backend\DashboardController;
 Route::get('/', [HomeController::class,'index'])->name('client.home');
 Route::get('/trang-chu', [HomeController::class,'index'])->name('client.home');
 
+// Google Sign In
+Route::get('/google',[GoogleController::class,'redirectToGoogle'])->name('login.google');
+Route::get('/google/callback',[GoogleController::class,'googleCallback'])->name('login.callback');
 
 // ===============ROUTE ADMIN===================
 Route::prefix('admin')->group(function(){
