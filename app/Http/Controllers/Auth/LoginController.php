@@ -5,51 +5,38 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+
 
 class LoginController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Login Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles authenticating users for the application and
-    | redirecting them to your home screen. The controller uses a trait
-    | to conveniently provide its functionality to your applications.
-    |
-    */
-
-    use AuthenticatesUsers;
-
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-
-    //  check role user and redirect to display
-    
-    protected $redirectTo = RouteServiceProvider::ADMIN;
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('guest')->except('logout');
+    // login
+    public function showLoginForm (Request $rq){
+        return view('auth.login');
     }
 
-    // 
+    public function login(Request $rq){
 
-    // chuyển hướng login
-    public function redirectToLogin(){
-        
-    }
+        $rq->validate([
+            'email' => 'required|string',
+            'password' => 'required|string',
+        ]);
 
-    // phần quyền
-    public function userAuthorization(){
+        // get info
+        if(Auth::atempt(['email'=>$rq->email,'password'=>$rq->password,'role_id'=>1])){
+            // client
+
+            dd('client');
+        }else if(Auth::atempt(['email'=>$rq->email,'password'=>$rq->password,'role_id'=>2])){
+            // admin
+            dd('admin');
+
+
+        }else{
+            dd('invalid');
+        }
 
     }
 

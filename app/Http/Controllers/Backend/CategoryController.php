@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Attribute;
+use App\Models\Category;
 
 class CategoryController extends Controller
 {
@@ -15,6 +17,8 @@ class CategoryController extends Controller
     public function index()
     {
         //
+
+        return view('admin.categories.list');
     }
 
     /**
@@ -24,7 +28,10 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        //get data
+        $listAttr = Attribute::all();
+
+        return view('admin.categories.add',['listAttr'=>$listAttr]);
     }
 
     /**
@@ -36,6 +43,16 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            "name"=>"required|unique:categories|max:30",
+            "attr_id"=>"required",
+            "avatar" =>"required|image"
+        ]);
+
+        Category::create($request->all());
+
+        return redirect(route('categories.index'))->with('msg','Them thanh cong danh muc moi');
+
     }
 
     /**

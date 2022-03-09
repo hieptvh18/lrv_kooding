@@ -9,7 +9,7 @@
       <div class="row">
         <div class="col-12 col-xl-8 mb-4 mb-xl-0">
           <h3 class="font-weight-bold">Welcome </h3>
-          <h6 class="font-weight-normal mb-0">Chào mừng admin {{Auth::user()->name}} quay lại!<span class="text-primary">!</span></h6>
+          <h6 class="font-weight-normal mb-0">Chào mừng admin  quay lại!<span class="text-primary">!</span></h6>
         </div>
         <div class="col-12 col-xl-4">
           <div class="justify-content-end d-flex">

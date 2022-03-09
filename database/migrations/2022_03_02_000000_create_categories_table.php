@@ -16,6 +16,9 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
+            $table->foreignId('attr_id');
+            $table->foreign('attr_id')->references('id')->on('attributes')->onDelete('cascade');
+
             $table->string('avatar',300);
             $table->timestamps();
         });

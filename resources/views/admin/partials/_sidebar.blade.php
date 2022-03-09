@@ -40,9 +40,8 @@
           </a>
           <div class="collapse" id="cate">
               <ul class="nav flex-column sub-menu">
-                  <li class="nav-item"> <a class="nav-link" href="category">Danh sách</a></li>
-                  <li class="nav-item"> <a class="nav-link" href="category?action=addCategory">Thêm danh
-                          mục</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="{{route('categories.index')}}">Danh sách</a></li>
+                  <li class="nav-item"> <a class="nav-link" href="{{route('categories.create')}}">Thêm</a></li>
               </ul>
           </div>
       </li>
