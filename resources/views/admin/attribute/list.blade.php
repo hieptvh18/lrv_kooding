@@ -27,16 +27,19 @@
                                 <td>{{ $val->name }}</td>
                                 <td>
                                     <a href="#update"><i class="fas fa-pen-square text-warning fa-2x "></i></a>
-                                    <a href="{{ route('attribute.destroy', $val->id) }}" onclick="
-                                                        event.preventDefault();
-                                                        document.querySelector('#form-del-attr{{ $key }}').submit()
-                                                "><i class="fas fa-trash-alt text-danger fa-2x"></i></a>
-
-                                    <form id="form-del-attr{{ $key }}"
-                                        action="{{ route('attribute.destroy', $val->id) }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                    </form>
+                                   
+                                    @if ($val->id != 1 && $val->id !=2)
+                                        <a href="{{ route('attribute.destroy', $val->id) }}" onclick="
+                                                            event.preventDefault();
+                                                            document.querySelector('#form-del-attr{{ $key }}').submit()
+                                                    "><i class="fas fa-trash-alt text-danger fa-2x"></i></a>
+    
+                                        <form id="form-del-attr{{ $key }}"
+                                            action="{{ route('attribute.destroy', $val->id) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                        </form>
+                                    @endif
                                 </td>
                             </tr>
                         @endforeach
@@ -111,7 +114,7 @@
                             </div>
 
                             <button type="submit" class="btn btn-primary mr-2"
-                                class="btn-sb-form-attr-value">Submit</button>
+                                id="btn-sb-form-attr-value">Submit</button>
                             <a href="" class="btn btn-light">Hủy</a>
                         </form>
                     </div>

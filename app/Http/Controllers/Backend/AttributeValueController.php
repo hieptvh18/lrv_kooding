@@ -41,6 +41,7 @@ class AttributeValueController extends Controller
         $model = new AttributeValue();
 
         $model->fill($request->all());
+        $model->name = $request['value_name'];
         $model->save();
 
         return redirect(route('attribute.index'))->with('msg','Thêm thành công giá trị mới!');

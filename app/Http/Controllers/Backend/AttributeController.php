@@ -98,7 +98,12 @@ class AttributeController extends Controller
     public function destroy($id)
     {
         //
-        Attribute::destroy($id);
-        return redirect()->route('attribute.index')->with('msg','Xóa thành công 1 thuộc tính');
+        if($id != 1 && $id != 2){
+            // dat color va size la 2 thuoc tinh mac dinh ko the xoa
+            Attribute::destroy($id);
+            return redirect()->route('attribute.index')->with('msg','Xóa thành công 1 thuộc tính');
+        }else{
+            return back()->with('msg','Xóa khong công thuộc tính');
+        }
     }
 }

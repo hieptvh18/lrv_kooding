@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Attribute;
 use App\Models\Category;
+use App\Models\CategoryAttribute;
 
 class CategoryController extends Controller
 {
@@ -42,14 +43,36 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->all()['name']);
+        if(Attribute::count() == 0){
+            // dua ra error bat tao them attribute truoc
+            return back()->with('msg-er','Can tao moi it nhat mot thuoc tinh san pham');
+        }
         //
         $request->validate([
             "name"=>"required|unique:categories|max:30",
-            "attr_id"=>"required",
             "avatar" =>"required|image"
         ]);
+        $fileName = uniqid() . '-subject' . time() . '.' . $request->avatar->extension();
+        $request->file('avatar')->move(public_path('uploads'), $fileName);
 
-        Category::create($request->all());
+        $category = new Category();
+        $category->name = $request->all()['name'];
+        $category->avatar = $fileName;
+        $category->save();
+
+        // add color vs size + other attr_id
+
+        // ktra thuoc tinh co dc ng dung checked thi add them vo arrAttr de them 1 luot lun =))
+        $arrAttr = [1,2];
+        foreach($arrAttr as $item){
+
+        }
+
+        // CategoryAttribute::create([
+        //     'cate_id'=>$category->id,
+        //     'attr_id'=>$request->all()['attr_id']
+        // ]);
 
         return redirect(route('categories.index'))->with('msg','Them thanh cong danh muc moi');
 

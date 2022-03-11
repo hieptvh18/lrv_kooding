@@ -13,12 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('attr_values', function (Blueprint $table) {
+        Schema::create('cate_attributes', function (Blueprint $table) {
             $table->id();
+            
+            $table->foreignId('cate_id');
+            $table->foreign('cate_id')->references('id')->on('categories')->onDelete('cascade');
+
             $table->foreignId('attr_id');
             $table->foreign('attr_id')->references('id')->on('attributes')->onDelete('cascade');
-            $table->string('name')->nullable();
-            $table->string('value');
         });
     }
 
@@ -29,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('attr_values');
+        Schema::dropIfExists('cate_attributes');
     }
 };
