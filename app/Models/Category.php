@@ -11,7 +11,7 @@ class Category extends Model
 
     protected $table = 'categories';
 
-    protected $fillable = ['name','attr_id','avatar'];
+    protected $fillable = ['name','avatar'];
     
     // relationship
     public function attribites(){

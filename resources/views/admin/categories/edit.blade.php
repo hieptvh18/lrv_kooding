@@ -1,46 +1,72 @@
-<div class="col-12 grid-margin stretch-card">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">Cập nhật - chỉnh sửa danh mục sản phẩm</h4>
-            <p class="card-description">
-                Basic form elements
-            </p>
-            <?php if (isset($_GET['msg'])) : ?>
-                <div class="alert alert-success"><?php echo $_GET['msg']; ?></div>
-            <?php endif; ?>
-            <form id="form_Ucategorys" class="forms-sample" method="POST" enctype="multipart/form-data" >
-                <div class="form-group">
-                    <label for="exampleInputName1">Name</label>
-                    <input name="name_cate" value="<?= $data['cate_detail']['name'] ?><?= save_value("name_cate") ?>" type="text" class="form-control" id="exampleInputName1" placeholder="Name">
-                </div>
-                <div class="form-group">
-                    <label>File upload</label>
-                    <p>Ảnh đại diện cũ:</p>
-                    <img src="./public/images/products/<?= $data['cate_detail']['avatar'] ?>" alt="" width="200px">
-                    <input type="hidden" name="avatar" value="<?= $data['cate_detail']['avatar'] ?>">
+@extends('layouts.layout-admin')
 
-                    <input name="img_cate" type="file" class="form-control file-upload-info" placeholder="Upload Image" id="upload" onchange="previewImg()">
-                    <?php
-                    if (!empty($data['errImg'])) {
-                        echo '<p class="text-danger">' . $data['errImg'] . '</p>';
-                    }
-                    ?>
-                    <div id="displayImg" class="" style="width: 200px;">
 
+@section('page-title', 'Them danh muc')
+@section('main')
+    <div class="col-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Cap nhat danh mục sản phẩm mới</h4>
+                <p class="card-description">
+                    Basic form elements
+                </p>
+
+                @if (session('msg-er'))
+                    <div class="text-danger">{{ session('msg-er') }}</div>
+                @endif
+                @if (session('msg-suc'))
+                    <div class="text-success">{{ session('msg-suc') }}</div>
+                @endif
+                <form action="{{ route('categories.store') }}" id="form_categorys" class="forms-sample" method="POST"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group">
+                        <label for="exampleInputName1">Name</label>
+                        <input name="name" value="{{ old('name') }}" type="text" class="form-control"
+                            id="exampleInputName1" placeholder="Name">
+
+                        @error('name')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="mr-3" for="special1">Danh mục đặc biệt ? (hiển thị img banner)</label>
+                    <div class="form-group">
+                        <label>File upload</label>
+                        <input name="avatar" type="file" class="form-control file-upload-info" placeholder="Upload Image"
+                            id="upload" onchange="previewImg()">
+                        @error('avatar')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                        <div id="displayImg" class="" style="width: 200px;">
 
-                    <input name="special" <?= $data['cate_detail']['special'] == 1?'checked': '' ?> value="1" type="radio" id="special" >
-                    <label class="mr-3" for="special">Có</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="mr-3" for="special1">Thuộc tính của loại sản phẩm:</label>
 
-                    <input name="special" <?= $data['cate_detail']['special'] == 0?'checked': '' ?>  value="0" type="radio" id="special2">
-                    <label for="special2">Không</label>
-                </div>
-                <button type="submit" name="btn_update" class="btn btn-primary mr-2">Submit</button>
-                <a href="category" class="btn btn-light">Danh sách</a>
-            </form>
+                        {{-- loop data --}}
+                        <div class="" style="display:flex; column-gap:20px; align-items:center;">
+                            @foreach ($listAttr as $key => $val)
+                                <div class="" style="display:flex; column-gap:10px; align-items:center;">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input name="attr_id[]" class="checkbox" value="{{ $val->id }}"
+                                                type="checkbox" id="attr{{ $key + 1 }}"
+                                                @if (is_array(old('attr_id')) && in_array($val->id, old('attr_id'))) checked @endif
+                                                @if ($val->id == 1 || $val->id == 2)
+                                                    {{'checked disabled'}}
+                                                @endif>
+                                        </label>
+                                    </div>
+                                    <label class="mr-3" for="attr{{ $key + 1 }}">{{ $val->name }}</label>
+                                </div>
+                            @endforeach
+                        </div>
+                    
+                    </div>
+                    <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                    <a href="" class="btn btn-light">Cancel</a>
+                </form>
+            </div>
         </div>
     </div>
-</div>
+@endsection

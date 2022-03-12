@@ -18,8 +18,9 @@ class CategoryController extends Controller
     public function index()
     {
         //
+        $categories = Category::all();
 
-        return view('admin.categories.list');
+        return view('admin.categories.list',compact('categories'));
     }
 
     /**
@@ -43,16 +44,13 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all()['name']);
-        if(Attribute::count() == 0){
-            // dua ra error bat tao them attribute truoc
-            return back()->with('msg-er','Can tao moi it nhat mot thuoc tinh san pham');
-        }
-        //
+    //    validate
         $request->validate([
             "name"=>"required|unique:categories|max:30",
-            "avatar" =>"required|image"
+            "avatar" =>"required|image| mimes:jpg,png,jpeg"
         ]);
+
+        // create filename & uploads file & save
         $fileName = uniqid() . '-subject' . time() . '.' . $request->avatar->extension();
         $request->file('avatar')->move(public_path('uploads'), $fileName);
 
@@ -60,19 +58,28 @@ class CategoryController extends Controller
         $category->name = $request->all()['name'];
         $category->avatar = $fileName;
         $category->save();
-
+        
         // add color vs size + other attr_id
 
         // ktra thuoc tinh co dc ng dung checked thi add them vo arrAttr de them 1 luot lun =))
-        $arrAttr = [1,2];
-        foreach($arrAttr as $item){
+        $arrAttrNew = [1,2];
+        if($request->has('attr_id')){
+            $arrAttrId = $request->all()['attr_id'];
 
+            foreach($arrAttrId as $id){
+                array_push($arrAttrNew,(int)$id);
+            }
         }
 
-        // CategoryAttribute::create([
-        //     'cate_id'=>$category->id,
-        //     'attr_id'=>$request->all()['attr_id']
-        // ]);
+        // lap va them moi danh muc
+        foreach($arrAttrNew as $attrId){
+
+            $categoryAttribute = new CategoryAttribute();
+            $categoryAttribute->attr_id = $attrId;
+            $categoryAttribute->cate_id = $category->id;
+            $categoryAttribute->save();
+        }
+
 
         return redirect(route('categories.index'))->with('msg','Them thanh cong danh muc moi');
 
@@ -87,6 +94,8 @@ class CategoryController extends Controller
     public function show($id)
     {
         //
+
+        return view('');
     }
 
     /**

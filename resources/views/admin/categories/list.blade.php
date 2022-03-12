@@ -1,11 +1,13 @@
+@extends('layouts.layout-admin')
+
+@section('page-title','Quan li danh muc');
+@section('main');
 <div class="card-body">
-    <h4 class="card-title">Danh sách sản phẩm</h4>
+    <h4 class="card-title">Danh sách danh muc</h4>
     <div class="" style="display: flex;">
-        <a href="category?action=addCategory" class="text-light btn btn-primary">Thêm mới</a>
+        <a href="{{route('categories.create')}}" class="text-light btn btn-primary">Thêm mới</a>
     </div>
-    <?php if (isset($_GET['msg'])) : ?>
-        <div class="alert alert-danger"><?php echo $_GET['msg']; ?></div>
-    <?php endif; ?>
+
 
     <div class="table-responsive">
         <table class="table">
@@ -14,28 +16,33 @@
                     <th>STT</th>
                     <th>Tên</th>
                     <th>Ảnh</th>
-                    <!-- <th>Số lượng</th> -->
+                    <th>Thuoc tinh</th>
                     <th>Chức năng</th>
                 </tr>
             </thead>
             <tbody>
-                <?php $n = 1;
-                foreach ($data['list_cate'] as $item) : ?>
+                @foreach ($categories as $key=>$cate)
                     <tr>
-                        <td><?php echo $n; ?></td>
-                        <td><?= $item['name'] ?></td>
-                        <td><img src="./public/images/categories/<?= $item['avatar'] ?>" alt=""></td>
-                        <!-- <td><?= $item['qty'] ?></td> -->
-
+                        <td>{{$key+1}}</td>
+                        <td>{{$cate->name}}</td>
+                        <td><img src="{{asset('uploads')}}/{{$cate->avatar}}" alt="" width="50px"></td>
                         <td>
-                            <a href="category?action=update&id=<?= $item['id'] ?>"><i class="fas fa-pen-square text-warning fa-2x "></i></a>
-                            <a href="category?action=del&id=<?= $item['id'] ?>" onclick="return confirm('Bạn chắc chắn muốn xóa sản phẩm?')"><i class="fas fa-trash-alt text-danger fa-2x"></i></a>
+                        @foreach(getAttrByCate($cate->id) as $attr)
+                            <p>{{$attr->name}}</p>
+                        @endforeach
+                    </td>
+                        <td>
+                            <a href="{{route('categories.edit',$cate->id)}}"><i
+                                    class="fas fa-pen-square text-warning fa-2x "></i></a>
+                            <a href="{{route('categories.destroy',$cate->id)}}"
+                                onclick="return confirm('Bạn chắc chắn muốn xóa sản phẩm?')"><i
+                                    class="fas fa-trash-alt text-danger fa-2x"></i></a>
                         </td>
                     </tr>
-                <?php $n++;
-                endforeach ?>
+                @endforeach
 
             </tbody>
         </table>
     </div>
 </div>
+@endsection
