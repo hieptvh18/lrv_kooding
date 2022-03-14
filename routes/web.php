@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 // admin
 use  App\Http\Controllers\Backend\DashboardController;
+use  App\Http\Controllers\Backend\CategoryAttrbuteController;
 
 // =================ROUTE CLIENT===============
 Route::get('/', [HomeController::class,'index'])->name('client.home');
@@ -29,6 +30,12 @@ Route::prefix('admin')->group(function(){
     
     // categories
     Route::resource('categories','App\Http\Controllers\Backend\CategoryController');
+    // remove category attribute
+    Route::get('/category/delete/{attr_id}/{cate_id}',[CategoryAttrbuteController::class,'destroy'])->name('category-attribute.destroy');
+    // add cate attr
+    Route::post('/category/store/{cate_id}',[CategoryAttrbuteController::class,'store'])->name('category-attribute.store');
+
+    
 
      // attribute
      Route::resource('attribute','App\Http\Controllers\Backend\AttributeController')->only([
