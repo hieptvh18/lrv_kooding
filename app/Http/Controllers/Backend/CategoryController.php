@@ -120,7 +120,7 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // dd($request->file('avatar'));
+        // dd($request->all());
         // validate
         if ($request->file('avatar')) {
             $ruleAvatarFiles = "image|mimes:jpg,png,jpeg|max:2040";
@@ -155,24 +155,28 @@ class CategoryController extends Controller
         // add color vs size + other attr_id
 
         // ktra thuoc tinh co dc ng dung checked thi add them vo arrAttr de them 1 luot lun =))
-        $arrAttrNew = [1, 2];
+        $arrAttrNew = [];
         if ($request->has('attr_id')) {
             $arrAttrId = $request->all()['attr_id'];
 
             foreach ($arrAttrId as $id) {
                 array_push($arrAttrNew, (int)$id);
             }
+
+            // lap va edit danh muc
+            foreach ($arrAttrNew as $attrId) {
+
+                $categoryAttribute = CategoryAttribute::where('attr_id', $attrId)
+                    ->where('cate_id', $id)->first();
+                $categoryAttribute->attr_id = $attrId;
+                $categoryAttribute->cate_id = $category->id;
+                $categoryAttribute->save();
+            }
+        } else {
+            // ko check thif ktra va remove tru attr_id = 1 & 2 ra con lai eo co la xoa het
+
         }
 
-        // lap va edit danh muc
-        foreach ($arrAttrNew as $attrId) {
-
-            $categoryAttribute = CategoryAttribute::where('attr_id', $attrId)
-                ->where('cate_id', $id)->first();
-            $categoryAttribute->attr_id = $attrId;
-            $categoryAttribute->cate_id = $category->id;
-            $categoryAttribute->save();
-        }
 
         return redirect(route('categories.edit', $id))->with('msg', 'Update success!');
     }

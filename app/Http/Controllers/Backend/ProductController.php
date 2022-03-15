@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Product;
+use App\Models\Category;
+use App\Models\Attribute;
 
 class ProductController extends Controller
 {
@@ -29,9 +31,10 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        //get data
+        $listCategory = Category::all();
 
-        return view('admin.product.add');
+        return view('admin.product.add',compact('listCategory'));
     }
 
     /**
@@ -65,6 +68,8 @@ class ProductController extends Controller
     public function edit($id)
     {
         //
+        // $listAttr = Product::select('attributes.*')
+
     }
 
     /**
