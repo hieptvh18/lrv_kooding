@@ -1,7 +1,7 @@
 @extends('layouts.layout-admin')
 
 @section('page-title', 'Quan li danh muc');
-@section('main');
+@section('main')
     <div class="card-body">
         <h4 class="card-title">Danh sách danh muc</h4>
         <div class="" style="display: flex;">

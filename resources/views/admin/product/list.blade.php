@@ -10,9 +10,10 @@
         <a href="{{route('product.create')}}" class="text-light btn btn-primary">Thêm mới</a>
 
         <select name="categories" id="categories" style="border-radius: 15px;">
-            <option value="" disabled selected>Lọc theo danh mục</option>
+            <option value="" disabled selected>Danh mục</option>
 
         </select>
+        <button class="btn btn-secondary">Check all</button>
     </div>
 
     <div class="table-responsive">
@@ -20,6 +21,7 @@
             <thead>
                 <tr>
                     <th>STT</th>
+                    <th>Select</th>
                     <th>Tên</th>
                     <th>Danh mục</th>
                     <th>Giá.</th>
@@ -34,6 +36,9 @@
                 @foreach($listProduct as $key=>$val)
                     <tr>
                         <td>{{$key + 1}}</td>
+                        <td>
+                            <input type="checkbox" name="pro_id[]">
+                        </td>
                         <td>{{$val->name}}</td>
                         <td>{{$val->cate_name}}</td>
                         <td>{{number_format($val->price,0)}}vnd</td>

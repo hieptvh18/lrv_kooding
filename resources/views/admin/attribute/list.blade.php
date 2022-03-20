@@ -70,7 +70,7 @@
         {{-- danh ssach giá trị của thuộc tính --}}
         <h4 class="card-title mt-5">Danh sách gía trị của thuộc tính.</h4>
         <!-- Button to Open the Modal -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+        <button type="button" {{$btnStatus}} class="btn btn-primary" data-toggle="modal" data-target="#myModal">
             Thêm giá trị mới
         </button>
 

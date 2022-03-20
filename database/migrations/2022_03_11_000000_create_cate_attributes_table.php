@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             
             $table->foreignId('cate_id');
-            $table->foreign('cate_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreign('cate_id')->references('id')->on('sub_categories')->onDelete('cascade');
 
             $table->foreignId('attr_id');
             $table->foreign('attr_id')->references('id')->on('attributes')->onDelete('cascade');

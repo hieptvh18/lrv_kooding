@@ -9,7 +9,7 @@
       <li class="nav-item">
           <a class="nav-link" href="{{ route('admin.dashboard') }}">
               <i class="far fa-chart-bar menu-icon"></i>
-              <span class="menu-title">Thống kê</span>
+              <span class="menu-title {{Route::is('admin.dashboard') ? 'active-link' : ''}}">Thống kê</span>
           </a>
       </li>
       <li class="nav-item">

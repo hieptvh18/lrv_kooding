@@ -21,7 +21,12 @@ class AttributeController extends Controller
         $list_attr_value = AttributeValue::select('attr_values.*','attributes.name as attr_name')
                                             ->join('attributes','attributes.id','attr_values.attr_id')
                                             ->get();
-        return view('admin.attribute.list', compact('listAttr','list_attr_value'));
+        //check attributes > 0 => btn add attrValue disable? 
+        $btnStatus = '';
+        if($listAttr->count() == 0){
+            $btnStatus = 'disabled';
+        }
+        return view('admin.attribute.list', compact('listAttr','list_attr_value','btnStatus'));
     }
 
     /**

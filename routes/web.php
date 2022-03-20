@@ -34,6 +34,10 @@ Route::prefix('admin')->group(function(){
     Route::get('/category/delete/{attr_id}/{cate_id}',[CategoryAttrbuteController::class,'destroy'])->name('category-attribute.destroy');
     // add cate attr
     Route::post('/category/store/{cate_id}',[CategoryAttrbuteController::class,'store'])->name('category-attribute.store');
+    
+    // sub categories
+    Route::resource('sub-categories','App\Http\Controllers\Backend\SubCategoryController');
+    
 
     
 
