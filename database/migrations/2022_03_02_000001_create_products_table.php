@@ -22,12 +22,15 @@ return new class extends Migration
             $table->foreign('sub_category_id')->references('id')->on('sub_categories')->onDelete('cascade');
             
             $table->integer('price');
-            $table->integer('discount');
-            $table->string('brand',300);
+            $table->integer('discount')->nullable();
+            
+            $table->foreignId('brand_id');
+            $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
+
             $table->string('avatar',355);
             $table->longText('description');
             $table->integer('quantity');
-            $table->tinyInteger('status');
+            $table->tinyInteger('status')->nullable();
             $table->bigInteger('view');
             $table->timestamps();
         });

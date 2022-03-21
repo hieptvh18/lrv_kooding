@@ -4,14 +4,9 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
-use App\Models\Product;
-use App\Models\Category;
-use App\Models\Attribute;
 use App\Models\Brand;
-use App\Models\SubCategories;
 
-class ProductController extends Controller
+class BrandController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,10 +15,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        // màn hình danh sách
-        $listProduct = Product::all();
+        // list
+        $listBrand = Brand::all();
 
-        return view('admin.product.list', compact('listProduct'));
+        return view('admin.brand.list',compact('listBrand'));
     }
 
     /**
@@ -33,11 +28,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //get data
-        $listCategory = SubCategories::all();
-        $listBrand = Brand::all();
-
-        return view('admin.product.add',compact('listCategory','listBrand'));
+        //
     }
 
     /**
@@ -49,6 +40,20 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            "name"=>"required|unique:brands",
+            "avatar" => "required|image|mimes:jpg,png,jpeg|max:2040",
+        ]);
+
+        $fileName = uniqid() . '-brand' . time() . '.' . $request->avatar->extension();
+        $request->file('avatar')->move(public_path('uploads'), $fileName);
+
+        $brand = new Brand();
+        $brand->name = $request->name;
+        $brand->avatar = $fileName;
+        $brand->save();
+
+        return redirect(route('brand.index'))->with('msg-suc','Add success!');
     }
 
     /**
@@ -71,8 +76,6 @@ class ProductController extends Controller
     public function edit($id)
     {
         //
-        // $listAttr = Product::select('attributes.*')
-
     }
 
     /**
@@ -96,5 +99,10 @@ class ProductController extends Controller
     public function destroy($id)
     {
         //
+        if(Brand::find($id)){
+            Brand::destroy($id);
+            return redirect(route('brand.index'))->with('msg-suc','Remove success');
+        }
+        return redirect(route('brand.index'))->with('msg-er','Remove fail!');
     }
 }

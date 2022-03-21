@@ -25,7 +25,6 @@ Route::prefix('admin')->group(function(){
     Route::get('/dashboard', [DashboardController::class,'index'])->name('admin.dashboard');
 
     // products
-    
     Route::resource('product','App\Http\Controllers\Backend\ProductController');
     
     // categories
@@ -39,8 +38,10 @@ Route::prefix('admin')->group(function(){
     Route::resource('sub-categories','App\Http\Controllers\Backend\SubCategoryController');
     
 
-    
-
+    // brand
+    Route::resource('brand','App\Http\Controllers\Backend\BrandController')->only([
+        'store','destroy','index'
+    ]);
      // attribute
      Route::resource('attribute','App\Http\Controllers\Backend\AttributeController')->only([
          'store','edit','update','destroy','index'

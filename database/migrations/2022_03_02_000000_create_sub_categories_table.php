@@ -20,7 +20,7 @@ return new class extends Migration
 
             // parent id se danh dau danh muc nhieu cap (so khop voi id khoa chinh xem gom thanh nao thi la con thang do
             $table->integer('parent_id')->nullable();
-            $table->string('parent_name');
+            $table->string('name');
             $table->string('sub_cate_slug',300)->unique();
             $table->string('avatar',300);
             $table->timestamps();
