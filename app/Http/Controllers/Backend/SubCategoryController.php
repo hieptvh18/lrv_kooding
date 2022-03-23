@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\SubCategories;
+use App\Models\SubCategory;
 use App\Models\Category;
 use App\Models\CategoryAttribute;
 use App\Models\Attribute;
@@ -40,6 +40,8 @@ class SubCategoryController extends Controller
      */
     public function store(Request $request)
     {
+        // dd(Category::find(1)->subCategory);
+
          //    validate
          $request->validate([
             "name" => "required|unique:sub_categories|max:30",
@@ -53,7 +55,7 @@ class SubCategoryController extends Controller
         $fileName = uniqid() . '-category' . time() . '.' . $request->avatar->extension();
         $request->file('avatar')->move(public_path('uploads'), $fileName);
 
-        $category = new SubCategories();
+        $category = new SubCategory();
         $category->fill($request->all());
         $category->avatar = $fileName;
         $category->save();
@@ -103,7 +105,7 @@ class SubCategoryController extends Controller
     public function edit($id)
     {
         //
-        $myCategory = SubCategories::find($id);
+        $myCategory = SubCategory::find($id);
         $listAttr = Attribute::all();
 
         return view('admin.categories.edit-subcategory', compact('myCategory', 'listAttr'));
@@ -132,7 +134,7 @@ class SubCategoryController extends Controller
             "avatar" => $ruleAvatarFiles
         ]);
 
-        $category = SubCategories::find($id);
+        $category = SubCategory::find($id);
 
         // create filename & uploads file & save
         if ($request->file('avatar')) {
@@ -190,14 +192,14 @@ class SubCategoryController extends Controller
     {
         //
 
-         $category = SubCategories::find($id);
+         $category = SubCategory::find($id);
          if(!$category){
              return redirect(route('categories.index'))->with('msg','Xoa that bai');
          }
          if (public_path('uploads/' . $category->avatar)) {
              unlink(public_path('uploads/' . $category->avatar));
          }
-         SubCategories::destroy($id);
+         SubCategory::destroy($id);
          return redirect(route('categories.index'))->with('msg-suc', 'Remvoe category success!');
     }
 }

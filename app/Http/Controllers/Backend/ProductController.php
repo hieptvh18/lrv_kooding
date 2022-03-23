@@ -9,7 +9,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Attribute;
 use App\Models\Brand;
-use App\Models\SubCategories;
+use App\Models\SubCategory;
 
 class ProductController extends Controller
 {
@@ -20,9 +20,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        // màn hình danh sách
-        $listProduct = Product::all();
-
+        // màn hình danh sách + phan trang
+        $listProduct = Product::orderBy('id','desc')->paginate(5);
         return view('admin.product.list', compact('listProduct'));
     }
 
@@ -34,7 +33,7 @@ class ProductController extends Controller
     public function create()
     {
         //get data
-        $listCategory = SubCategories::all();
+        $listCategory = SubCategory::all();
         $listBrand = Brand::all();
 
         return view('admin.product.add',compact('listCategory','listBrand'));

@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('name',300);
             $table->string('slug',300)->unique();
 
-            $table->foreignId('sub_category_id');
-            $table->foreign('sub_category_id')->references('id')->on('sub_categories')->onDelete('cascade');
+            $table->foreignId('category_id');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             
             $table->integer('price');
             $table->integer('discount')->nullable();

@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Models\Attribute;
 use App\Models\Category;
 use App\Models\CategoryAttribute;
-use App\Models\SubCategories;
 
 class CategoryController extends Controller
 {
@@ -33,9 +32,11 @@ class CategoryController extends Controller
     {
         //get data
         $listAttr = Attribute::all();
-        $parent_categories = Category::all();
+        $categories = Category::all()->toArray();
 
-        return view('admin.categories.add', ['listAttr' => $listAttr,'parent_categories'=>$parent_categories]);
+        $listSelectSub = getChildCategories($categories);
+
+        return view('admin.categories.add', compact('listAttr','categories','listSelectSub'));
     }
 
     /**
@@ -46,15 +47,45 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //save db
+        // check neu select parent categories thi xac dinh muc con, nguoc lai la danh muc thong thuong.
+        //validate
         $request->validate([
-            "parent_name"=> "required|unique:categories|max:50"
-        ]);
+            "name" => "required|unique:categories|max:30",
+            "slug" => "required|unique:sub_categories,sub_cate_slug|alpha_dash",
+            "avatar" => "required|image| mimes:jpg,png,jpeg|max:2040",
+            "attr_id"=>"required"
 
-        $category = new Category ;
-        $category->parent_name = $request->input('parent_name');
+        ]);// create filename & uploads file & save
+        $fileName = uniqid() . '-category' . time() . '.' . $request->avatar->extension();
+        $request->file('avatar')->move(public_path('uploads'), $fileName);
+
+        $category = new Category();
+        $category->fill($request->all());
+        $category->avatar = $fileName;
         $category->save();
-        return redirect(route("categories.create"))->with('msg-suc','Add success!');
+
+        // add color vs size + other attr_id
+
+        // ktra thuoc tinh co dc ng dung checked thi add them vo arrAttr de them 1 luot lun =))
+        $arrAttrNew = [1, 2];
+        if ($request->has('attr_id')) {
+            $arrAttrId = $request->all()['attr_id'];
+
+            foreach ($arrAttrId as $id) {
+                array_push($arrAttrNew, (int)$id);
+            }
+        }
+
+        // loop & create cate_attributes
+        foreach ($arrAttrNew as $attrId) {
+
+            $categoryAttribute = new CategoryAttribute();
+            $categoryAttribute->attr_id = $attrId;
+            $categoryAttribute->cate_id = $category->id;
+            $categoryAttribute->save();
+        }
+
+        return redirect(route('categories.index'))->with('msg-suc', 'Them thanh cong danh muc moi');
        
     }
 

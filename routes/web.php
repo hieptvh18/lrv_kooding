@@ -34,10 +34,6 @@ Route::prefix('admin')->group(function(){
     // add cate attr
     Route::post('/category/store/{cate_id}',[CategoryAttrbuteController::class,'store'])->name('category-attribute.store');
     
-    // sub categories
-    Route::resource('sub-categories','App\Http\Controllers\Backend\SubCategoryController');
-    
-
     // brand
     Route::resource('brand','App\Http\Controllers\Backend\BrandController')->only([
         'store','destroy','index'

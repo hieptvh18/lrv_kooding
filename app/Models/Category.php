@@ -11,13 +11,13 @@ class Category extends Model
 
     protected $table = 'categories';
 
-    protected $fillable = ['name','avatar'];
+    protected $fillable = ['name','parent_id','slug','avatar'];
     
     // relationship
     public function attribites(){
         return $this->belongsTo(Attribute::class,'attr_id');
     }
 
-    // 1-n
+    
     
 }

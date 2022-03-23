@@ -16,10 +16,16 @@ class BrandSeeder extends Seeder
     public function run()
     {
         //
-        Brand::insert([
-            'name'=>"Gucci",
-            'avatar'=>'aaa'
-        ]);
+        // Brand::insert([
+        //     [
+        //         'name'=>"Gucci",
+        //     'avatar'=>'aaa'
+        //     ],
+        //     [
+        //         'name'=>"Ivymodal",
+        //     'avatar'=>'aaa'
+        //     ]
+        // ]);
 
     }
 }

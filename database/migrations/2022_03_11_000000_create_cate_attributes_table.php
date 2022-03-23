@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('cate_attributes', function (Blueprint $table) {
             $table->id();
             
-            $table->foreignId('cate_id');
-            $table->foreign('cate_id')->references('id')->on('sub_categories')->onDelete('cascade');
+            $table->foreignId('category_id');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
 
             $table->foreignId('attr_id');
             $table->foreign('attr_id')->references('id')->on('attributes')->onDelete('cascade');
