@@ -13,10 +13,10 @@ class Category extends Model
 
     protected $fillable = ['name','parent_id','slug','avatar'];
     
-    // relationship
-    public function attribites(){
-        return $this->belongsTo(Attribute::class,'attr_id');
-    }
+    // relationship many to many(4 paeamerter: 1:class name, table middle,id refer table middle, id refer table middle)
+    public function attributes(){
+        return $this->belongsToMany(Attribute::class,'cate_attributes','category_id','attr_id');
+    }     
 
     
     

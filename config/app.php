@@ -180,6 +180,9 @@ return [
         // socialite
         Laravel\Socialite\SocialiteServiceProvider::class,
 
+        // get current location
+        Stevebauman\Location\LocationServiceProvider::class,
+
     ],
 
     /*
@@ -196,6 +199,8 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // ...
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+
+        'Location' => 'Stevebauman\Location\Facades\Location',
 
     ])->toArray(),
 

@@ -10,7 +10,7 @@ class CategoryAttribute extends Model
     use HasFactory;
     protected $table = 'cate_attributes';
 
-    protected $fillable = ['attr_id','name'];
+    protected $fillable = ['attr_id','cate_id'];
 
     public $timestamps = false;
 }

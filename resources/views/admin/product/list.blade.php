@@ -23,13 +23,12 @@
             <table class="table table-list-product">
                 <thead>
                     <tr>
-                        <th>STT</th>
                         <th>Select</th>
                         <th>Tên</th>
+                        <th>Thương hiệu</th>
                         <th>Danh mục</th>
                         <th>Giá.</th>
                         <th>Ảnh</th>
-                        <th>Giá giảm</th>
                         <!-- <th>Mô tả</th> -->
                         <th>Tình trạng</th>
                         <th>Chức năng</th>
@@ -38,15 +37,14 @@
                 <tbody class="list-product">
                     @foreach ($listProduct as $key => $val)
                         <tr>
-                            <td>{{ $key + 1 }}</td>
                             <td>
                                 <input type="checkbox" name="pro_id[]">
                             </td>
                             <td>{{ $val->name }}</td>
-                            <td>{{ $val->cate_name }}</td>
+                            <td>{{ $val->brands->name }}</td>
+                            <td>{{ $val->categories->name }}</td>
                             <td>{{ number_format($val->price, 0) }}vnd</td>
                             <td><img src="{{ asset('uploads/' . $val->avatar) }}" alt=""> </td>
-                            <td>{{ $val->discount }}vnd</td>
                             <td>
                                 @if ($val->status == 0)
                                     <label class="badge badge-danger">Hết hàng</label>
@@ -56,6 +54,8 @@
 
                             </td>
                             <td>
+                                <a href=""><i
+                                    class="fas fa-eye text-info fa-2x "></i></a>
                                 <a href="product?action=update&id={{ $val->id }}"><i
                                         class="fas fa-pen-square text-warning fa-2x "></i></a>
                                 <a href="?action=del&id={{ $val->id }}"

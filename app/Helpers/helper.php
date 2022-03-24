@@ -6,9 +6,9 @@ use App\Models\SubCategory;
 if (!function_exists('getAttrByCate')) {
     function getAttrByCate($cateId){
         $result = Category::select('attributes.name')
-        ->join('cate_attributes','cate_attributes.cate_id','sub_categories.id')
+        ->join('cate_attributes','cate_attributes.cate_id','categories.id')
         ->join('attributes','attributes.id','cate_attributes.attr_id')
-        ->where('sub_categories.id',$cateId)->get();
+        ->where('categories.id',$cateId)->get();
         return $result;
     }
 }

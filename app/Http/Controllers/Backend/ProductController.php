@@ -6,10 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Product;
-use App\Models\Category;
 use App\Models\Attribute;
 use App\Models\Brand;
-use App\Models\SubCategory;
+use App\Models\Category;
 
 class ProductController extends Controller
 {
@@ -22,6 +21,7 @@ class ProductController extends Controller
     {
         // màn hình danh sách + phan trang
         $listProduct = Product::orderBy('id','desc')->paginate(5);
+        // dd(Product::find(2)->brands);
         return view('admin.product.list', compact('listProduct'));
     }
 
@@ -33,10 +33,11 @@ class ProductController extends Controller
     public function create()
     {
         //get data
-        $listCategory = SubCategory::all();
         $listBrand = Brand::all();
+        $categories = Category::all()->toArray();
+        $listSelectCategory = getChildCategories($categories);
 
-        return view('admin.product.add',compact('listCategory','listBrand'));
+        return view('admin.product.add',compact('listSelectCategory','listBrand'));
     }
 
     /**

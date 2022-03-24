@@ -16,7 +16,7 @@ class AttributeSeeder extends Seeder
     public function run()
     {
         //
-        Attribute::create([
+        Attribute::insert([
             [
                 "name"=>"Màu sắc"
             ],

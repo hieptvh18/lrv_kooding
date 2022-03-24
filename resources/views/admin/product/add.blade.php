@@ -23,11 +23,13 @@
                         </div>
                         <div class="form-group col-4">
                             <label for="cate" class="">Loại sản phẩm</label>
-                            <select id="cate" name="sub_category_id" class="form-control">
-                                <option selected disabled value="">---chon danh muc---</option>
-                                @foreach ($listCategory as $cate)
-                                    <option value="{{ $cate->id }}">{{ $cate->name }}</option>
+                            <select name="category_id" id="" class="form-control">
+
+                                <option value="" selected disabled>---select none---</option>
+                                @foreach ($listSelectCategory as $key=>$item)
+                                    <option value="{{$item['id']}}" {{ old('category_id') == $key ? "selected" : "" }}>{{str_repeat('---',$item['level'])}}{{$item['name']}}</option>
                                 @endforeach
+    
                             </select>
                         </div>
                         <div class="form-group col-4">

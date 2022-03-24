@@ -27,31 +27,12 @@
             </a>
             <div class="collapse" id="products">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('product.index') }}">Danh
-                            sách
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('product.index') }}">Sản phẩm
                         </a></li>
-                    <li class="nav-item"> <a class="nav-link"
-                            href="{{ route('product.create') }}">Thêm</a>
-                    </li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('categories.create') }}">Danh mục
+                        </a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('attribute.index') }}">Thuộc
                             tính</a></li>
-                </ul>
-            </div>
-        </li>
-
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#cate" aria-expanded="false"
-                aria-controls="ui-basic">
-                <i class="icon-layout menu-icon"></i>
-                <span class="menu-title">Danh mục sản phẩm</span>
-                <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="cate">
-                <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="{{ route('categories.index') }}">Danh
-                            sách</a></li>
-                    <li class="nav-item"> <a class="nav-link"
-                            href="{{ route('categories.create') }}">Thêm</a></li>
                 </ul>
             </div>
         </li>

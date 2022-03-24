@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             // ProductSeeder::class,
             // BrandSeeder::class
-            AttributeSeeder::class
+            // AttributeSeeder::class
         ]);
         \App\Models\Brand::factory(2)->create();
         \App\Models\Category::factory(2)->create();

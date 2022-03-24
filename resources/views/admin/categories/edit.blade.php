@@ -30,7 +30,24 @@
                                     id="exampleInputName1" placeholder="Name">
 
                                 @error('name')
-                                    <div class="text-danger">{{ $message }}</div>
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="form-group">
+                                <label for="">Parent Categories</label>
+                                <select name="parent_id" id="" class="form-control">
+    
+                                    <option value="">---select none---</option>
+                                    @foreach ($listSelectSub as $key => $item)
+                                        <option value="{{ $item['id'] }}" {{$myCategory->parent_id == $item['id'] ? 'selected':''}}>
+                                            {{ str_repeat('---', $item['level']) }}{{ $item['name'] }}</option>
+                                    @endforeach
+    
+                                </select>
+                                <small>Choose category origin(if you select none, it add categories)*</small>
+                                @error('parent_id')
+                                    <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
 
@@ -44,7 +61,7 @@
                                 <input name="avatar" type="file" class="form-control file-upload-info"
                                     placeholder="Upload Image" id="upload" onchange="previewImg()">
                                 @error('avatar')
-                                    <div class="text-danger">{{ $message }}</div>
+                                    <small class="text-danger">{{ $message }}</small>
                                 @enderror
                                 <div id="displayImg" class="" style="width: 200px;">
 
@@ -65,10 +82,11 @@
                                             <div class="form-check">
                                                 <label class="form-check-label">
                                                     <input name="attr_id[]" class="checkbox"
-                                                        value="{{ $val->id }}" type="checkbox"
-                                                        id="attr{{ $key + 1 }}"
-                                                        @if (is_array(old('attr_id')) && in_array($val->id, old('attr_id'))) checked @endif
-                                                        @if ($val->id == 1 || $val->id == 2) {{ 'checked disabled' }} @endif>
+                                                        value="{{ $val->id }}" type="checkbox" id="attr{{ $key + 1 }}"
+                                                        @foreach ($attrOfCategories as $val2)
+                                                            {{$val2->id == $val->id ? 'checked' : ''}}
+                                                        @endforeach
+                                                        >
 
                                                 </label>
                                             </div>
@@ -78,8 +96,9 @@
                                            
                                         </div>
                                     @endforeach
-                                    {{-- <button class="btn btn-primary">Them moi</button> --}}
-                                  
+                                    @error('attr_id')
+                                        <small class="text-danger">{{$message}}</small>
+                                    @enderror
                                 </div>
 
                             </div>
@@ -87,6 +106,7 @@
                     </div>
                     <button type="submit" class="btn btn-primary mr-2">Submit</button>
                     <a href="" class="btn btn-light">Cancel</a>
+                    <a href="{{route('categories.create')}}" class="btn btn-info">Danh sách</a>
                 </form>
 
                 

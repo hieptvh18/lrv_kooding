@@ -21,6 +21,7 @@ return new class extends Migration
 
             $table->foreignId('attr_id');
             $table->foreign('attr_id')->references('id')->on('attributes')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 

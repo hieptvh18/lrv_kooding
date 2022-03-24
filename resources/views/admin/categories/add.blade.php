@@ -6,10 +6,8 @@
     <div class=" grid-margin p-2">
         <div class="">
             <div class="card-body">
-                <h4 class="card-title">Add sub category</h4>
-                <p class="card-description">
-                    Basic form elements
-                </p>
+                <h4 class="card-title">Add category</h4>
+               <a href="#listCategory" class="btn btn-primary btn-sm" style="scroll-behavior: smooth"> Danh sách danh mục</a>
 
                 @if (session('msg-er'))
                     <div class="text-danger">{{ session('msg-er') }}</div>
@@ -17,7 +15,7 @@
                 @if (session('msg-suc'))
                     <div class="text-success">{{ session('msg-suc') }}</div>
                 @endif
-                <form action="{{ route('categories.store') }}" id="form_categorys" class="forms-sample" method="POST"
+                <form action="{{ route('categories.store') }}" id="form_categorys" class="forms-sample mt-3" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     <div class="row">
@@ -30,16 +28,17 @@
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
-    
+
                         <div class="form-group col-6">
                             <label for="">Parent Categories</label>
                             <select name="parent_id" id="" class="form-control">
 
                                 <option value="">---select none---</option>
-                                @foreach ($listSelectSub as $key=>$item)
-                                    <option value="{{$item['id']}}" {{ old('name') == $key ? "selected" : "" }}>{{str_repeat('---',$item['level'])}}{{$item['name']}}</option>
+                                @foreach ($listSelectSub as $key => $item)
+                                    <option value="{{ $item['id'] }}" {{ old('parent_id') == $key ? 'selected' : '' }}>
+                                        {{ str_repeat('---', $item['level']) }}{{ $item['name'] }}</option>
                                 @endforeach
-    
+
                             </select>
                             <small>Choose category origin(if you select none, it add categories)*</small>
                             @error('parent_id')
@@ -48,11 +47,11 @@
                         </div>
                     </div>
 
-                   <div class="row">
+                    <div class="row">
                         <div class="form-group col-6">
                             <label for="">Category slug</label>
-                            <input name="slug" value="{{ old('slug') }}" type="text" class="form-control"
-                                id="" placeholder="enter slug : category-clothing-new...">
+                            <input name="slug" value="{{ old('slug') }}" type="text" class="form-control" id=""
+                                placeholder="enter slug : category-clothing-new...">
                             <small>Enter slug(display in url, it must only contain letters, numbers, dashes and
                                 underscores)</small>
                             @error('slug')
@@ -62,8 +61,8 @@
 
                         <div class="form-group col-6">
                             <label>File upload</label>
-                            <input name="avatar" type="file" class="form-control file-upload-info" placeholder="Upload Image"
-                                id="upload" onchange="previewImg()">
+                            <input name="avatar" type="file" class="form-control file-upload-info"
+                                placeholder="Upload Image" id="upload" onchange="previewImg()">
                             <small>Upload avatar of sub category*</small>
                             @error('avatar')
                                 <div class="text-danger">{{ $message }}</div>
@@ -72,7 +71,7 @@
 
                             </div>
                         </div>
-                   </div>
+                    </div>
 
                     <div class="form-group">
                         <label class="mr-3" for="special1">Thuộc tính của loại sản phẩm:</label>
@@ -105,29 +104,38 @@
         </div>
 
         {{-- list parent categories --}}
-        <div class="mt-4">
+        <div class="mt-4" id="listCategory">
             <h6>List parent categories</h6>
             <table class="table table-borderd">
                 <thead>
                     <tr>
                         <th>STT</th>
                         <th>Name</th>
-                        <th>Parent name</th>
+                        <th>Avatar</th>
+                        <th>Slug</th>
+                        <th>Thuộc tính</th>
                         <th>Service</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($categories as $key => $val)
+                    @foreach ($listCate as $key => $val)
                         <tr>
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $val['name'] }}</td>
-                            <td>...</td>
+
+                            <td><img src="{{ asset('uploads') }}/{{ $val->avatar }}" alt="" width="50px"></td>
+                            <td>{{ $val->slug }}</td>
+                            <td>
+                                @foreach ($val->attributes as $attr)
+                                    <p>{{ $attr->name }}</p>
+                                @endforeach
+                            </td>
                             <td>
                                 <a href="{{ route('categories.destroy', $val['id']) }}" class="btn btn-sm btn-danger"
                                     onclick="
-                                        event.preventDefault();
-                                        document.querySelector('#formDelCate{{ $key }}').submit();
-                                        ">Remove</a>
+                                            event.preventDefault();
+                                            document.querySelector('#formDelCate{{ $key }}').submit();
+                                            ">Remove</a>
 
                                 <form action="{{ route('categories.destroy', $val['id']) }}" method="POST"
                                     id="formDelCate{{ $key }}">
@@ -142,6 +150,9 @@
                     @endforeach
                 </tbody>
             </table>
+            <div class="paginate">
+                {{ $listCate->links() }}
+            </div>
         </div>
     </div>
 @endsection
