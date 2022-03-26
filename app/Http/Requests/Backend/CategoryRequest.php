@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests\Backend;
 
+use App\Models\Category;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class CategoryRequest extends FormRequest
 {
@@ -19,6 +21,8 @@ class CategoryRequest extends FormRequest
         return true;//cho phep ng dung thuc hien rq hay k
     }
 
+   
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -26,13 +30,38 @@ class CategoryRequest extends FormRequest
      */
     public function rules(Request $request)
     {
-        // define rules
-        return [
-            "name" => "required|unique:categories|max:30",
-            "slug" => "required|unique:categories,slug|alpha_dash",
-            "avatar" => "required|image| mimes:jpg,png,jpeg|max:2040",
-            "attr_id"=>"required"
-        ];
+        // find category => ignore validate unique
+        $category = Category::where('name',$request->input('name'))->first();
+
+        if($request->file('avatar')){
+            $ruleAvatarEdit = "required|image|mimes:jpg,png,jpeg|max:2040";
+        }else{
+            $ruleAvatarEdit = 'nullable';
+        }
+
+        // check method
+        switch($request->method()){
+            case"PUT":
+                $rules = [
+                    "name" => ["required","max:30",Rule::unique('categories')->ignore($category->id)],
+                    "slug" => ["required",Rule::unique('categories')->ignore($category->id)],
+                    "avatar" => $ruleAvatarEdit,
+                    "attr_id"=>"required"
+                ];
+
+                break;
+                
+                default:
+                $rules = [
+                    "name" => ["required","unique:categories","max:30"],
+                    "slug" => "required|unique:categories,slug|alpha_dash",
+                    "avatar" => "required|image|mimes:jpg,png,jpeg|max:2040",
+                    "attr_id"=>"required"
+                ];
+                break;
+        }
+
+        return $rules;
     }
 
     // customer message
@@ -56,6 +85,14 @@ class CategoryRequest extends FormRequest
         ];
     }
 
+     // chuan bi truoc khi validate
+     protected function prepareForValidation()
+     {
+         $this->merge([
+             'slug' => Str::slug($this->slug),
+         ]);
+     }
+
     // sau khi validate 
     // public function withValidator($validator){
     //     if($validator->has($validator->errors())){
@@ -63,9 +100,6 @@ class CategoryRequest extends FormRequest
     //     }
     // }
 
-    // trước khi validate
-    protected function prepareForValidation(){
-        // do    something
-    }
+
 
 }

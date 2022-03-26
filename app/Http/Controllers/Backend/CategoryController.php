@@ -6,6 +6,7 @@ use App\Http\Requests\Backend\CategoryRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Attribute;
+use App\Models\CateAttribute;
 use App\Models\Category;
 use App\Models\CategoryAttribute;
 
@@ -19,7 +20,7 @@ class CategoryController extends Controller
     public function index()
     {
         //
-        $categories = Category::orderByDesc('categories.id')->paginate(3);
+        $categories = Category::orderByDesc('categories.id')->paginate(5);
 
         return view('admin.categories.list', compact('categories'));
     }
@@ -121,68 +122,41 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CategoryRequest $request, $id)
+    public function update(CategoryRequest $categoryRequest, $id)
     {
-        if ($request->file('avatar')) {
-            $ruleAvatarFiles = "image|mimes:jpg,png,jpeg|max:2040";
-        } else {
-            $ruleAvatarFiles = 'nullable';
-        }
-
-        $request->validate([
-            "avatar" => $ruleAvatarFiles
-        ]);
-
         $category = Category::find($id);
-
         // create filename & uploads file & save
-        if ($request->file('avatar')) {
+        if ($categoryRequest->file('avatar')) {
             // unlink avatar old 
-            if (public_path('uploads/' . $category->avatar)) {
-                unlink(public_path('uploads/' . $category->avatar));
-            }
+            // if (public_path('uploads/' . $category->avatar)) {
+            //     unlink(public_path('uploads/' . $category->avatar));
+            // }
             // create fileNakme
-            $fileName = uniqid() . '-category' . time() . '.' . $request->avatar->extension();
-            $request->file('avatar')->move(public_path('uploads'), $fileName);
+            $fileName = uniqid() . '-category' . time() . '.' . $categoryRequest->avatar->extension();
+            $categoryRequest->file('avatar')->move(public_path('uploads'), $fileName);
         } else {
-            $fileName = $request->input('avatar');
+            $fileName = $categoryRequest->input('avatar');
         }
 
-        $category->name = $request->input('name');
+        $category->name = $categoryRequest->input('name');
         $category->avatar = $fileName;
         // parent_id is field nullable
-        if($request->parent_id != null){
-            $category->parent_id = $request->parent_id;
+        if($categoryRequest->parent_id != null){
+            $category->parent_id = $categoryRequest->parent_id;
         }
+        $category->slug = $categoryRequest->input('slug');
         $category->save();
 
         // add color vs size + other attr_id
 
         // remove value old => add new =))
+        $attrOfCategories = CateAttribute::select('cate_attributes.*')
+        ->where('category_id',$id)->delete();
 
-        $attrOfCategories =  $attrOfCategories = Category::select('attributes.*')
-        ->join('cate_attributes','cate_attributes.category_id','categories.id')
-        ->join('attributes','attributes.id','cate_attributes.attr_id')
-        ->where('categories.id',$id)
-        ->get();
-
-        foreach($attrOfCategories as $attr){
-
-        }
-
-        $arrAttrNew = [];
-        if ($request->has('attr_id')) {
-            $arrAttrId = $request->all()['attr_id'];
-
-            foreach ($arrAttrId as $id) {
-                array_push($arrAttrNew, (int)$id);
-            }
-
-            // lap va edit danh muc
-            foreach ($arrAttrNew as $attrId) {
-
-                $categoryAttribute = CategoryAttribute::where('attr_id', $attrId)
-                    ->where('category_id', $id)->first();
+        // lap va add 
+        if ($categoryRequest->has('attr_id')) {
+            foreach ($categoryRequest->attr_id as $attrId) {
+                $categoryAttribute = new CategoryAttribute();
                 $categoryAttribute->attr_id = $attrId;
                 $categoryAttribute->category_id = $category->id;
                 $categoryAttribute->save();

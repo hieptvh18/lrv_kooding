@@ -12,7 +12,7 @@
                 </p>
 
                 @if (session('msg-er'))
-                    <div class="text-danger">{{ session('msg-er') }}</div>
+                    <div class="alert alert-danger">{{ session('msg-er') }}</div>
                 @endif
                 @if (session('msg-suc'))
                     <div class="text-success">{{ session('msg-suc') }}</div>
@@ -40,7 +40,10 @@
     
                                     <option value="">---select none---</option>
                                     @foreach ($listSelectSub as $key => $item)
-                                        <option value="{{ $item['id'] }}" {{$myCategory->parent_id == $item['id'] ? 'selected':''}}>
+                                        <option  value="{{ $item['id'] }}" 
+                                        {{--disable chinh no =))--}}
+                                        {{$myCategory->id == $item['id'] ? 'disabled':''}} {{--selected parent_id--}}
+                                        {{$myCategory->parent_id == $item['id'] ? 'selected':''}}>
                                             {{ str_repeat('---', $item['level']) }}{{ $item['name'] }}</option>
                                     @endforeach
     
@@ -58,7 +61,7 @@
                                     <input type="hidden" name="avatar" value="{{ $myCategory->avatar }}">
                                 </div>
                                 <label>File upload</label>
-                                <input name="avatar" type="file" class="form-control file-upload-info"
+                                <input name="avatar" type="file" value="{{old('avatar')}}" class="form-control file-upload-info"
                                     placeholder="Upload Image" id="upload" onchange="previewImg()">
                                 @error('avatar')
                                     <small class="text-danger">{{ $message }}</small>
@@ -70,10 +73,19 @@
                         </div>
 
                         <div class="col-6">
+                            <div class="form-group">
+                                <label for="">Category slug</label>
+                                <input name="slug" value="{{ $myCategory->slug }}" type="text" class="form-control" id=""
+                                    placeholder="enter slug : category-clothing-new...">
+                                <small>Enter slug(display in url, it must only contain letters, numbers, dashes and
+                                    underscores)</small>
+                                @error('slug')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
 
                             <div class="form-group">
                                 <label class="mr-3" for="special1">Thuộc tính của loại sản phẩm:</label>
-
                                 {{-- loop data --}}
                                 <div class="">
                                     @foreach ($listAttr as $key => $val)
@@ -100,8 +112,8 @@
                                         <small class="text-danger">{{$message}}</small>
                                     @enderror
                                 </div>
-
                             </div>
+
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary mr-2">Submit</button>

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
 
             // slg san pham luc nhap kho
-            $table->integer('quantity');
+            $table->integer('quantity')->comment('so luong cua tung san pham va thuoc tinh tuong ung');
 
             // slg sp da ban
             

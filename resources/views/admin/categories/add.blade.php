@@ -25,7 +25,7 @@
                                 id="exampleInputName1" placeholder="enter sub category name">
                             <small>Enter sub category name *</small>
                             @error('name')
-                                <div class="text-danger">{{ $message }}</div>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
@@ -35,14 +35,14 @@
 
                                 <option value="">---select none---</option>
                                 @foreach ($listSelectSub as $key => $item)
-                                    <option value="{{ $item['id'] }}" {{ old('parent_id') == $key ? 'selected' : '' }}>
+                                    <option value="{{ $item['id'] }}" {{ old('parent_id') == $item['id'] ? "selected" : "" }}>
                                         {{ str_repeat('---', $item['level']) }}{{ $item['name'] }}</option>
                                 @endforeach
 
                             </select>
                             <small>Choose category origin(if you select none, it add categories)*</small>
                             @error('parent_id')
-                                <div class="text-danger">{{ $message }}</div>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                     </div>
@@ -55,17 +55,17 @@
                             <small>Enter slug(display in url, it must only contain letters, numbers, dashes and
                                 underscores)</small>
                             @error('slug')
-                                <div class="text-danger">{{ $message }}</div>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
                         <div class="form-group col-6">
                             <label>File upload</label>
-                            <input name="avatar" type="file" class="form-control file-upload-info"
+                            <input name="avatar" type="file" value="{{old('avatar')}}" class="form-control file-upload-info"
                                 placeholder="Upload Image" id="upload" onchange="previewImg()">
                             <small>Upload avatar of sub category*</small>
                             @error('avatar')
-                                <div class="text-danger">{{ $message }}</div>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                             <div id="displayImg" class="" style="width: 200px;">
 
@@ -91,7 +91,7 @@
                                 </div>
                             @endforeach
                             @error('attr_id')
-                                <div class="text-danger">{{ $message }}</div>
+                                <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
 
