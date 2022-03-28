@@ -20,22 +20,34 @@
                             <label for="exampleInputName1">Tên </label>
                             <input type="text" value="{{ old('name') }}" name="name" class="form-control"
                                 id="exampleInputName1" placeholder="Name">
+
+                            @error('name')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
                         <div class="form-group col-4">
                             <label for="cate" class="">Loại sản phẩm</label>
                             <select name="category_id" id="" class="form-control">
 
                                 <option value="" selected disabled>---select none---</option>
-                                @foreach ($listSelectCategory as $key=>$item)
-                                    <option value="{{$item['id']}}" {{ old('category_id') == $key ? "selected" : "" }}>{{str_repeat('---',$item['level'])}}{{$item['name']}}</option>
+                                @foreach ($listSelectCategory as $key => $item)
+                                    <option value="{{ $item['id'] }}"
+                                        {{ old('category_id') == $item['id'] ? 'selected' : '' }}>
+                                        {{ str_repeat('---', $item['level']) }}{{ $item['name'] }}</option>
                                 @endforeach
-    
+
                             </select>
+                            @error('category_id')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
                         <div class="form-group col-4">
                             <label for="price">Giá</label>
                             <input type="number" value="{{ old('price') }}" name="price" class="form-control" id="price"
                                 placeholder="Giá sản phẩm">
+                            @error('price')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
                     </div>
 
@@ -44,55 +56,63 @@
                             <label for="" class="">Số lượng</label>
                             <input type="number" name="quantity" class="form-control" value="{{ old('quantity') }}"
                                 placeholder="Số lượng sản phẩm">
+                            @error('quantity')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
                         <div class="form-group col-4">
                             <label for="" class="">Giam gia</label>
-                            <input type="number" name="quantity" class="form-control" value="{{ old('quantity') }}"
-                                placeholder="Số lượng sản phẩm">
+                            <input type="number" name="discount" class="form-control" value="{{ old('quantity') }}"
+                                placeholder="Giá giảm">
+                            @error('discount')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
                         <div class="form-group col-4">
                             <label for="" class="">Thuong Hieu</label>
                             <select id="" name="brand_id" class="form-control">
                                 <option selected disabled value="">---chon thuong hieu---</option>
-                                @foreach($listBrand as $val)
-                                    <option value="{{$val->id}}">{{$val->name}}</option>
+                                @foreach ($listBrand as $val)
+                                    <option value="{{ $val->id }}"
+                                        {{ old('brand_id') == $val->id ? 'selected' : '' }}>{{ $val->name }}</option>
                                 @endforeach
                             </select>
+                            @error('brand_id')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
 
                     </div>
 
-                    <div class="row">
-                        <div class="form-group col-6" style="display:flex; column-gap:30px; align-items:center;">
-                            <label for="">Màu sản phẩm</label>
-                            {{-- <?php foreach ($data['color_values'] as $item) : ?>
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input class="checkbox" type="checkbox" name="color[]" value="<?= $item['id'] ?>">
-                                    <?= $item['value'] ?>
-                                </label>
-                            </div>
-                        <?php endforeach; ?> --}}
-                            <label for="color[]" class="error"></label>
-                        </div>
+                    <div class="content-attribute">
+                        <p class="ml-3">Thuộc tính sản phẩm</p>
+                        {{-- loop attribute òf product category & attribute value --}}
+                        <div class="row">
+                            @foreach ($listAttr as $key=>$attribute)
+                                <div class="form-group col-4">
+                                    <select id="" name="attr_value_id[]" class="form-control">
+                                        <option selected disabled value="">---Chọn {{$attribute->name}}---</option>
+                                        @foreach (\App\Models\Attribute::find($attribute->id)->attributeValues as $val)
+                                            <option value="{{ $val->id }}"
+                                                {{ old('attr_value_id[]') == $val->id ? 'selected' : '' }}>{{ $val->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            @endforeach
 
-                        <div class="form-group col-6" style="display:flex; column-gap:30px; align-items:center;">
-                            <label for="">Kích cỡ</label>
-                            {{-- <?php foreach ($data['size_values'] as $item) : ?>
-                            <div class="form-check">
-                                <label class="form-check-label">
-                                    <input class="checkbox" type="checkbox" name="size[]" value="<?= $item['id'] ?>">
-                                    <?= $item['value'] ?>
-                                </label>
-                            </div>
-                        <?php endforeach; ?> --}}
-                            <label for="size[]" class="error"></label>
+                            @error('attr_value_id')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
                     </div>
                     <div class="row">
                         <div class="form-group col-6">
                             <label>Ảnh đại diện( ảnh)</label>
                             <input type="file" name="avatar" class="form-control" id="upload" onchange="previewImg()">
+                            @error('avatar')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
 
                             <div id="displayImg" class="" style="width: 200px;">
                             </div>
@@ -100,6 +120,12 @@
                         <div class="form-group col-6">
                             <label>Ảnh Chi tiết(dưới 5 ảnh)</label>
                             <input type="file" name="avatars[]" class="form-control" id="uploads" multiple="multiple">
+                            @error('avatars')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                            @if (session('err-avatars'))
+                                <small class="text-danger">{{ session('err-avatars') }}</small>
+                            @endif('err-avatars')
 
                         </div>
                     </div>
@@ -108,26 +134,53 @@
 
                         <div class="col-6">
                             <div class="form-check-inline ">
-                                <label for="" class="mr-3"> Kich hoat</label>
-                                <input class="form-check-input" value="0" id="special" type="checkbox" name="special"
+                                <label for="active" class="mr-3"> Kích hoạt</label>
+                                <input id="active" class="form-check-input" value="0" id="special" type="checkbox" name="special"
                                     checked>
                             </div>
                         </div>
-                        <div class="col-6">
-                            <label for="">Slug</label>
-                            <input type="text" name="slug" placeholder="Enter slug: day-la-slug-01" class="form-control">
-                            <small>* Hien thi tren url</small>
-                        </div>
+
                     </div>
 
                     <div class="form-group">
                         <label for="local-upload">Mô tả thông tin sản phẩm</label>
-                        <textarea class="form-control" id="local-upload" name="desc" rows="4">{{ old('description') }}</textarea>
+                        <textarea class="form-control" id="local-upload" name="description" rows="4">{{ old('description') }}</textarea>
+                        @error('description')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
-                    <button type="submit" name="btn_add" class="btn btn-primary mr-2">Thêm</button>
+                    <button type="submit" class="btn btn-primary mr-2">Thêm</button>
                     <button class="btn btn-light">Cancel</button>
                 </form>
             </div>
         </div>
     </div>
+@endsection
+@section('script')
+    {{-- <script>
+        $(document).ready(function() {
+            $('select[name="category_id"]').change(function() {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    url: "{{ route('ajax.get-attr-of-category') }}",
+                    type: "POST",
+                    data: {
+                        "category_id": $('select[name="category_id"]').val(),
+
+                    },
+                    success: function(data) {
+                        $('.content-attribute').html(data)
+                    },
+                    error: function(err) {
+                        console.log('err -' + err)
+                    }
+                })
+
+            })
+        })
+    </script> --}}
 @endsection

@@ -7,10 +7,12 @@ use Illuminate\Http\Request;
 
 use App\Models\AttributeValue;
 use App\Models\Attribute;
+use App\Models\Category;
+use App\Models\CateAttribute;
 
 class AjaxController extends Controller
 {
-    // check attribute value exist
+    // check attribute value exist[form add attribute]
     public function attrValueExist(Request $rq){
         if($rq->ajax()){
             
@@ -24,6 +26,37 @@ class AjaxController extends Controller
             }
             return 0;
         }
+    }
+
+        // filter attribute of category[form add product]
+    public function getAttrOfCategory(Request $rq){
+
+        // if($rq->ajax()){
+        //     $categoryAttribute = CateAttribute::select('attributes.*')
+        //                                         ->join('attributes','attributes.id','cate_attributes.attr_id')
+        //                                         ->where('cate_attributes.category_id',$rq->category_id)->get();
+
+        //     // get value of atributes
+        //     $result = '';
+        //     foreach($categoryAttribute as $cate){
+        //         $result += `
+        //             <label for="" class="">Thuộc tính</label>
+        //             <select id="" name="brand_id" class="form-control">
+        //                 <option selected disabled value="">---chon thuong hieu---</option>
+        //                 @foreach ($listBrand as $val)
+        //                     <option value="{{ $val->id }}"
+        //                         {{ old('brand_id') == $val->id ? 'selected' : '' }}>{{ $val->name }}</option>
+        //                 @endforeach
+        //             </select>
+        //             @error('brand_id')
+        //                 <small class="text-danger">{{ $message }}</small>
+        //             @enderror
+        //         `;
+        //     }
+
+        //     return $result;
+
+        // }
     }
 
   

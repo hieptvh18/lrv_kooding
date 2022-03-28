@@ -23,6 +23,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // handle ajax request
 Route::any('ajax/get-attr-value-exist',[AjaxController::class,'attrValueExist'])->name('ajax.attr-value-exist');
+Route::any('ajax/get-attr-of-category',[AjaxController::class,'getAttrOfCategory'])->name('ajax.get-attr-of-category');
+
 
 // // Google Sign In
 // Route::get('/google',[GoogleController::class,'redirectToGoogle'])->name('login.google');

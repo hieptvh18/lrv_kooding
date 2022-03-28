@@ -13,5 +13,7 @@ class Attribute extends Model
 
     public $timestamps = false;
 
-    
+    public function attributeValues(){
+        return $this->hasMany(AttributeValue::class,'attr_id');
+    }
 }

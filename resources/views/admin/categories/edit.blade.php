@@ -22,6 +22,7 @@
                     method="POST" enctype="multipart/form-data">
                     @method('PUT')
                     @csrf
+                    <input type="hidden" name="id" value="{{$myCategory->id}}">
                     <div class="row">
                         <div class="col-6">
                             <div class="form-group">
@@ -73,7 +74,7 @@
                         </div>
 
                         <div class="col-6">
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <label for="">Category slug</label>
                                 <input name="slug" value="{{ $myCategory->slug }}" type="text" class="form-control" id=""
                                     placeholder="enter slug : category-clothing-new...">
@@ -82,7 +83,7 @@
                                 @error('slug')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
-                            </div>
+                            </div> --}}
 
                             <div class="form-group">
                                 <label class="mr-3" for="special1">Thuộc tính của loại sản phẩm:</label>

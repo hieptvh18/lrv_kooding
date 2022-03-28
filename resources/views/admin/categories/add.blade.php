@@ -6,7 +6,7 @@
     <div class=" grid-margin p-2">
         <div class="">
             <div class="card-body">
-                <h4 class="card-title">Add category</h4>
+                <h4 class="card-title">Add new category</h4>
                <a href="#listCategory" class="btn btn-primary btn-sm" style="scroll-behavior: smooth"> Danh sách danh mục</a>
 
                 @if (session('msg-er'))
@@ -48,17 +48,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="form-group col-6">
-                            <label for="">Category slug</label>
-                            <input name="slug" value="{{ old('slug') }}" type="text" class="form-control" id=""
-                                placeholder="enter slug : category-clothing-new...">
-                            <small>Enter slug(display in url, it must only contain letters, numbers, dashes and
-                                underscores)</small>
-                            @error('slug')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
-
+                       
                         <div class="form-group col-6">
                             <label>File upload</label>
                             <input name="avatar" type="file" value="{{old('avatar')}}" class="form-control file-upload-info"
@@ -71,31 +61,32 @@
 
                             </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="mr-3" for="special1">Thuộc tính của loại sản phẩm:</label>
-
-                        {{-- loop data --}}
-                        <div class="" style="display:flex; column-gap:20px; align-items:center;">
-                            @foreach ($listAttr as $key => $val)
-                                <div class="" style="display:flex; column-gap:10px; align-items:center;">
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input name="attr_id[]" class="checkbox" value="{{ $val->id }}"
-                                                type="checkbox" id="attr{{ $key + 1 }}"
-                                                @if (is_array(old('attr_id')) && in_array($val->id, old('attr_id'))) checked @endif </label>
+                        <div class="form-group col-6">
+                            <label class="mr-3" for="special1">Thuộc tính của loại sản phẩm:</label>
+    
+                            {{-- loop data --}}
+                            <div class="" style="display:flex; column-gap:20px; align-items:center;">
+                                @foreach ($listAttr as $key => $val)
+                                    <div class="" style="display:flex; column-gap:10px; align-items:center;">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input name="attr_id[]" class="checkbox" value="{{ $val->id }}"
+                                                    type="checkbox" id="attr{{ $key + 1 }}"
+                                                    @if (is_array(old('attr_id')) && in_array($val->id, old('attr_id'))) checked @endif </label>
+                                        </div>
+                                        <label class="mr-3"
+                                            for="attr{{ $key + 1 }}">{{ $val->name }}</label>
                                     </div>
-                                    <label class="mr-3"
-                                        for="attr{{ $key + 1 }}">{{ $val->name }}</label>
-                                </div>
-                            @endforeach
-                            @error('attr_id')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
+                                @endforeach
+                                @error('attr_id')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+    
                         </div>
-
                     </div>
+
                     <button type="submit" class="btn btn-primary btn-sm mr-2">Submit</button>
                     <a href="" class="btn btn-sm btn-light">Cancel</a>
                 </form>

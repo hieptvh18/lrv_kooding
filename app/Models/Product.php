@@ -11,7 +11,7 @@ class Product extends Model
 
     protected $table = 'products';
 
-    protected $fillable = [];
+    protected $fillable = ['name','slug','category_id','price','discount','brand_id','avatar','description','status'];
     
     // relationship
     public function categories(){

@@ -18,7 +18,7 @@ class CategoryRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;//cho phep ng dung thuc hien rq hay k
+       return true;
     }
 
    
@@ -31,8 +31,6 @@ class CategoryRequest extends FormRequest
     public function rules(Request $request)
     {
         // find category => ignore validate unique
-        $category = Category::where('name',$request->input('name'))->first();
-
         if($request->file('avatar')){
             $ruleAvatarEdit = "required|image|mimes:jpg,png,jpeg|max:2040";
         }else{
@@ -43,8 +41,8 @@ class CategoryRequest extends FormRequest
         switch($request->method()){
             case"PUT":
                 $rules = [
-                    "name" => ["required","max:30",Rule::unique('categories')->ignore($category->id)],
-                    "slug" => ["required",Rule::unique('categories')->ignore($category->id)],
+                    "name" => ["required","max:30",Rule::unique('categories','name')->ignore(request()->id)],
+                    "slug" => [Rule::unique('categories','slug')->ignore(request()->id)],
                     "avatar" => $ruleAvatarEdit,
                     "attr_id"=>"required"
                 ];
@@ -54,7 +52,6 @@ class CategoryRequest extends FormRequest
                 default:
                 $rules = [
                     "name" => ["required","unique:categories","max:30"],
-                    "slug" => "required|unique:categories,slug|alpha_dash",
                     "avatar" => "required|image|mimes:jpg,png,jpeg|max:2040",
                     "attr_id"=>"required"
                 ];
@@ -71,7 +68,6 @@ class CategoryRequest extends FormRequest
             "required"=>"Bắt buộc nhập :attribute!",
             "name.max"=>"Độ dài tối đa là 30 kí tư",
             "unique"=>":attribute đã tồn tại trong dữ liệu",
-            "slug.alpha_dash"=>"Slug chỉ nhận kí tự đặc biệt gồm _-",
             "avatar.image"=>"File tải lên phải là ảnh",
             "avatar.mimes"=>"Chỉ nhận file ảnh dạng jpg,png,jpeg",
         ];
@@ -89,7 +85,7 @@ class CategoryRequest extends FormRequest
      protected function prepareForValidation()
      {
          $this->merge([
-             'slug' => Str::slug($this->slug),
+             'slug' => Str::slug($this->name),
          ]);
      }
 

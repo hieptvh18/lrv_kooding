@@ -4,11 +4,12 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use App\Http\Requests\Backend\ProductRequest;
 use App\Models\Product;
 use App\Models\Attribute;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Stock;
 
 class ProductController extends Controller
 {
@@ -34,10 +35,13 @@ class ProductController extends Controller
     {
         //get data
         $listBrand = Brand::all();
+        $listAttr =  Attribute::all();
         $categories = Category::all()->toArray();
         $listSelectCategory = getChildCategories($categories);
+        
+        // $listAttrOfCategory = ;
 
-        return view('admin.product.add',compact('listSelectCategory','listBrand'));
+        return view('admin.product.add',compact('listSelectCategory','listBrand','listAttr'));
     }
 
     /**
@@ -46,9 +50,39 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        //
+        // check avatars detail
+        if(count($request->file('avatars')) > 5){
+            return back()->with('err-avatars','Không được tải lên quá 5 ảnh!');
+        }
+        $fileName = uniqid() . '-product' . time() . '.' . $request->avatar->extension();
+        
+        $productNew = new Product();
+        $productNew ->fill($request->all());
+        $productNew->avatar = $fileName;
+        $save = $productNew->save();
+
+        if($save){
+
+            // upload
+            $request->file('avatar')->move(public_path('uploads'), $fileName);
+            
+            // add & upload pro_img
+
+
+            // add stocks attr_value
+            foreach($request->attr_value_id as $item){
+                $stock  = new Stock();
+                $stock->pro_id = $productNew->id;
+                $stock->attr_value_id = $item;
+                $stock->attr_value_id = $item;
+                $stock->save();
+            }
+        }
+
+
+        return redirect(route('products.create'))->with('msg-suc','Thêm thành công sản phẩm vào kho hàng!');
     }
 
     /**

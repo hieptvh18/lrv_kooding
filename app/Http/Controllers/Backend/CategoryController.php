@@ -51,7 +51,6 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $categoryRequest)
     {
-        // dd($categoryRequest->all());
         // validate = FormRequest
 
         // create filename & uploads file & save
@@ -122,7 +121,7 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CategoryRequest $categoryRequest, $id)
+    public function update(CategoryRequest $categoryRequest,Category $cate, $id)
     {
         $category = Category::find($id);
         // create filename & uploads file & save
@@ -150,7 +149,7 @@ class CategoryController extends Controller
         // add color vs size + other attr_id
 
         // remove value old => add new =))
-        $attrOfCategories = CateAttribute::select('cate_attributes.*')
+        $attrOfCategories = CateAttribute::select('*')
         ->where('category_id',$id)->delete();
 
         // lap va add 
