@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 // admin
 use  App\Http\Controllers\Backend\DashboardController;
 use  App\Http\Controllers\Backend\CategoryAttrbuteController;
+use  App\Http\Controllers\Backend\StockController;
 
 // =================ROUTE CLIENT===============
 Route::get('/', [HomeController::class,'index'])->name('client.home');
@@ -40,13 +41,17 @@ Route::prefix('admin')->group(function(){
     ]);
      // attribute
      Route::resource('attribute','App\Http\Controllers\Backend\AttributeController')->only([
-         'store','edit','update','destroy','index'
+         'index'
      ]);
 
     //  attr value
      Route::resource('attributeValue','App\Http\Controllers\Backend\AttributeValueController')->only([
          'store','destroy'
      ]);
+
+      //  stocks
+      Route::get('add-to-stock/{id}',[StockController::class,'create'])->name('stock.create');
+      Route::post('store-to-stock',[StockController::class,'store'])->name('stock.store');
 
 
 });

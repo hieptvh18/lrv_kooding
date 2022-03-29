@@ -44,7 +44,6 @@ class CategoryRequest extends FormRequest
                     "name" => ["required","max:30",Rule::unique('categories','name')->ignore(request()->id)],
                     "slug" => [Rule::unique('categories','slug')->ignore(request()->id)],
                     "avatar" => $ruleAvatarEdit,
-                    "attr_id"=>"required"
                 ];
 
                 break;
@@ -53,7 +52,6 @@ class CategoryRequest extends FormRequest
                 $rules = [
                     "name" => ["required","unique:categories","max:30"],
                     "avatar" => "required|image|mimes:jpg,png,jpeg|max:2040",
-                    "attr_id"=>"required"
                 ];
                 break;
         }

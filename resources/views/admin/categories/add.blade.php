@@ -62,33 +62,15 @@
                             </div>
                         </div>
 
-                        <div class="form-group col-6">
-                            <label class="mr-3" for="special1">Thuộc tính của loại sản phẩm:</label>
-    
-                            {{-- loop data --}}
-                            <div class="" style="display:flex; column-gap:20px; align-items:center;">
-                                @foreach ($listAttr as $key => $val)
-                                    <div class="" style="display:flex; column-gap:10px; align-items:center;">
-                                        <div class="form-check">
-                                            <label class="form-check-label">
-                                                <input name="attr_id[]" class="checkbox" value="{{ $val->id }}"
-                                                    type="checkbox" id="attr{{ $key + 1 }}"
-                                                    @if (is_array(old('attr_id')) && in_array($val->id, old('attr_id'))) checked @endif </label>
-                                        </div>
-                                        <label class="mr-3"
-                                            for="attr{{ $key + 1 }}">{{ $val->name }}</label>
-                                    </div>
-                                @endforeach
-                                @error('attr_id')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-    
+                        <div class="col-6">
+                            <button type="submit" class="btn btn-primary btn-sm mr-2">Submit</button>
+                             <a href="" class="btn btn-sm btn-light">Cancel</a>
                         </div>
+
+                        
                     </div>
 
-                    <button type="submit" class="btn btn-primary btn-sm mr-2">Submit</button>
-                    <a href="" class="btn btn-sm btn-light">Cancel</a>
+                    
                 </form>
             </div>
 
@@ -96,7 +78,7 @@
 
         {{-- list parent categories --}}
         <div class="mt-4" id="listCategory">
-            <h6>List parent categories</h6>
+            <h6>List categories</h6>
             <table class="table table-borderd">
                 <thead>
                     <tr>
@@ -104,7 +86,6 @@
                         <th>Name</th>
                         <th>Avatar</th>
                         <th>Slug</th>
-                        <th>Thuộc tính</th>
                         <th>Service</th>
                     </tr>
                 </thead>
@@ -116,11 +97,7 @@
 
                             <td><img src="{{ asset('uploads') }}/{{ $val->avatar }}" alt="" width="50px"></td>
                             <td>{{ $val->slug }}</td>
-                            <td>
-                                @foreach ($val->attributes as $attr)
-                                    <p>{{ $attr->name }}</p>
-                                @endforeach
-                            </td>
+                           
                             <td>
                                 <a href="{{ route('categories.destroy', $val['id']) }}" class="btn btn-sm btn-danger"
                                     onclick="

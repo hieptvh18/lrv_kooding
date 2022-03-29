@@ -10,6 +10,7 @@ use App\Models\Attribute;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Stock;
+use App\Models\ProductImage;
 
 class ProductController extends Controller
 {
@@ -21,7 +22,7 @@ class ProductController extends Controller
     public function index()
     {
         // màn hình danh sách + phan trang
-        $listProduct = Product::orderBy('id','desc')->paginate(5);
+        $listProduct = Product::where('status',1)->orderBy('id','desc')->paginate(5);
         // dd(Product::find(2)->brands);
         return view('admin.product.list', compact('listProduct'));
     }
@@ -56,33 +57,34 @@ class ProductController extends Controller
         if(count($request->file('avatars')) > 5){
             return back()->with('err-avatars','Không được tải lên quá 5 ảnh!');
         }
-        $fileName = uniqid() . '-product' . time() . '.' . $request->avatar->extension();
+        $avatarName = uniqid() . '-product' . time() . '.' . $request->avatar->extension();
         
         $productNew = new Product();
         $productNew ->fill($request->all());
-        $productNew->avatar = $fileName;
+        $productNew->avatar = $avatarName;
         $save = $productNew->save();
-
+        
         if($save){
-
+            
             // upload
-            $request->file('avatar')->move(public_path('uploads'), $fileName);
+            $request->file('avatar')->move(public_path('uploads'), $avatarName);
             
             // add & upload pro_img
-
+            foreach($request->file('avatars') as $key=>$item){
+                $imageDetailName = uniqid() . '-product-detail-'.$key. time() . '.' . $item->extension();
+                $item->move(public_path('uploads'), $imageDetailName);
+                $productImage = new ProductImage();
+                $productImage->pro_id = $productNew->id;
+                $productImage->url = $imageDetailName;
+                $productImage->save();
+            }
 
             // add stocks attr_value
-            foreach($request->attr_value_id as $item){
-                $stock  = new Stock();
-                $stock->pro_id = $productNew->id;
-                $stock->attr_value_id = $item;
-                $stock->attr_value_id = $item;
-                $stock->save();
-            }
+            
         }
 
-
-        return redirect(route('products.create'))->with('msg-suc','Thêm thành công sản phẩm vào kho hàng!');
+        // redirect sang add product variant to stock
+        return redirect(route('stock.create',$productNew->id));
     }
 
     /**

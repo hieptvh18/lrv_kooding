@@ -5,70 +5,9 @@
 @section('main')
 
     <div class="card-body">
-        <h4 class="card-title">Danh sách Thuộc tính</h4>
-
-        <div class="row">
-            <div class="col-8">
-                @if (session('msg'))
-                    <div class="alert alert-success">{{ session('msg') }}</div>
-                @endif
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>STT</th>
-                            <th>Tên</th>
-                            <th>Quản lý</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($listAttr as $key => $val)
-                            <tr>
-                                <td>{{ $key + 1 }}</td>
-                                <td>{{ $val->name }}</td>
-                                <td>
-                                    <a href="#update"><i class="fas fa-pen-square text-warning fa-2x "></i></a>
-                                   
-                                    @if ($val->id != 1 && $val->id !=2)
-                                        <a href="{{ route('attribute.destroy', $val->id) }}" onclick="
-                                                            event.preventDefault();
-                                                            document.querySelector('#form-del-attr{{ $key }}').submit()
-                                                    "><i class="fas fa-trash-alt text-danger fa-2x"></i></a>
-    
-                                        <form id="form-del-attr{{ $key }}"
-                                            action="{{ route('attribute.destroy', $val->id) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                        </form>
-                                    @endif
-                                </td>
-                            </tr>
-                        @endforeach
-
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="table-responsive col-4">
-                <h4 class="card-title">Thêm mới Thuộc tính</h4>
-
-                <form action="{{ route('attribute.store') }}" method="POST">
-                    @csrf
-                    <div class="form-group">
-                        <label for="">Tên</label>
-                        <input type="text" class="form-control" name="name" placeholder="Nhập tên thuộc tính sản phẩm">
-                        @error('name')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-
-            </div>
-        </div>
-
 
         {{-- danh ssach giá trị của thuộc tính --}}
-        <h4 class="card-title mt-5">Danh sách gía trị của thuộc tính.</h4>
+        <h4 class="card-title mt-3">Danh sách gía trị của thuộc tính.</h4>
         <!-- Button to Open the Modal -->
         <button type="button" {{$btnStatus}} class="btn btn-primary" data-toggle="modal" data-target="#myModal">
             Thêm giá trị mới
@@ -150,13 +89,13 @@
                                 <td>{{ $item->name }}</td>
                                 <td>
 
-                                    <a href="{{ route('attributeValue.destroy', $val->id) }}" onclick="
+                                    <a href="{{ route('attributeValue.destroy', $item->id) }}" onclick="
                                             event.preventDefault();
                                             document.querySelector('#form-del-attr-value{{ $key }}').submit()
                                     "><i class="fas fa-trash-alt text-danger fa-2x"></i></a>
 
                                     <form id="form-del-attr-value{{ $key }}"
-                                        action="{{ route('attributeValue.destroy', $val->id) }}" method="POST">
+                                        action="{{ route('attributeValue.destroy', $item->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                     </form>

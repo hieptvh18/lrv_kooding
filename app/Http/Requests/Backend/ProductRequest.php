@@ -49,7 +49,7 @@ class ProductRequest extends FormRequest
                     "avatar" => $ruleAvatarEdit,
                     "discount" => "nullable|integer|11",
                     "price" => "required|integer|max:11",
-                    "quantity" => "required|integer",
+                    // "quantity" => "required|integer",
                     "description" => "required|min:30|max:4000000",
 
                 ];
@@ -64,11 +64,13 @@ class ProductRequest extends FormRequest
                     "price" => "required|regex:/^\d{1,11}$/",
                     "discount" => "nullable|regex:/^\d{1,11}$/",
                     "brand_id" => "required",
-                    "quantity" => "required|regex:/^\d{1,11}$/",
+                    // "quantity" => "required|regex:/^\d{1,11}$/",
                     "description" => "required|min:30|max:4000000",
                     "avatar" => "required|image|mimes:jpg,png,jpeg|max:2040",
                     // "avatars" => "nullable|image|mimes:jpg,png,jpeg|max:2040",
-                    "attr_value_id"=>"required",
+                    // "color_id"=>"required",
+                    // "size_id"=>"required",
+                    // "material_id"=>"required",
                     
                 ];
                 break;

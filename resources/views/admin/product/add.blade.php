@@ -52,14 +52,14 @@
                     </div>
 
                     <div class="row">
-                        <div class="form-group col-4">
+                        {{-- <div class="form-group col-4">
                             <label for="" class="">Số lượng</label>
                             <input type="number" name="quantity" class="form-control" value="{{ old('quantity') }}"
                                 placeholder="Số lượng sản phẩm">
                             @error('quantity')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
-                        </div>
+                        </div> --}}
                         <div class="form-group col-4">
                             <label for="" class="">Giam gia</label>
                             <input type="number" name="discount" class="form-control" value="{{ old('quantity') }}"
@@ -84,28 +84,7 @@
 
                     </div>
 
-                    <div class="content-attribute">
-                        <p class="ml-3">Thuộc tính sản phẩm</p>
-                        {{-- loop attribute òf product category & attribute value --}}
-                        <div class="row">
-                            @foreach ($listAttr as $key=>$attribute)
-                                <div class="form-group col-4">
-                                    <select id="" name="attr_value_id[]" class="form-control">
-                                        <option selected disabled value="">---Chọn {{$attribute->name}}---</option>
-                                        @foreach (\App\Models\Attribute::find($attribute->id)->attributeValues as $val)
-                                            <option value="{{ $val->id }}"
-                                                {{ old('attr_value_id[]') == $val->id ? 'selected' : '' }}>{{ $val->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            @endforeach
-
-                            @error('attr_value_id')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
-                    </div>
+                    
                     <div class="row">
                         <div class="form-group col-6">
                             <label>Ảnh đại diện( ảnh)</label>
@@ -128,18 +107,6 @@
                             @endif('err-avatars')
 
                         </div>
-                    </div>
-
-                    <div class="row">
-
-                        <div class="col-6">
-                            <div class="form-check-inline ">
-                                <label for="active" class="mr-3"> Kích hoạt</label>
-                                <input id="active" class="form-check-input" value="0" id="special" type="checkbox" name="special"
-                                    checked>
-                            </div>
-                        </div>
-
                     </div>
 
                     <div class="form-group">

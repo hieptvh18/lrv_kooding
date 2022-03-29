@@ -1,12 +1,12 @@
 @extends('layouts.layout-admin')
 
 
-@section('page-title', 'Them danh muc')
+@section('page-title', 'Sửa danh muc')
 @section('main')
     <div class="col-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Cap nhat danh mục sản phẩm mới</h4>
+                <h4 class="card-title">Chỉnh sửa danh mục sản phẩm</h4>
                 <p class="card-description">
                     Basic form elements
                 </p>
@@ -73,49 +73,7 @@
                             </div>
                         </div>
 
-                        <div class="col-6">
-                            {{-- <div class="form-group">
-                                <label for="">Category slug</label>
-                                <input name="slug" value="{{ $myCategory->slug }}" type="text" class="form-control" id=""
-                                    placeholder="enter slug : category-clothing-new...">
-                                <small>Enter slug(display in url, it must only contain letters, numbers, dashes and
-                                    underscores)</small>
-                                @error('slug')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div> --}}
-
-                            <div class="form-group">
-                                <label class="mr-3" for="special1">Thuộc tính của loại sản phẩm:</label>
-                                {{-- loop data --}}
-                                <div class="">
-                                    @foreach ($listAttr as $key => $val)
-                                        <div class=""
-                                            style="display:flex; column-gap:10px; align-items:center;">
-                                            <div class="form-check">
-                                                <label class="form-check-label">
-                                                    <input name="attr_id[]" class="checkbox"
-                                                        value="{{ $val->id }}" type="checkbox" id="attr{{ $key + 1 }}"
-                                                        @foreach ($attrOfCategories as $val2)
-                                                            {{$val2->id == $val->id ? 'checked' : ''}}
-                                                        @endforeach
-                                                        >
-
-                                                </label>
-                                            </div>
-                                            <label class="mr-3"
-                                                for="attr{{ $key + 1 }}">{{ $val->name }}</label>
-
-                                           
-                                        </div>
-                                    @endforeach
-                                    @error('attr_id')
-                                        <small class="text-danger">{{$message}}</small>
-                                    @enderror
-                                </div>
-                            </div>
-
-                        </div>
+                       
                     </div>
                     <button type="submit" class="btn btn-primary mr-2">Submit</button>
                     <a href="" class="btn btn-light">Cancel</a>

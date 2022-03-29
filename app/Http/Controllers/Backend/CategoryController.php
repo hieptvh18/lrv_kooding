@@ -34,13 +34,12 @@ class CategoryController extends Controller
     {
         // dd(\App\Models\Category::find(6)->attributes);
         //get data
-        $listAttr = Attribute::all();
         $categories = Category::all()->toArray();
         $listCate = Category::orderByDesc('categories.id')->paginate(3);
 
         $listSelectSub = getChildCategories($categories);
 
-        return view('admin.categories.add', compact('listAttr','categories','listSelectSub','listCate'));
+        return view('admin.categories.add', compact('categories','listSelectSub','listCate'));
     }
 
     /**
@@ -61,18 +60,6 @@ class CategoryController extends Controller
         $category->fill($categoryRequest->all());
         $category->avatar = $fileName;
         $category->save();
-        $lastCateId = $category->id;
-
-        // add color vs size + other attr_id
-        // ktra thuoc tinh co dc ng dung checked thi add them vo arrAttr de them 1 luot lun =))
-
-        // loop & create cate_attributes
-        foreach ($categoryRequest->attr_id as $attrId) {
-            $categoryAttribute = new CategoryAttribute();
-            $categoryAttribute->attr_id = $attrId;
-            $categoryAttribute->category_id = $lastCateId;
-            $categoryAttribute->save();
-        }
 
         return redirect(route('categories.create'))->with('msg-suc', 'Them thanh cong danh muc moi');
        
@@ -103,15 +90,9 @@ class CategoryController extends Controller
         $categoryArray = Category::all()->toArray();
         $listAttr = Attribute::all();
         $listSelectSub = getChildCategories($categoryArray);
-        // get attribute of cate
-        $attrOfCategories = Category::select('attributes.*')
-                                ->join('cate_attributes','cate_attributes.category_id','categories.id')
-                                ->join('attributes','attributes.id','cate_attributes.attr_id')
-                                ->where('categories.id',$id)
-                                ->get();
 
         // dd($attrOfCategories);
-        return view('admin.categories.edit', compact('myCategory', 'listAttr','attrOfCategories','listSelectSub'));
+        return view('admin.categories.edit', compact('myCategory', 'listAttr','listSelectSub'));
     }
 
     /**
@@ -127,9 +108,9 @@ class CategoryController extends Controller
         // create filename & uploads file & save
         if ($categoryRequest->file('avatar')) {
             // unlink avatar old 
-            // if (public_path('uploads/' . $category->avatar)) {
-            //     unlink(public_path('uploads/' . $category->avatar));
-            // }
+            if (public_path('uploads/' . $category->avatar)) {
+                unlink(public_path('uploads/' . $category->avatar));
+            }
             // create fileNakme
             $fileName = uniqid() . '-category' . time() . '.' . $categoryRequest->avatar->extension();
             $categoryRequest->file('avatar')->move(public_path('uploads'), $fileName);
@@ -145,23 +126,6 @@ class CategoryController extends Controller
         }
         $category->slug = $categoryRequest->input('slug');
         $category->save();
-
-        // add color vs size + other attr_id
-
-        // remove value old => add new =))
-        $attrOfCategories = CateAttribute::select('*')
-        ->where('category_id',$id)->delete();
-
-        // lap va add 
-        if ($categoryRequest->has('attr_id')) {
-            foreach ($categoryRequest->attr_id as $attrId) {
-                $categoryAttribute = new CategoryAttribute();
-                $categoryAttribute->attr_id = $attrId;
-                $categoryAttribute->category_id = $category->id;
-                $categoryAttribute->save();
-            }
-        } 
-
 
         return redirect(route('categories.edit', $id))->with('msg-suc', 'Update success!');
     }
