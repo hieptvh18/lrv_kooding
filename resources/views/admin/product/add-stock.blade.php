@@ -1,7 +1,17 @@
 @extends('layouts.layout-admin')
 
 @section('page-title', 'THÊM SẢN PHẨM')
-
+@section('plugin-css')
+    <style>
+        .icon-color{
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        border: 1px solid #ccc;
+        margin: 0 10px;
+}
+    </style>
+@endsection
 @section('main')
     <div class="col-12 grid-margin stretch-card">
         <div class="card">
@@ -13,17 +23,18 @@
                 <h5>Tên sản phẩm: {{$product->name}}</h5>
 
                 <div class="info-product mb-3 mt-3">
-                    {{-- loop attr added --}}
+                    {{-- loop attr added stock --}}
                     @if(count($productAttribute) > 0)
                     Biến thể đã thêm:
-                    
+                 
                     @foreach ($productAttribute as $key => $val)
                         <p>{{$key +1 }}.
-                            @foreach (\App\Models\Stock::find($val->id)->attributeValues as $val2)
-                                <span>Màu sắc: {{$val2->name}} - Kích cỡ - {{}} - Chất liệu: {{}}</span>
-                            @endforeach
+                                <b>Màu sắc</b>: <span class="icon-color" style="background-color: {{getAttributeValue($val->color_id)->value}}"></span>{{getAttributeValue($val->color_id)->name}} - 
+                                <b>Kích cỡ</b>: {{getAttributeValue($val->size_id)->name}} ({{getAttributeValue($val->size_id)->value}}) - 
+                                <b>Chất liệu</b>: {{getAttributeValue($val->material_id)->name}} ({{getAttributeValue($val->material_id)->value}}) - 
+                                <b>Số lượng</b>: {{$val->quantity}}
                         </p>
-                    @endforeach
+                    @endforeach 
                     
                     @else
                         <span>Biến thể đã thêm: 0</span>

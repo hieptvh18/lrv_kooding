@@ -27,7 +27,6 @@ class StockController extends Controller
 
         if($productExist){
             $productAttribute = $productExist;
-            dd($productAttribute);
         }
 
         return view('admin.product.add-stock',compact('product','productAttribute'));
@@ -45,11 +44,39 @@ class StockController extends Controller
             "required"=>"Không được để trống"
         ]);
 
-        $stockModel = new Stock();
+        // check exist 
+        $productExist = Stock::where('pro_id',$request->input('pro_id'))->get();
+        if($productExist){
+            foreach($productExist as $val){
+                if($val->color_id == $request->input('color_id') && $val->size_id == $request->input('size_id') && $val->material_id == $request->input('material_id')){
+                    // exist all attribute => += quantity
+                    $stockModel = Stock::find($val->id);
+    
+                    $stockModel->pro_id = $request->input('pro_id');
+                    $stockModel->quantity = $stockModel->quantity += $request->input('quantity');
+            
+                    $stockModel->save();
+                    return redirect(route('stock.create',$request->input('pro_id')));
 
-        $stockModel->fill($request->all());
+                }
+            }
+                // exist pro but not === attribute
+                $stockModel = new Stock();
 
-        $stockModel->save();
+                $stockModel->fill($request->all());
+        
+                $stockModel->save();
+
+        }else{
+            // not exist product add new
+            $stockModel = new Stock();
+    
+            $stockModel->fill($request->all());
+    
+            $stockModel->save();
+
+        }
+
 
         return redirect(route('stock.create',$request->input('pro_id')));
 

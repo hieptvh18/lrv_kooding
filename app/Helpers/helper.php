@@ -1,6 +1,6 @@
 <?php
 use App\Models\Category;
-use App\Models\SubCategory;
+use App\Models\AttributeValue;
 
 // func lay thuoc tinh san pham tu danh muc
 if (!function_exists('getAttrByCate')) {
@@ -49,6 +49,15 @@ if(!function_exists('showSelectCategories')){
                 showSelectCategories($item['child'],$num);
             }
         }
+    }
+}
+
+// get info attr_value
+if(!function_exists('getAttributeValue')){
+    function getAttributeValue($id){
+        $result = AttributeValue::where('id',$id)->first();
+
+        return $result;
     }
 }
 

@@ -1,19 +1,20 @@
 @extends('layouts.layout-admin')
 
-@section('page-title', 'THÊM SẢN PHẨM')
+@section('page-title', 'SỬA SẢN PHẨM')
 
 @section('main')
     <div class="col-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <h4 class="card-title">Thêm sản phẩm mới</h4>
+                <h4 class="card-title">Cập nhật sản phẩm </h4>
                 <p class="card-description">
-                    Thêm sản phẩm mới vào kho hàng
+                    Chỉnh sửa thông tin sản phẩm
                 </p>
 
-                <form action="{{ route('product.store') }}" id="add_products" class="forms-sample" method="POST"
+                <form action="{{ route('product.update',$product->id) }}" id="add_products" class="forms-sample" method="POST"
                     enctype="multipart/form-data">
                     @csrf
+                    @method('PUT')
 
                     <div class="row">
                         <div class="form-group col-4">

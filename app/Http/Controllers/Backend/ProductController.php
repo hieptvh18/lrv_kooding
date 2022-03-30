@@ -106,8 +106,17 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        //
-        // $listAttr = Product::select('attributes.*')
+        // get dât
+        $product = Product::find($id);
+
+        if($product){
+            // get data
+
+
+            return view('admin.product.edit',compact('product'));
+        }
+
+        return back()->with('msg-er','Không tìm thấy sản phẩm!');
 
     }
 
@@ -131,6 +140,16 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $product = Product::find($id);
+
+        if($product){
+            Product::destroy($id);
+            // unlink avatar & avatar detail
+            
+
+            return redirect(route('product.index'))->with('msg-suc','Xóa thành công!');
+        }
+
+        return back()->with('msg-er','Xóa không thành công!');
     }
 }

@@ -54,9 +54,9 @@
 
                             </td>
                             <td>
-                                <a href=""><i
+                                <a href="{{route('stock.create',$val->id)}}"><i
                                     class="fas fa-eye text-info fa-2x "></i></a>
-                                <a href="product?action=update&id={{ $val->id }}"><i
+                                <a href="{{route('product.edit',$val->id)}}"><i
                                         class="fas fa-pen-square text-warning fa-2x "></i></a>
                                 <a href="?action=del&id={{ $val->id }}"
                                     onclick="return confirm('Bạn chắc chắn muốn xóa sản phẩm?')"><i
