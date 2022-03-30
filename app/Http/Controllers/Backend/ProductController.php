@@ -14,6 +14,7 @@ use App\Models\ProductImage;
 
 class ProductController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -22,7 +23,7 @@ class ProductController extends Controller
     public function index()
     {
         // màn hình danh sách + phan trang
-        $listProduct = Product::where('status',1)->orderBy('id','desc')->paginate(5);
+        $listProduct = Product::orderBy('id','desc')->paginate(5);
         // dd(Product::find(2)->brands);
         return view('admin.product.list', compact('listProduct'));
     }
@@ -108,12 +109,15 @@ class ProductController extends Controller
     {
         // get dât
         $product = Product::find($id);
+        $listBrand = Brand::all();
+        $categories = Category::all()->toArray();
+        $listSelectCategory = getChildCategories($categories);
 
         if($product){
             // get data
 
 
-            return view('admin.product.edit',compact('product'));
+            return view('admin.product.edit',compact('product','listSelectCategory','listBrand'));
         }
 
         return back()->with('msg-er','Không tìm thấy sản phẩm!');
@@ -129,7 +133,55 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // dd($request->all());
+        // check avatars detail
+        if($request->file('avatars') && count($request->file('avatars')) > 5){
+            return back()->with('err-avatars','Không được tải lên quá 5 ảnh!');
+        }
+
+        $productNew =  Product::find($id);
+
+        if($request->file('avatar')){
+            $avatarName = uniqid() . '-product' . time() . '.' . $request->avatar->extension();
+            // unlink img old
+            if(file_exists(public_path('uploads/'.$productNew->avatar))){
+                unlink(public_path('uploads/'.$productNew->avatar));
+            }
+        }else{
+            $avatarName = $request->input('avatar');
+        }
+        
+        $productNew ->fill($request->all());
+        $productNew->avatar = $avatarName;
+        $save = $productNew->save();
+        
+        if($save){
+            
+            // upload
+            if($request->file('avatar')){
+                $request->file('avatar')->move(public_path('uploads'), $avatarName);
+            }     
+
+            // add & upload pro_img
+            if($request->file('avatars')){
+                foreach($request->file('avatars') as $key=>$item){
+                    $imageDetailName = uniqid() . '-product-detail-'.$key. time() . '.' . $item->extension();
+                    $item->move(public_path('uploads'), $imageDetailName);
+
+                    $productImage = ProductImage::where('pro_id',$id)->get();
+                    foreach($productImage as $val){
+                        $productImageItem = ProductImage::find($val->id);
+                        // $productImage->pro_id = $productNew->id;
+                        $productImageItem->url = $imageDetailName;
+                        $productImageItem->save();
+                    }
+                }
+            }
+            return back()->with('msg-suc','Cập nhật thành công!');
+        }
+
+        // er
+        return back()->with('msg-er','Cập nhật không thành công!');
     }
 
     /**
@@ -143,9 +195,22 @@ class ProductController extends Controller
         $product = Product::find($id);
 
         if($product){
-            Product::destroy($id);
+            $proImg = ProductImage::where('pro_id',$id)->get();
             // unlink avatar & avatar detail
+            if(file_exists(public_path('uploads/'.$product->avatar))){
+                unlink(public_path('uploads/'.$product->avatar));
+            }
+
+            if($proImg){
+                foreach($proImg as $item){
+                    
+                    if(file_exists(public_path('uploads/'.$item->url))){
+                        unlink(public_path('uploads/'.$item->url));
+                    }
+                }
+            }
             
+            Product::destroy($id);
 
             return redirect(route('product.index'))->with('msg-suc','Xóa thành công!');
         }

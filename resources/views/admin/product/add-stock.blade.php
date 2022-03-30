@@ -3,13 +3,14 @@
 @section('page-title', 'THÊM SẢN PHẨM')
 @section('plugin-css')
     <style>
-        .icon-color{
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        border: 1px solid #ccc;
-        margin: 0 10px;
-}
+        .icon-color {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            border: 1px solid #ccc;
+            margin: 0 10px;
+        }
+
     </style>
 @endsection
 @section('main')
@@ -20,30 +21,51 @@
                 <p class="card-description">
                     Thêm sản phẩm mới vào kho hàng
                 </p>
-                <h5>Tên sản phẩm: {{$product->name}}</h5>
+                @if (session('msg-er'))
+                    <div class="alert alert-danger">{{ session('msg-er') }}</div>
+                @endif
+                @if (session('msg-suc'))
+                    <div class=" alert alert-success">{{ session('msg-suc') }}</div>
+                @endif
+                <h5>Tên sản phẩm: {{ $product->name }}</h5>
 
                 <div class="info-product mb-3 mt-3">
                     {{-- loop attr added stock --}}
-                    @if(count($productAttribute) > 0)
-                    Biến thể đã thêm:
-                 
-                    @foreach ($productAttribute as $key => $val)
-                        <p>{{$key +1 }}.
-                                <b>Màu sắc</b>: <span class="icon-color" style="background-color: {{getAttributeValue($val->color_id)->value}}"></span>{{getAttributeValue($val->color_id)->name}} - 
-                                <b>Kích cỡ</b>: {{getAttributeValue($val->size_id)->name}} ({{getAttributeValue($val->size_id)->value}}) - 
-                                <b>Chất liệu</b>: {{getAttributeValue($val->material_id)->name}} ({{getAttributeValue($val->material_id)->value}}) - 
-                                <b>Số lượng</b>: {{$val->quantity}}
-                        </p>
-                    @endforeach 
-                    
+                    @if (count($productStocks) > 0)
+                        Biến thể đã thêm:
+
+                        @foreach ($productStocks as $key => $val)
+                            <p>{{ $key + 1 }}.
+                                <b>Màu sắc</b>: <span class="icon-color"
+                                    style="background-color: {{ getAttributeValue($val->color_id)->value }}"></span>{{ getAttributeValue($val->color_id)->name }}
+                                -
+                                <b>Kích cỡ</b>: {{ getAttributeValue($val->size_id)->name }}
+                                ({{ getAttributeValue($val->size_id)->value }}) -
+                                <b>Chất liệu</b>: {{ getAttributeValue($val->material_id)->name }}
+                                ({{ getAttributeValue($val->material_id)->value }}) -
+                                <b>Số lượng</b>: {{ $val->quantity }}
+                                {{-- remove item --}}
+                                <a href="{{ route('stock.destroyVariant', $val->id) }}" onclick="
+                                        event.preventDefault();
+                                        document.querySelector('#formFakeRemovePro{{ $key }}').submit()
+                                        "><i class="fas fa-trash-alt text-danger fa-1x ml-3"></i></a>
+
+                                {{-- form fake method remove --}}
+                            <form action="{{ route('stock.destroyVariant', $val->id) }}"
+                                id="formFakeRemovePro{{ $key }}" method="POST">
+                                @method('delete')
+                                @csrf
+                            </form>
+                            </p>
+                        @endforeach
                     @else
                         <span>Biến thể đã thêm: 0</span>
                     @endif
                 </div>
 
-                <form action="{{route('stock.store')}}" method="POST">
+                <form action="{{ route('stock.store') }}" method="POST">
                     @csrf
-                    <input type="hidden" name="pro_id" value="{{$product->id}}">
+                    <input type="hidden" name="pro_id" value="{{ $product->id }}">
                     <div class="content-attribute">
                         <p class="ml-3">Thuộc tính sản phẩm</p>
                         {{-- loop attribute òf product category & attribute value --}}
@@ -103,7 +125,7 @@
                         </div>
                     </div>
                     <button class="btn btn-primary" type="submit">Submit</button>
-                    <a href="{{route('product.create')}}" class="btn btn-light">Cancel</a>
+                    <a href="{{ route('product.create') }}" class="btn btn-light">Cancel</a>
                 </form>
             </div>
         </div>

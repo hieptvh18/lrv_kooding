@@ -52,6 +52,7 @@ Route::prefix('admin')->group(function(){
       //  stocks
       Route::get('add-to-stock/{id}',[StockController::class,'create'])->name('stock.create');
       Route::post('store-to-stock',[StockController::class,'store'])->name('stock.store');
+      Route::delete('remove-item-stock/{id}',[StockController::class,'destroyVariant'])->name('stock.destroyVariant');
 
 
 });

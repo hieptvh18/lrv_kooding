@@ -6,6 +6,12 @@
 
     <div class="card-body">
         <h4 class="card-title">Danh sách sản phẩm</h4>
+        @if (session('msg-er'))
+            <div class="alert alert-danger">{{ session('msg-er') }}</div>
+        @endif
+        @if (session('msg-suc'))
+            <div class="alert alert-success">{{ session('msg-suc') }}</div>
+        @endif
         <div class="d-flex justify-content-between">
             <div class="">
                 <a href="{{ route('product.create') }}" class="text-light btn btn-primary">Thêm mới</a>
@@ -54,13 +60,21 @@
 
                             </td>
                             <td>
-                                <a href="{{route('stock.create',$val->id)}}"><i
-                                    class="fas fa-eye text-info fa-2x "></i></a>
-                                <a href="{{route('product.edit',$val->id)}}"><i
+                                <a href="{{ route('stock.create', $val->id) }}"><i
+                                        class="fas fa-eye text-info fa-2x "></i></a>
+                                <a href="{{ route('product.edit', $val->id) }}"><i
                                         class="fas fa-pen-square text-warning fa-2x "></i></a>
-                                <a href="?action=del&id={{ $val->id }}"
-                                    onclick="return confirm('Bạn chắc chắn muốn xóa sản phẩm?')"><i
-                                        class="fas fa-trash-alt text-danger fa-2x"></i></a>
+                                <a href="{{ route('product.destroy', $val->id) }}" onclick="
+                                        event.preventDefault();
+                                        document.querySelector('#formFakeRemovePro{{ $key }}').submit()
+                                        "><i class="fas fa-trash-alt text-danger fa-2x"></i></a>
+
+                                {{-- form fake method remove --}}
+                                <form action="{{ route('product.destroy', $val->id) }}"
+                                    id="formFakeRemovePro{{ $key }}" method="POST">
+                                    @method('delete')
+                                    @csrf
+                                </form>
                             </td>
                         </tr>
                     @endforeach
@@ -70,7 +84,7 @@
             <div class="paginate">
                 {{ $listProduct->links() }}
             </div>
-            
+
         </div>
     </div>
     <div id="output"></div>

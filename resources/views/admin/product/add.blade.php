@@ -10,6 +10,12 @@
                 <p class="card-description">
                     Thêm sản phẩm mới vào kho hàng
                 </p>
+                @if (session('msg-er'))
+                    <div class="alert alert-danger">{{ session('msg-er') }}</div>
+                @endif
+                @if (session('msg-suc'))
+                    <div class="alert alert-success">{{ session('msg-suc') }}</div>
+                @endif
 
                 <form action="{{ route('product.store') }}" id="add_products" class="forms-sample" method="POST"
                     enctype="multipart/form-data">
@@ -43,8 +49,8 @@
                         </div>
                         <div class="form-group col-4">
                             <label for="price">Giá</label>
-                            <input type="number" value="{{ old('price') }}" name="price" class="form-control" id="price"
-                                placeholder="Giá sản phẩm">
+                            <input type="number" value="{{ old('price') }}" name="price" class="form-control"
+                                id="price" placeholder="Giá sản phẩm">
                             @error('price')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
@@ -84,7 +90,7 @@
 
                     </div>
 
-                    
+
                     <div class="row">
                         <div class="form-group col-6">
                             <label>Ảnh đại diện( ảnh)</label>

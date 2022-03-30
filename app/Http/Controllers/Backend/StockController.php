@@ -20,16 +20,16 @@ class StockController extends Controller
     {
         // get id product
         $product = Product::find($id);
-        $productAttribute = array();
+        $productStocks = array();
 
         // check product exist in stock => render to display
         $productExist = Stock::where('pro_id',$id)->get();
 
         if($productExist){
-            $productAttribute = $productExist;
+            $productStocks = $productExist;
         }
 
-        return view('admin.product.add-stock',compact('product','productAttribute'));
+        return view('admin.product.add-stock',compact('product','productStocks'));
     }
 
     // save product variant-> stock
@@ -80,6 +80,17 @@ class StockController extends Controller
 
         return redirect(route('stock.create',$request->input('pro_id')));
 
+    }
+
+    // remove variant
+    function destroyVariant($id){
+
+        $stockExist = Stock::find($id);
+        if($stockExist){
+            Stock::destroy($id);            
+            return redirect(route('stock.create',$stockExist->pro_id))->with('msg-suc','Xóa thành công sản phẩm trong kho!');
+        }
+        return back()->with('msg-er','Không tìm thấy sản phẩm trong kho!');
     }
    
 }
