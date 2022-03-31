@@ -20,12 +20,20 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        // search product
+        $searchTitle = '';
+        $listProduct =Product::select('*');
+        if($request->keyword){
+            $searchTitle = $request->keyword;
+
+            $listProduct = $listProduct->where('name','like','%'.$request->keyword.'%');
+        }
         // màn hình danh sách + phan trang
-        $listProduct = Product::orderBy('id','desc')->paginate(5);
-        // dd(Product::find(2)->brands);
-        return view('admin.product.list', compact('listProduct'));
+        $listProduct = $listProduct->orderBy('id','desc')->paginate(10);
+
+        return view('admin.product.list', compact('listProduct','searchTitle'));
     }
 
     /**
@@ -157,25 +165,38 @@ class ProductController extends Controller
         
         if($save){
             
-            // upload
+            // upload avatar
             if($request->file('avatar')){
                 $request->file('avatar')->move(public_path('uploads'), $avatarName);
             }     
 
             // add & upload pro_img
             if($request->file('avatars')){
+               
+                // loop & unlink img detail old
+                $productExists = ProductImage::where('pro_id',$id)->get();
+                // dd($productExists);
+                foreach($productExists as $key=>$val){
+                    if(file_exists(public_path('uploads/'.$val->url))){
+                        unlink(public_path('uploads/'.$val->url));
+                        // dd(public_path('uploads/'.$val->url));
+                    }
+                }
+
+                 // remove old value
+                 ProductImage::where('pro_id',$id)->delete();
+
+                // add new
                 foreach($request->file('avatars') as $key=>$item){
                     $imageDetailName = uniqid() . '-product-detail-'.$key. time() . '.' . $item->extension();
                     $item->move(public_path('uploads'), $imageDetailName);
 
-                    $productImage = ProductImage::where('pro_id',$id)->get();
-                    foreach($productImage as $val){
-                        $productImageItem = ProductImage::find($val->id);
-                        // $productImage->pro_id = $productNew->id;
+                        $productImageItem = new ProductImage();
+                        $productImageItem->pro_id = $productNew->id;
                         $productImageItem->url = $imageDetailName;
                         $productImageItem->save();
-                    }
                 }
+
             }
             return back()->with('msg-suc','Cập nhật thành công!');
         }

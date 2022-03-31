@@ -13,27 +13,44 @@
             <div class="alert alert-success">{{ session('msg-suc') }}</div>
         @endif
         <div class="d-flex justify-content-between">
-            <div class="">
-                <a href="{{ route('product.create') }}" class="text-light btn btn-primary">Thêm mới</a>
-                <select name="categories" id="categories" style="border-radius: 15px;">
+            <div class="d-flex">
+                <a href="{{ route('product.create') }}" class="text-light btn btn-primary btn-sm">Thêm mới</a>
+                <select name="categories" class="ml-2 mr-2" id="categories" >
                     <option value="" disabled selected>Danh mục</option>
                 </select>
+                <form action="" method="GET">
+                        <input type="search" value="{{old('keyword')}}" name="keyword" placeholder="Enter key search" class="form-control-sm" style="height:33px;border:1px solid #ccc;border-radius:10px">
+                        <button class="btn btn-info btn-sm">Tìm kiếm</button>
+                </form>
             </div>
             <div class="">
-                <input type="checkbox" class="form-check-label" id="btnCheck"> <label for="btnCheck">
+               
+                <input type="checkbox" class="form-check-label" id="btnCheck"> <label for="btnCheck" >
                     check all</label>
             </div>
         </div>
 
+        <div class="title-search mt-4 mb-4">
+            @if ($searchTitle)
+                <h4>Kết quả tìm kiếm: " {{$searchTitle}} "</h4>
+            @endif
+        </div>
+
+        @if ($listProduct->count() > 0)
+            
         <div class="table-responsive">
             <table class="table table-list-product">
                 <thead>
                     <tr>
                         <th>Select</th>
-                        <th>Tên</th>
+                        <th>Tên 
+                            <a href="{{route('product.index')}}?sortName=0"><i class="fas fa-sort"></i></a>
+                        </th>
                         <th>Thương hiệu</th>
                         <th>Danh mục</th>
-                        <th>Giá.</th>
+                        <th>Giá.
+                            <a href="{{route('product.index')}}?sortPrice=0"><i class="fas fa-sort"></i></a>
+                        </th>
                         <th>Ảnh</th>
                         <!-- <th>Mô tả</th> -->
                         <th>Tình trạng</th>
@@ -86,6 +103,8 @@
             </div>
 
         </div>
+        @endif
+
     </div>
     <div id="output"></div>
 

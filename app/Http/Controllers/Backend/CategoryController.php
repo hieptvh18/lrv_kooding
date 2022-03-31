@@ -17,12 +17,14 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-        $categories = Category::orderByDesc('categories.id')->paginate(5);
+      
+        // search category
+       
+        // $categories = $categories->orderByDesc('categories.id')->paginate(5);
 
-        return view('admin.categories.list', compact('categories'));
+        // return view('admin.categories.list', compact('categories'));
     }
 
     /**
@@ -30,16 +32,22 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        // dd(\App\Models\Category::find(6)->attributes);
         //get data
+        $listCate = Category::select('*');
+        $searchTitle = '';
+        if($request->keyword){
+            $searchTitle = $request->keyword;
+            $listCate = $listCate->where('name','like','%'.$request->keyword.'%');
+        }
+
         $categories = Category::all()->toArray();
-        $listCate = Category::orderByDesc('categories.id')->paginate(3);
+        $listCate = $listCate->orderByDesc('categories.id')->paginate(3);
 
         $listSelectSub = getChildCategories($categories);
 
-        return view('admin.categories.add', compact('categories','listSelectSub','listCate'));
+        return view('admin.categories.add', compact('categories','listSelectSub','listCate','searchTitle'));
     }
 
     /**
@@ -108,7 +116,7 @@ class CategoryController extends Controller
         // create filename & uploads file & save
         if ($categoryRequest->file('avatar')) {
             // unlink avatar old 
-            if (public_path('uploads/' . $category->avatar)) {
+            if (file_exists(public_path('uploads/' . $category->avatar))) {
                 unlink(public_path('uploads/' . $category->avatar));
             }
             // create fileNakme
@@ -142,7 +150,7 @@ class CategoryController extends Controller
         if(!$category){
             return redirect(route('categories.create'))->with('msg-er','Xoa that bai');
         }
-        if (public_path('uploads/' . $category->avatar)) {
+        if (file_exists(public_path('uploads/' . $category->avatar))) {
             unlink(public_path('uploads/' . $category->avatar));
         }
         Category::destroy($id);

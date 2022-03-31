@@ -79,6 +79,18 @@
         {{-- list parent categories --}}
         <div class="mt-4" id="listCategory">
             <h6>List categories</h6>
+            <form action="" method="GET">
+                <input type="search" value="{{old('keyword')}}" name="keyword" placeholder="search category" class="form-control-sm" style="height:33px;border:1px solid #ccc;border-radius:10px">
+                <button class="btn btn-info btn-sm">Tìm kiếm</button>
+            </form>
+
+            <div class="title-search mt-4 mb-4">
+                @if ($searchTitle)
+                    <h4>Kết quả tìm kiếm: " {{$searchTitle}} "</h4>
+                @endif
+            </div>
+
+        @if ($listCate->count() > 0)
             <table class="table table-borderd">
                 <thead>
                     <tr>
@@ -121,6 +133,7 @@
             <div class="paginate">
                 {{ $listCate->links() }}
             </div>
+            @endif
         </div>
     </div>
 @endsection

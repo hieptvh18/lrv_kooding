@@ -45,7 +45,7 @@ class ProductRequest extends FormRequest
             case"PUT":
                 $rules = [
                     "name" => ["required","max:30",Rule::unique('products')->ignore(request()->id)],
-                    "slug" => [Rule::unique('products')->ignore(request(    )->id)],
+                    "slug" => [Rule::unique('products')->ignore(request()->id)],
                     "avatar" => $ruleAvatarEdit,
                     "discount" => "nullable|integer|11",
                     "price" => "required|integer|max:11",
