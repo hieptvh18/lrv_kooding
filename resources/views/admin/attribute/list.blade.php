@@ -91,7 +91,9 @@
 
                                     <a href="{{ route('attributeValue.destroy', $item->id) }}" onclick="
                                             event.preventDefault();
-                                            document.querySelector('#form-del-attr-value{{ $key }}').submit()
+                                         if(confirm('Bạn có chắc chắn xóa? Các mục liên quan cũng sẽ biến mất!')){
+                                             document.querySelector('#form-del-attr-value{{ $key }}').submit()
+                                         }
                                     "><i class="fas fa-trash-alt text-danger fa-2x"></i></a>
 
                                     <form id="form-del-attr-value{{ $key }}"
@@ -105,6 +107,9 @@
 
                     </tbody>
                 </table>
+                <div class="paginate">
+                    {{ $list_attr_value->links() }}
+                </div>
             </div>
         </div>
 

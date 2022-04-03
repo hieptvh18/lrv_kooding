@@ -34,8 +34,10 @@
                                 <td>
                                    
                                         <a href="{{ route('brand.destroy', $val->id) }}" onclick="
-                                                            event.preventDefault();
-                                                            document.querySelector('#form-del-brand{{ $key }}').submit()
+                                             event.preventDefault();
+                                            if(confirm('Bạn có chắc chắn xóa? Các mục liên quan cũng sẽ biến mất!')){
+                                                document.querySelector('#form-del-brand{{ $key }}').submit()
+                                            }
                                                     "><i class="fas fa-trash-alt text-danger fa-2x"></i></a>
                                         <form id="form-del-brand{{ $key }}"
                                             action="{{ route('brand.destroy', $val->id) }}" method="POST">

@@ -18,6 +18,10 @@ class Category extends Model
         return $this->belongsToMany(Attribute::class,'cate_attributes','category_id','attr_id');
     }     
 
+    public function products(){
+        return $this->hasMany(Product::class,'category_id');
+    }
+
     
     
 }

@@ -96,6 +96,7 @@
                     <tr>
                         <th>STT</th>
                         <th>Name</th>
+                        <th>Quantity product</th>
                         <th>Avatar</th>
                         <th>Slug</th>
                         <th>Service</th>
@@ -106,6 +107,7 @@
                         <tr>
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $val['name'] }}</td>
+                            <td>{{ $val -> products->count() }}</td>
 
                             <td><img src="{{ asset('uploads') }}/{{ $val->avatar }}" alt="" width="50px"></td>
                             <td>{{ $val->slug }}</td>
@@ -114,7 +116,9 @@
                                 <a href="{{ route('categories.destroy', $val['id']) }}" class="btn btn-sm btn-danger"
                                     onclick="
                                             event.preventDefault();
-                                            document.querySelector('#formDelCate{{ $key }}').submit();
+                                         if(confirm('Bạn có chắc chắn xóa? Các mục liên quan cũng sẽ biến mất!')){
+                                             document.querySelector('#formDelCate{{ $key }}').submit();
+                                         }
                                             ">Remove</a>
 
                                 <form action="{{ route('categories.destroy', $val['id']) }}" method="POST"

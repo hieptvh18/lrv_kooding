@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use  App\Http\Controllers\Backend\DashboardController;
 use  App\Http\Controllers\Backend\CategoryAttrbuteController;
 use  App\Http\Controllers\Backend\StockController;
+use  App\Http\Controllers\Backend\ProductController;
 
 // =================ROUTE CLIENT===============
 Route::get('/', [HomeController::class,'index'])->name('client.home');
@@ -27,6 +28,7 @@ Route::prefix('admin')->group(function(){
 
     // products
     Route::resource('product','App\Http\Controllers\Backend\ProductController');
+    Route::delete('product-delete-muntiple',[ProductController::class,'removeMuntiple'])->name('product.removeMuntiple');
     
     // categories
     Route::resource('categories','App\Http\Controllers\Backend\CategoryController');
@@ -53,6 +55,9 @@ Route::prefix('admin')->group(function(){
       Route::get('add-to-stock/{id}',[StockController::class,'create'])->name('stock.create');
       Route::post('store-to-stock',[StockController::class,'store'])->name('stock.store');
       Route::delete('remove-item-stock/{id}',[StockController::class,'destroyVariant'])->name('stock.destroyVariant');
+
+    //   user
+    Route::resource('user','App\Http\Controllers\Backend\UserController');
 
 
 });

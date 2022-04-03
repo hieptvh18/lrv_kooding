@@ -23,17 +23,36 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         // search product
-        $searchTitle = '';
+        $title = '';
+        $listCategory = Category::all();
+        $sortName = 'asc'; //default = 0(asc), click = 1(desc);
         $listProduct =Product::select('*');
         if($request->keyword){
-            $searchTitle = $request->keyword;
+            $title = "Kết quả tìm kiếm: " . "'".$request->keyword."'";
 
             $listProduct = $listProduct->where('name','like','%'.$request->keyword.'%');
         }
+
+        // filter by category
+        if($request->filterByCategory){
+            $cateFitler = Category::find($request->filterByCategory);
+            $title = 'Kết quả lọc theo danh mục: '."'".$cateFitler->name."'";
+            $listProduct = $listProduct->where('category_id',$request->filterByCategory);
+        }
+
+        // sort name
+        if($request->sortName == 'asc'){
+            $listProduct = $listProduct->orderBy('name','asc');
+            $sortName = 'desc';
+        }else{
+            $listProduct = $listProduct->orderBy('name','desc');
+            $sortName = 'asc';
+        }
+
         // màn hình danh sách + phan trang
         $listProduct = $listProduct->orderBy('id','desc')->paginate(10);
 
-        return view('admin.product.list', compact('listProduct','searchTitle'));
+        return view('admin.product.list', compact('listProduct','title','sortName','listCategory'));
     }
 
     /**
@@ -213,29 +232,43 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $product = Product::find($id);
+       if(!is_array($id)){
+            $product = Product::find($id);
 
-        if($product){
-            $proImg = ProductImage::where('pro_id',$id)->get();
-            // unlink avatar & avatar detail
-            if(file_exists(public_path('uploads/'.$product->avatar))){
-                unlink(public_path('uploads/'.$product->avatar));
-            }
+            if($product){
+                $proImg = ProductImage::where('pro_id',$id)->get();
+                // unlink avatar & avatar detail
+                if(file_exists(public_path('uploads/'.$product->avatar))){
+                    unlink(public_path('uploads/'.$product->avatar));
+                }
 
-            if($proImg){
-                foreach($proImg as $item){
-                    
-                    if(file_exists(public_path('uploads/'.$item->url))){
-                        unlink(public_path('uploads/'.$item->url));
+                if($proImg){
+                    foreach($proImg as $item){
+                        
+                        if(file_exists(public_path('uploads/'.$item->url))){
+                            unlink(public_path('uploads/'.$item->url));
+                        }
                     }
                 }
-            }
-            
-            Product::destroy($id);
+                
+                Product::destroy($id);
 
-            return redirect(route('product.index'))->with('msg-suc','Xóa thành công!');
-        }
+                return redirect(route('product.index'))->with('msg-suc','Xóa thành công!');
+            }
+       }
+    //    arrray
 
         return back()->with('msg-er','Xóa không thành công!');
     }
+
+
+    // remove muntiple
+    public function removeMuntiple(Request $request){
+
+        // covert string to arrray
+        $idArray = explode(',',$request->pro_id);
+       Product::whereIn('id',$idArray)->delete();
+        return redirect(route('product.index'))->with('msg-suc','Xóa thành công!');
+    }
 }
+

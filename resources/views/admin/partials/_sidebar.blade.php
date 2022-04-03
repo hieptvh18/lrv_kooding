@@ -33,6 +33,7 @@
                         </a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('attribute.index') }}">Thuộc
                             tính</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="">Kho hàng</a></li>
                 </ul>
             </div>
         </li>
@@ -54,7 +55,7 @@
             </a>
             <div class="collapse" id="account">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="account">Danh sách</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{route('user.index')}}">Danh sách</a></li>
                     <li class="nav-item"> <a class="nav-link" href="account?action=add">Thêm tài khoản</a>
                     </li>
                 </ul>
