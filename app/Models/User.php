@@ -45,9 +45,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    // admin role
+    public function isAdministrator() {
+        return $this->roles()->where('id', 2)->where('id',3)->exists();
+     }
+
     // relationship
 
     public function roles(){
-        return $this->belongsToMany(Roles::class,'role_id');
+        return $this->belongsToMany(Role::class,'role_id');
     }
 }

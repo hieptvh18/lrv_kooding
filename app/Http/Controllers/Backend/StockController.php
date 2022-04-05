@@ -12,7 +12,10 @@ class StockController extends Controller
   
     public function index()
     {
-        //
+        // display manage stock
+        $listProductStock = Stock::select('*')->paginate(10);
+        // dd(Stock::find(13)->products);
+        return view('admin.stocks.index',compact('listProductStock'));
 
     }
     

@@ -33,7 +33,7 @@
                         </a></li>
                     <li class="nav-item"> <a class="nav-link" href="{{ route('attribute.index') }}">Thuộc
                             tính</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="">Kho hàng</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="{{route('stock.index')}}">Kho hàng</a></li>
                 </ul>
             </div>
         </li>

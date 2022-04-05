@@ -15,11 +15,11 @@ class Stock extends Model
 
     // relationship
     public function products(){
-        return $this->hasMany(Product::class,'pro_id');
+        return $this->hasOne(Product::class,'pro_id');
     }
 
     // rela attr , attr_value
     public function attributeValues(){
-        return $this->belongsTo(AttributeValue::class,['color_id','size_id','material_id']);
+        return $this->belongsToMany(AttributeValue::class,['color_id','size_id','material_id']);
     }
 }

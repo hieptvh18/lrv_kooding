@@ -24,7 +24,7 @@ class LoginController extends Controller
             'password' => 'required|string',
         ]);
 
-        // get info
+        // // get info
         if(Auth::atempt(['email'=>$rq->email,'password'=>$rq->password,'role_id'=>1])){
             // client
 
@@ -40,5 +40,6 @@ class LoginController extends Controller
 
     }
 
+    
 
 }
