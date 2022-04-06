@@ -11,6 +11,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Stock;
 use App\Models\ProductImage;
+use DB;
 
 class ProductController extends Controller
 {
@@ -23,6 +24,7 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         // search product
+        // dd();
         $title = '';
         $listCategory = Category::all();
         $sortName = 'asc'; //default = 0(asc), click = 1(desc);

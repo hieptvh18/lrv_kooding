@@ -18,7 +18,7 @@ return new class extends Migration
 
             $table->foreignId('pro_id');
             $table->foreign('pro_id')->references('id')->on('products')->onDelete('cascade');
-            
+            $table->string('name',200);
             $table->foreignId('color_id');
             $table->foreign('color_id')->references('id')->on('attr_values')->onDelete('cascade');
 

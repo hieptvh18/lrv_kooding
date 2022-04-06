@@ -61,7 +61,7 @@
                         <th>Giá.
                         </th>
                         <th>Ảnh</th>
-                        <!-- <th>Mô tả</th> -->
+                        <th>Số lượng</th>
                         <th>Tình trạng</th>
                         <th>Chức năng</th>
                     </tr>
@@ -77,8 +77,9 @@
                             <td>{{ $val->categories->name }}</td>
                             <td>{{ number_format($val->price, 0) }}vnd</td>
                             <td><img src="{{ asset('uploads/' . $val->avatar) }}" alt=""> </td>
+                            <td>{{$val->quantity}}</td>
                             <td>
-                                @if ($val->status == 0)
+                                @if ($val->quantity == 0)
                                     <label class="badge badge-danger">Hết hàng</label>
                                 @else
                                     <label class="badge badge-success">Còn hàng</label>
@@ -114,6 +115,8 @@
             </div>
 
         </div>
+        @else
+            <p class="mt-5 text-center">Không tìm thấy sản phẩm nào!</p>
         @endif
 
     </div>

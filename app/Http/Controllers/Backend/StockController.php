@@ -10,12 +10,32 @@ use App\Models\Stock;
 class StockController extends Controller
 {
   
-    public function index()
+    public function index(Request $request)
     {
         // display manage stock
-        $listProductStock = Stock::select('*')->paginate(10);
-        // dd(Stock::find(13)->products);
-        return view('admin.stocks.index',compact('listProductStock'));
+        $listProductStock = Stock::select('*');
+        
+        // option: sort search bla bla...
+        $sortType = 'asc';
+        if($request->sort_by){
+            $listProductStock->orderBy($request->sort_by,$request->sort_type);
+            if($request->sort_type == 'asc'){
+                $sortType = 'desc';
+            }else{
+                $sortType = 'asc';
+            }
+        }
+
+        // search
+        $searchTitle = '';
+        if($request->keyword_stock){
+            $listProductStock = $listProductStock->where('name','like','%'.$request->keyword_stock.'%');
+            $searchTitle = 'Kết quả tìm kiếm: '. "'".$request->keyword_stock."'";
+        }
+
+        $listProductStock = $listProductStock->paginate(10);
+
+        return view('admin.stocks.index',compact('listProductStock','sortType','searchTitle'));
 
     }
     
@@ -55,34 +75,47 @@ class StockController extends Controller
                     // exist all attribute => += quantity
                     $stockModel = Stock::find($val->id);
     
-                    $stockModel->pro_id = $request->input('pro_id');
                     $stockModel->quantity = $stockModel->quantity += $request->input('quantity');
+                    
+                    // update total qty of table product
+                    Product::find($request->pro_id)->increment('quantity',$request->quantity);
             
                     $stockModel->save();
                     return redirect(route('stock.create',$request->input('pro_id')));
 
                 }
             }
-                // exist pro but not === attribute
-                $stockModel = new Stock();
-
-                $stockModel->fill($request->all());
-        
-                $stockModel->save();
-
-        }else{
-            // not exist product add new
+        }
+            // not exist product add new // exist pro but not === attribute
             $stockModel = new Stock();
     
             $stockModel->fill($request->all());
+            // add qty to table product(all qty of variants)
+            Product::find($request->pro_id)->increment('quantity',$request->quantity);
     
             $stockModel->save();
 
-        }
-
-
         return redirect(route('stock.create',$request->input('pro_id')));
 
+    }
+
+    // update all quantity(restock)
+    public function updateAll(Request $request){
+       
+        // gom mang stock va update theo quantity(lap 2 mang check key==key)
+        foreach($request->stock_id as $keyStock=>$valStock){
+            foreach($request->new_quantity as $keyQty=>$valQty){
+                if($keyStock == $keyQty){
+                    // update theo id (valStock) cua mang do theo valQTy 
+                    Stock::find($valStock)->increment('quantity',$valQty);
+
+                    // update total qty of table product
+                    // code...
+                }
+            }
+        }
+
+        return back()->with('msg-suc','Cập nhật thành công kho!');
     }
 
     // remove variant

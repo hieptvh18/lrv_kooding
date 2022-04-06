@@ -34,8 +34,10 @@
                     @if (count($productStocks) > 0)
                         Biến thể đã thêm:
 
-                        @foreach ($productStocks as $key => $val)
+                        <div class="ml-3">
+                            @foreach ($productStocks as $key => $val)
                             <p>{{ $key + 1 }}.
+                                <b>Sku:</b><span>{{$val->sku}}</span> - 
                                 <b>Màu sắc</b>: <span class="icon-color"
                                     style="background-color: {{ getAttributeValue($val->color_id)->value }}"></span>{{ getAttributeValue($val->color_id)->name }}
                                 -
@@ -57,7 +59,8 @@
                                 @csrf
                             </form>
                             </p>
-                        @endforeach
+                        @endforeach 
+                        </div>
                     @else
                         <span>Biến thể đã thêm: 0</span>
                     @endif
@@ -66,6 +69,7 @@
                 <form action="{{ route('stock.store') }}" method="POST">
                     @csrf
                     <input type="hidden" name="pro_id" value="{{ $product->id }}">
+                    <input type="hidden" name="name" value="{{ $product->name }}">
                     <div class="content-attribute">
                         <p class="ml-3">Thuộc tính sản phẩm</p>
                         {{-- loop attribute òf product category & attribute value --}}
@@ -125,7 +129,7 @@
                         </div>
                     </div>
                     <button class="btn btn-primary" type="submit">Submit</button>
-                    <a href="{{ route('product.create') }}" class="btn btn-light">Cancel</a>
+                    <a href="{{ route('product.index') }}" class="btn btn-light">Cancel</a>
                 </form>
             </div>
         </div>

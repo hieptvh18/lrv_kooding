@@ -58,14 +58,13 @@
                     </div>
 
                     <div class="row">
-                        {{-- <div class="form-group col-4">
+                        <div class="form-group col-4">
                             <label for="" class="">Số lượng</label>
-                            <input type="number" name="quantity" class="form-control" value="{{ old('quantity') }}"
-                                placeholder="Số lượng sản phẩm">
+                            <input type="number" disabled name="quantity" class="form-control" value="{{$product->quantity}}">
                             @error('quantity')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
-                        </div> --}}
+                        </div>
                         <div class="form-group col-4">
                             <label for="" class="">Giam gia</label>
                             <input type="number" name="discount" class="form-control" value="{{ $product->discount }}"

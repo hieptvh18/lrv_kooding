@@ -39,7 +39,6 @@ Route::get('/trang-chu', [HomeController::class,'index'])->name('client.home');
 
     Route::prefix('admin')->group(function(){
         
-        
         // dashboard
         Route::get('/dashboard', [DashboardController::class,'index'])->name('admin.dashboard');
 
@@ -69,10 +68,11 @@ Route::get('/trang-chu', [HomeController::class,'index'])->name('client.home');
         ]);
 
         //  stocks
-        Route::get('stock-mangage',[StockController::class,'index'])->name('stock.index');
+        Route::get('stock-manage',[StockController::class,'index'])->name('stock.index');
         Route::get('add-to-stock/{id}',[StockController::class,'create'])->name('stock.create');
         Route::post('store-to-stock',[StockController::class,'store'])->name('stock.store');
         Route::delete('remove-item-stock/{id}',[StockController::class,'destroyVariant'])->name('stock.destroyVariant');
+        Route::put('store-update-quantity',[StockController::class,'updateAll'])->name('stock.updateAll');
         
         //   user
         Route::resource('user','App\Http\Controllers\Backend\UserController');

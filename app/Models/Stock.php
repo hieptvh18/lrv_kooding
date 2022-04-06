@@ -4,22 +4,31 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use BinaryCats\Sku\HasSku;
+use BinaryCats\Sku\Concerns\SkuOptions;
+
+
 
 class Stock extends Model
 {
+    // generate sku
+    use HasSku;
     use HasFactory;
 
     protected $table = 'stocks'; //== pro_attributes old
 
-    protected $fillable = ['pro_id','color_id','size_id','material_id','quantity','sku'];
+    protected $fillable = ['pro_id','name','color_id','size_id','material_id','quantity','sku'];
 
     // relationship
     public function products(){
-        return $this->hasOne(Product::class,'pro_id');
+        return $this->belongsTo(Product::class,'pro_id');
     }
 
     // rela attr , attr_value
     public function attributeValues(){
         return $this->belongsToMany(AttributeValue::class,['color_id','size_id','material_id']);
     }
+
+    // ghi de field render sku
+   
 }

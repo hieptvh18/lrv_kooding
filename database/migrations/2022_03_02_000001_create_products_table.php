@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('avatar',355);
             $table->longText('description');
             // note :quantity se la tong so luong cua bien the sp trong stock + lai
-            // $table->integer('quantity')->comment('save to stock');
+            $table->integer('quantity')->comment('save to stock');
             $table->tinyInteger('status')->comment('tinh trang cua san pham')->nullable(0);
             $table->bigInteger('view')->nullable(0);
             $table->timestamps();

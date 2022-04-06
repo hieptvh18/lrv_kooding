@@ -40,8 +40,8 @@ class DatabaseSeeder extends Seeder
             "value"=>"Vải gấm"],
         ]);
 
-        \App\Models\Brand::factory(2)->create();
-        \App\Models\Category::factory(2)->create();
-        \App\Models\Product::factory(11)->create();
+        \App\Models\Brand::factory(5)->create();
+        \App\Models\Category::factory(5)->create();
+        \App\Models\Product::factory(15)->create();
     }
 }
