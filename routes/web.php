@@ -17,7 +17,7 @@ use  App\Http\Controllers\Backend\ProductController;
 use App\Http\Controllers\Api\GoogleController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-
+use App\Http\Controllers\Backend\UserController;
 
 // =================auth======================
 Route::prefix('auth')->group(function(){
@@ -31,13 +31,14 @@ Route::get('/google',[GoogleController::class,'redirectToGoogle'])->name('login.
 Route::get('/google/callback',[GoogleController::class,'googleCallback'])->name('login.callback');
 
 // =================ROUTE CLIENT===============
+
 Route::get('/', [HomeController::class,'index'])->name('client.home');
 Route::get('/trang-chu', [HomeController::class,'index'])->name('client.home');
 
 
 // ===============ROUTE ADMIN===================
 
-    Route::prefix('admin')->group(function(){
+    Route::prefix('admin')->middleware(['auth'])->group(function(){
         
         // dashboard
         Route::get('/dashboard', [DashboardController::class,'index'])->name('admin.dashboard');
@@ -76,7 +77,8 @@ Route::get('/trang-chu', [HomeController::class,'index'])->name('client.home');
         
         //   user
         Route::resource('user','App\Http\Controllers\Backend\UserController');
-
+        Route::get('profile',[UserController::class,'profileDisplay'])->name('admin.profile');
+        Route::post('save-profile',[UserController::class,'profileStore'])->name('admin.profile.store');
 
     });
 

@@ -52,7 +52,7 @@ class StockController extends Controller
             $productStocks = $productExist;
         }
 
-        return view('admin.product.add-stock',compact('product','productStocks'));
+        return view('admin.stocks.add-stock',compact('product','productStocks'));
     }
 
     // save product variant-> stock

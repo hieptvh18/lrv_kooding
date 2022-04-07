@@ -71,20 +71,25 @@
       <li class="nav-item nav-profile dropdown">
         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
           {{-- <img src="./public/images/upload/a.jpg" alt="profile" /> --}}
+            {{Auth::user()->name}}
+
           <span>...</span>
         </a>
         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
           <a href="profile" class="dropdown-item">
             <i class="ti-settings text-primary"></i>
-            Hồ sơ
+            Profile
           </a>
-          <a class="dropdown-item" href="{{--{{ route('logout') }}--}}"
+          <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                                            if(confirm('Bạn chắc chắn đăng xuất?'))
+
+                                              document.getElementById('logout-form').submit();">
+                                            
                                         <i class="ti-power-off text-primary"></i>
                                         Đăng xuất
                                     </a>
-            <form action="{{--{{route('logout')}}--}}" method="POST" id="logout-form">
+            <form action="{{route('logout')}}" method="POST" id="logout-form">
               @csrf
             </form>
         </div>

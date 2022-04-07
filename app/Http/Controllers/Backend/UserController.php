@@ -86,4 +86,16 @@ class UserController extends Controller
     {
         //
     }
+
+    // profile
+    public function profileDisplay(){
+        return view('admin.account.profile');
+    }
+
+    public function profileStore(Request $request){
+        dd($request->all());
+    }
+
+    // change my pass
+    
 }

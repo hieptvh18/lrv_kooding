@@ -34,7 +34,9 @@
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->email }}</td>
                                 <td>{{ $item->phone }}</td>
-                                <td>{{ $item->roles->name }}</td>
+                                <td> <div class="badge badge-success">
+                                    {{ $item->roles->name }}
+                                </div></td>
                                 <td>
 
                                     <a href="{{ route('attributeValue.destroy', $item->id) }}" onclick="

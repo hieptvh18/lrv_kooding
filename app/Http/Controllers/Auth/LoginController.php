@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Auth;
 use App\Models\User;
 
 
@@ -24,20 +24,25 @@ class LoginController extends Controller
             'password' => 'required|string',
         ]);
 
-        // // get info
-        if(Auth::atempt(['email'=>$rq->email,'password'=>$rq->password,'role_id'=>1])){
-            // client
+        // check login
+        if(Auth::attempt(['email' => $rq->email, 'password' => $rq->password])){
 
-            dd('client');
-        }else if(Auth::atempt(['email'=>$rq->email,'password'=>$rq->password,'role_id'=>2])){
-            // admin
-            dd('admin');
-
-
-        }else{
-            dd('invalid');
+           $user = User::where('email',$rq->email)->first();
+           Auth::login($user);
+          
+           if(Auth::user()->role_id == 1){
+               return redirect(route('client.home'));
+            }
+            return redirect(route('admin.dashboard'));
         }
+        return back()->with('err-login','Email hoặc mật khẩu không chính xác!');
 
+        
+    }
+
+    public function logout(){
+        Auth::logout();
+        return redirect(route('client.home'))->with('msg-suc','Đăng xuất thành công!');
     }
 
     

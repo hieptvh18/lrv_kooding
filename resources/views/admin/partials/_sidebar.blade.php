@@ -65,7 +65,7 @@
             <a class="nav-link" data-toggle="collapse" href="#comment" aria-expanded="false"
                 aria-controls="ui-basic">
                 <i class="far fa-comments menu-icon"></i>
-                <span class="menu-title">Bình luận</span>
+                <span class="menu-title">Phản hồi</span>
                 <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="comment">

@@ -4,7 +4,9 @@
 
 @section('content')
     <h4>Xin chào? Hãy bắt đầu đăng nhập</h4>
-
+    @if (session('err-login'))
+        <div class="alert alert-danger">{{session('err-login')}}</div>
+    @endif
     <form action="{{ route('login') }}" method="POST" class="pt-3">
 
         @csrf
