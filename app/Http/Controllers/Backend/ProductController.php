@@ -23,8 +23,7 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        // search product
-        // dd();
+        // product options
         $title = '';
         $listCategory = Category::all();
         $sortName = 'asc'; //default = 0(asc), click = 1(desc);

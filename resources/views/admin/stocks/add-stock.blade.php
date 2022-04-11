@@ -119,7 +119,7 @@
                                 @enderror
                             </div>
                             <div class="form-group col-3">
-                                <input type="number" name="quantity" class="form-control" value="{{ old('quantity') }}"
+                                <input type="number" min="1" name="quantity" class="form-control" value="{{ old('quantity') }}"
                                     placeholder="Số lượng sản phẩm">
                                 @error('quantity')
                                     <small class="text-danger">{{ $message }}</small>

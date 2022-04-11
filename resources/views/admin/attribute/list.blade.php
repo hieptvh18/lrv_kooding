@@ -9,8 +9,8 @@
         {{-- danh ssach giá trị của thuộc tính --}}
         <h4 class="card-title mt-3">Danh sách gía trị của thuộc tính.</h4>
         <!-- Button to Open the Modal -->
-        <button type="button" {{$btnStatus}} class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-            Thêm giá trị mới
+        <button type="button" {{$btnStatus}} class="btn btn-outline-primary" data-toggle="modal" data-target="#myModal">
+            Thêm mới+
         </button>
 
         <!-- The Modal -->

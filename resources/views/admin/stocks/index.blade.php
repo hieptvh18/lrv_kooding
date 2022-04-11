@@ -18,7 +18,7 @@
             <form action="" method="GET" class="d-flex">
                 <input type="search" value="{{ old('keyword_stock') }}" name="keyword_stock" placeholder="search category"
                     class="form-control-sm" style="height:33px;border:1px solid #ccc;border-radius:10px">
-                <button class="btn btn-info btn-sm">Tìm kiếm</button>
+                <button class="btn btn-outline-info btn-sm">Tìm kiếm</button>
             </form>
         </div>
 
@@ -35,7 +35,7 @@
                     </div>
                     <button type="submit" class="btn btn-info btn-sm mb-2 ">Cập nhật SL số mới</button>
                 </div>
-                <table class="table table-bordered">
+                <table class="table table-striped">
                     <thead>
                         <tr class="">
                             <th>STT</th>
@@ -47,7 +47,7 @@
                             {{-- <th>Tình trạng</th> --}}
                             <th>Số lượng hiện tại<a href="?sort_by=quantity&sort_type={{ $sortType }}"><i
                                         class="fa fa-sort ml-2" aria-hidden="true"></a></th>
-                            <th>Cập nhật lại số lượng</th>
+                            <th>Thêm số lượng</th>
                             <th>Chức năng</th>
                         </tr>
                     </thead>

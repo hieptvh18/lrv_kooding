@@ -62,7 +62,7 @@ class StockController extends Controller
             "color_id"=>"required",
             "size_id"=>"required",
             "material_id"=>"required",
-            "quantity" => "required|regex:/^\d{1,11}$/"
+            "quantity" => "required|min:1|regex:/^\d{1,11}$/"
         ],[
             "required"=>"Không được để trống"
         ]);

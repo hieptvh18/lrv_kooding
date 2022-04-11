@@ -7,7 +7,7 @@
         <div class="">
             <div class="card-body">
                 <h4 class="card-title">Add new category</h4>
-               <a href="#listCategory" class="btn btn-primary btn-sm" style="scroll-behavior: smooth"> Danh sách danh mục</a>
+               <a href="#listCategory" class="btn btn-outline-primary btn-sm" style="scroll-behavior: smooth"> Danh sách danh mục</a>
 
                 @if (session('msg-er'))
                     <div class="text-danger">{{ session('msg-er') }}</div>
@@ -64,7 +64,7 @@
 
                         <div class="col-6">
                             <button type="submit" class="btn btn-primary btn-sm mr-2">Submit</button>
-                             <a href="" class="btn btn-sm btn-light">Cancel</a>
+                             <a href="" class="btn btn-sm btn-outline-light">Cancel</a>
                         </div>
 
                         
@@ -81,7 +81,7 @@
             <h6>List categories</h6>
             <form action="" method="GET">
                 <input type="search" value="{{old('keyword')}}" name="keyword" placeholder="search category" class="form-control-sm" style="height:33px;border:1px solid #ccc;border-radius:10px">
-                <button class="btn btn-info btn-sm">Tìm kiếm</button>
+                <button class="btn btn-outline-info btn-sm">Tìm kiếm</button>
             </form>
 
             <div class="title-search mt-4 mb-4">
@@ -91,7 +91,7 @@
             </div>
 
         @if ($listCate->count() > 0)
-            <table class="table table-borderd">
+            <table class="table table-striped">
                 <thead>
                     <tr>
                         <th>STT</th>
@@ -113,7 +113,7 @@
                             <td>{{ $val->slug }}</td>
                            
                             <td>
-                                <a href="{{ route('categories.destroy', $val['id']) }}" class="btn btn-sm btn-danger"
+                                <a href="{{ route('categories.destroy', $val['id']) }}" class="btn btn-sm btn-outline-danger"
                                     onclick="
                                             event.preventDefault();
                                          if(confirm('Bạn có chắc chắn xóa? Các mục liên quan cũng sẽ biến mất!')){
@@ -128,7 +128,7 @@
                                 </form>
 
                                 <a href="{{ route('categories.edit', $val['id']) }}"
-                                    class="btn btn-warning btn-sm">Edit</a>
+                                    class="btn btn-outline-warning btn-sm">Edit</a>
                             </td>
                         </tr>
                     @endforeach

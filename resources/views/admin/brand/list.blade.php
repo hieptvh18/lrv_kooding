@@ -14,7 +14,7 @@
                 @if (session('msg-er'))
                 <div class="alert alert-danger">{{ session('msg') }}</div>
             @endif
-                <table class="table">
+                <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>STT</th>

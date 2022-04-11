@@ -56,7 +56,7 @@
             <div class="collapse" id="account">
                 <ul class="nav flex-column sub-menu">
                     <li class="nav-item"> <a class="nav-link" href="{{route('user.index')}}">Danh sách</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="account?action=add">Thêm tài khoản</a>
+                    <li class="nav-item"> <a class="nav-link" href="account?action=add">Phân quyền</a>
                     </li>
                 </ul>
             </div>

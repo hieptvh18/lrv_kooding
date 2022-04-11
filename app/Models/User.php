@@ -55,4 +55,14 @@ class User extends Authenticatable
     public function roles(){
         return $this->belongsTo(Role::class,'role_id');
     }
+
+
+    // get value config
+    function getStrRole(){
+        $perrmissionMapping =  array_flip(config('permission'));
+
+        // this laf ng dung hien tai
+        // tra ve value la string tu role_id 
+        return $perrmissionMapping[$this->role_id];
+    }
 }

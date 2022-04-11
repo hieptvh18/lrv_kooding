@@ -4,7 +4,13 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+
 use App\Models\User;
+use App\Models\Role;
+
+use Auth;
+use Illuminate\Validation\Rule;
+use App\Http\Requests\Backend\UserRequest;
 
 class UserController extends Controller
 {
@@ -18,7 +24,7 @@ class UserController extends Controller
         // list account
         $listUser = User::all();
 
-        return view('admin.account.list',compact('listUser'));
+        return view('admin.account.list', compact('listUser'));
     }
 
     /**
@@ -28,7 +34,10 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        //get data
+        $roles = Role::all();
+
+        return view('admin.account.create',compact('roles'));
     }
 
     /**
@@ -37,9 +46,16 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
         //
+        $newUser = new User();
+        
+        $newUser->fill($request->all());
+        $newUser->password = bcrypt($request->password);
+        $newUser -> save();
+
+        return redirect(route('user.index'))->with('msg-suc','Thêm thành công tài khoản mới');
     }
 
     /**
@@ -61,7 +77,11 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        //get data
+        $user = User::find($id);
+        $roles = Role::all();
+
+        return view('admin.account.edit',compact('user','roles'));
     }
 
     /**
@@ -74,6 +94,7 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         //
+        dd($request->all());
     }
 
     /**
@@ -88,14 +109,34 @@ class UserController extends Controller
     }
 
     // profile
-    public function profileDisplay(){
+    public function profileDisplay()
+    {
         return view('admin.account.profile');
     }
 
-    public function profileStore(Request $request){
-        dd($request->all());
+    public function profileStore(Request $request)
+    {
+    
+        $request->validate(
+            [
+                "name" => "required",
+                "phone" => "required|regex:/^0[0-9]{9,15}$/|".Rule::unique('users')->ignore(Auth::user()->id),
+                "gender" => "required"
+            ],
+            [
+                "name.required" => "Bắt buộc nhập tên",
+                "phone.regex" => "Số điện thoại không hợp lệ"
+            ]
+        );
+
+        $user = User::find(Auth::user()->id);
+        $user->fill($request->all());
+        $user -> gender = $request->gender;
+        $user->save();
+
+        return redirect(route('admin.profile'))->with('msg-suc', 'Cập nhật thành công hồ sơ admin');
     }
 
     // change my pass
-    
+
 }

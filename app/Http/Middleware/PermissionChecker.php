@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Auth;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
 
-class OnlyAdminAccess
+class PermissionChecker //cho phep lam gi?
 {
     /**
      * Handle an incoming request.
@@ -16,12 +16,16 @@ class OnlyAdminAccess
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next,$roles)
     {
-        // check role admin (co the dung attemp check trong controller)
-        if(Auth::check() && FacadesAuth::user()->role_id != 1){
-            return $next($request);
-        }
+        // check role admin = middleware (co the dung attemp check trong controller)
+        if(Auth::check()){
+            // kiem tra ng dung hien tai co khop voi cac role cho phep truy cap hay k o route
+             if(in_array(Auth::user()->getStrRole(),explode('|',$roles))){
+                return $next($request);
+            }
+            return redirect(route('403'));
+       }
 
         return redirect(route('client.home'));
     }
