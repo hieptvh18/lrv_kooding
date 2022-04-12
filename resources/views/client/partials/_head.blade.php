@@ -23,9 +23,9 @@
     <!-- js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <!-- css -->
-    <link rel="stylesheet" href="{{asset('css/style_layout.css')}}public/">
-    <link rel="stylesheet" href="{{asset('css/style.css')}}">
-    <link rel="stylesheet" href="{{asset('css/album.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/css/style_layout.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/css/album.css')}}">
 
     @yield('plugin-head')
     <meta charset="UTF-8">

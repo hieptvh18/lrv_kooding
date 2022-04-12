@@ -19,12 +19,33 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $rq)
     {
-        // list account
-        $listUser = User::all();
+        // list account & option
+        $listUser = User::select('*');
+        $searchTitle = '';
+        $sortType = 'asc';
 
-        return view('admin.account.list', compact('listUser'));
+        // search
+        if($rq -> keyword_user){
+            
+            $searchTitle = "Kết quả tìm kiếm "."'".$rq -> keyword_user."'";
+            $listUser = $listUser->where('name','like','%'.$rq->keyword_user.'%');
+        }
+
+        // sort 
+        if($rq->sortBy && $rq -> sortType){
+            $listUser = $listUser->orderBy($rq->sortBy,$rq->sortType);
+            if($rq->sortType == 'asc'){
+                $sortType = 'desc';
+            }else{
+                $sortType = 'asc';
+            }
+        }
+
+        $listUser= $listUser->paginate(10);
+
+        return view('admin.account.list', compact('listUser','searchTitle','sortType'));
     }
 
     /**
@@ -91,10 +112,14 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserRequest $request, $id)
     {
         //
-        dd($request->all());
+        $user = User::find($id);
+        $user->fill($request->all());
+        $user->save();
+
+        return redirect(route('user.index'))->with('msg-suc','Cập nhật thành công tài khoản!');
     }
 
     /**
@@ -106,6 +131,8 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+        User::destroy($id);
+        return redirect(route('user.index'))->with('msg-suc','Xóa thành công tài khoản');
     }
 
     // profile

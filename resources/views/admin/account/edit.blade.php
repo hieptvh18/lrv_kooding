@@ -10,15 +10,16 @@
                     Thêm tài khoản tào lao cho vui
                 </p>
                 @if (session('msg-er'))
-                <div class="text-danger">{{ session('msg-er') }}</div>
+                <div class="alert alert-danger">{{ session('msg-er') }}</div>
             @endif
             @if (session('msg-suc'))
-                <div class="text-success">{{ session('msg-suc') }}</div>
+                <div class="alert alert-success">{{ session('msg-suc') }}</div>
             @endif
                 <form action="{{ route('user.update',$user->id) }}" method="POST" enctype="multipart/form-data" name="form-register"
                     id="register_user" class="p-5">
-                    @method('put')
+                    @method('PUT')
                     @csrf
+                    <input type="hidden" name="id" value="{{$user->id}}">
                     <div class="row">
                         <div class="form-group col-6">
                             <label for="">Tên</label>
@@ -38,14 +39,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="form-group col-6">
-                            <label for="">Mật khẩu</label>
-                            <input type="password" value="{{ $user->password }}" name="password" placeholder="Nhập mật khẩu"
-                                class="form-control form-control-sm">
-                            @error('password')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
+                       
                         <div class="form-group col-6">
                             <label for="">Số điện thoại</label>
                             <input type="phone" value="{{ $user->phone }}" name="phone" id="phone"
@@ -54,24 +48,8 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
-                    </div>
-                    <div class="gender col-md-12 mb-4 mt-4">
-                        <p><label for="">Vai trò</label></p>
-                        <div class="form-check-inline">
-                            @foreach ($roles as $key=>$role)
-                                <input class="form-check-input" {{ $user->id == $role->id ? 'checked' : '' }} id="role{{$key}}"
-                                    value="{{$role->id}}" type="radio" name="role_id">
-                                <label for="role{{$key}}" class="form-check-label mr-3">
-                                    {{$role->name}}
-                                </label>
-                            @endforeach
-                            @error('role_id')
-                                <small class="text-danger">{{ $message }}</small>
-                            @enderror
-                        </div>
-                    </div>
-                 
-                        <div class="gender col-md-12 mb-4 mt-4">
+
+                        <div class="gender col-md-6 mb-4 mt-4">
                             <label class="form-check-label mr-3" for="">Giới tính</label>
                             <br>
                             <br>    
@@ -87,6 +65,25 @@
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
+                    </div>
+                    <div class="gender col-md-12 mb-4 mt-4">
+                        <p><label for="">Vai trò</label></p>
+                        <div class="form-check-inline">
+                            @foreach ($roles as $key=>$role)
+                                <input class="form-check-input" {{ $user->role_id == $role->id ? 'checked' : '' }} id="role{{$key}}"
+                                    value="{{$role->id}}" type="radio" name="role_id">
+
+                                <label for="role{{$key}}" class="form-check-label mr-3">
+                                    {{$role->name}}
+                                </label>
+                            @endforeach
+                            @error('role_id')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+                 
+                        
 
 
                     <button type="submit" class="btn btn-warning mr-2">Cập nhật</button>

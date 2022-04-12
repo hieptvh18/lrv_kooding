@@ -18,8 +18,8 @@
                         <div class="btn__burger"></div>
                     </div>
                 </div>
-                <a href="index" class="logo">
-                    <img src="public/images/layout/" alt="" class="logo-img">
+                <a href="{{route('client.home')}}" class="logo">
+                    <img src="{{asset('assets/images/layout/logo-main.png')}}" alt="" class="logo-img">
                 </a>
             </div>
             <div class="search">
@@ -38,16 +38,26 @@
             </div>
             <div class="user-options">
                 <div class="search-rp"></div>
+               
+                @if (Auth::check())
+                    <div class="profile pt-4 pb-4">
+                        <span class="title-pop-user">Hồ sơ<i class="fa fa-angle-down ml-2" aria-hidden="true"></i></span>
+                        <div class="pop-profile">
+                            <a href="accountClient?action=viewProfileClient">Bảng điều khiển</a>
 
-                <div class="profile pt-4 pb-4">
-                    <span class="title-pop-user">Hồ sơ<i class="fa fa-angle-down ml-2" aria-hidden="true"></i></span>
-                    <div class="pop-profile">
-                        <a href="accountClient?action=viewProfileClient">Bảng điều khiển</a>
+                            <a href="{{route('logout')}}"
+                                onclick="
+                                    event.preventDefault()
+                                    if(confirm('Bạn chắc chắn muốn đăng xuất')){
+                                        document.querySelector('#form-logout').submit();
+                                    }
+                                ">Đăng xuất</a>
 
-                        <a href="accountClient?action=logoutClient"
-                            onclick="return confirm('Bạn chắc chắn muốn đăng xuất')">Đăng xuất</a>
+                                {{-- form fake method --}}
+                                <form action="{{route('logout')}}" method="post" id="form-logout">@csrf</form>
+                        </div>
                     </div>
-                </div>
+                @else
                 {{-- admin profile --}}
                 <div class="account pt-4 pb-4" id="popup-user" data-toggle="modal" data-target="#box-login-register">
                     <span class="title-pop-user">Đăng nhập / Đăng ký</span>
@@ -155,8 +165,9 @@
                     </div>
                 </div>
                 <!-- end modal login-->
+                @endif
                 <a href="#lang" class="lang pt-4 pb-4">
-                    <img src="public/images/layout/vietnam.png" alt="">
+                    <img src="{{asset('assets/images/layout/vietnam.png')}}" alt="">
                 </a>
                 <div class="box-favorite-pro pt-4 pb-4">
                     <a href="productFavoriteClient" class="favorite-pro">
@@ -231,7 +242,7 @@
         </div>
         <div class="header-menu">
             <ul class="sub-nav m-0">
-                <li><a href="productClient?action=list">#ALL</a></li>
+                <li><a href="{{route('client.shop')}}">#ALL</a></li>
                 <li><a href="productClient?action=list&filtercate=">Tên ...</a></li>
 
                 @if (session('admin'))
@@ -243,6 +254,11 @@
 
                 <li><a href="newsClient">Tin tức</a></li>
                 <li><a href="albumClient">#KOODING</a></li>
+                @if (Auth::check() && Auth::user()->role_id != 1)
+                    
+                <li><a href="{{route('admin.dashboard')}}">Trang quản trị <i class="ml-2 fa fa-unlock-alt" aria-hidden="true"></i>
+                </a></li>
+                @endif
             </ul>
         </div>
 

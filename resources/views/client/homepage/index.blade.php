@@ -1,4 +1,4 @@
-@extends('layouts.layout-client');
+@extends('layouts.layout-client')
 
 @section('page-title', 'Trang chủ | Kooding')
 @section('main')
@@ -142,38 +142,38 @@
         <!--  -->
         <div class="news-main">
             <div class="col-news left">
-                <?php foreach ($data['news_special'] as $item) : ?>
+
+                {{-- loop --}}
                 <div class="news-item mb-4">
-                    <a href="newsClient?action=viewDetail&id=<?= $item['id'] ?>" class="box-img">
+                    <a href="newsClient?action=viewDetail&id=" class="box-img">
                         <div class="box_newsImg">
                             <!-- <img src="public/images/layout/188906b2571586bae5d3dd009b56647f019b6145.jpg" alt=""> -->
-                            <img src="./public/images/upload/<?= $item['image'] ?>" alt="">
+                            <img src="./public/images/upload/" alt="">
                         </div>
 
                     </a>
                     <div class="pro-name">
-                        <?= $item['title'] ?>
+                       pro name
                     </div>
-                    <span><?= substr($item['shortdesc'], 0, 200) ?></span>
-                    <a href="newsClient?action=viewDetail&id=<?= $item['id'] ?>" class="btn-discover mt-2">
+                    <span><?= substr('bl abl short desc', 0, 200) ?></span>
+                    <a href="newsClient?action=viewDetail&id=" class="btn-discover mt-2">
                         KHÁM PHÁ
                     </a>
                 </div>
-                <?php endforeach; ?>
             </div>
             <div class="col-news right">
                 <div class="news-item">
-                    <a href="newsClient?action=viewDetail&id=<?= $item['id'] ?>" class="box-img">
+                    <a href="newsClient?action=viewDetail&id=" class="box-img">
                         <div class="box_newsImg ss2">
                             <!-- <img src="public/images/layout/261d0a0ba82f5e1c2b6b03fb85b850b687c0e93f.jpg" alt=""> -->
-                            <img src="./public/images/upload/<?= $data['news_special2']['image'] ?>" alt="">
+                            <img src="./public/images/upload/" alt="">
                         </div>
                     </a>
                     <div class="pro-name">
-                        <?= $data['news_special2']['title'] ?>
+                        pro name
                     </div>
-                    <span><?= substr($data['news_special2']['shortdesc'], 0, 200) ?></span>
-                    <a href="newsClient?action=viewDetail&id=<?= $item['id'] ?>" class="btn-discover mt-2">
+                    <span><?= substr('short desc bla bla', 0, 200) ?></span>
+                    <a href="newsClient?action=viewDetail&id=" class="btn-discover mt-2">
                         KHÁM PHÁ
                     </a>
                 </div>
@@ -198,17 +198,16 @@
             <div class="slick__slider">
                 <div class="pro-news-slider slide-news" id="slide-trending">
 
-                    <?php foreach ($data['pro_topview'] as $item) : ?>
-                    <a href="productDetail?action=viewDetail&id=<?= $item['id'] ?>" class="pro-news-item">
-                        <img src="public/images/products/<?= $item['avatar'] ?>" alt="">
+                    {{-- loop top view --}}
+                    <a href="productDetail?action=viewDetail&id=" class="pro-news-item">
+                        <img src="public/images/products/" alt="">
                         <div class="pro-name bg-white pt-2 text-center">
-                            <?= $item['name'] ?>
+                            pro name
                         </div>
                         <div class="pro-des bg-white">
-                            <?= substr($item['description'], 0, 25) . '...' ?>
+                            <?= substr('desc', 0, 25) . '...' ?>
                         </div>
                     </a>
-                    <?php endforeach; ?>
 
                 </div>
             </div>
@@ -216,13 +215,13 @@
         <!-- end trending -->
         <div class="about-us" id="introduce">
             <div class="title text-center">
-                <h5><?= $data['display']['title_intro'] ?></h5>
+                <h5>render title</h5>
             </div>
             <div id="times" class="btn__times">+</div>
             <div id="minus" class="btn__minus none">-</div>
             <div class="background__overlay"></div>
             <div class="site__intro show1">
-                <?= $data['display']['content_intro'] ?>
+                render intro
             </div>
         </div>
 
@@ -230,7 +229,7 @@
 
         <div class="slider-album pb-4">
             <div class="slide-title text-center pt-4 pb-2 text-light">
-                <h3>#<?= $data['display']['web_name'] ?></h3>
+                <h3>#render web name</h3>
                 <p>Chia sẽ khoảnh khắc của bạn với KOODING TRÊN <i class="fab fa-instagram text-light"
                         aria-hidden="true"></i> hoặc <i class="fab fa-twitter text-light" aria-hidden="true"></i>
 

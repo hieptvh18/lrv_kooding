@@ -1,3 +1,7 @@
+@extends('layouts.layout-client')
+
+@section('page-title','Chi tiết sản phẩm | Kooding')
+@section('main')
 <main class="body__details">
     <div class="product-page pt-4">
         <div class="subnav-trail">
@@ -7,7 +11,7 @@
             <span class="divider">/</span>
             <a href="#">Chi tiết sản phẩm</a>
             <span class="divider">/</span>
-            <a href="#pd-info"><?= $data['pros']['name'] ?></a>
+            <a href="#pd-info">{{$product->name}}</a>
         </div>
         <!-- <div class="" id="test"></div> -->
 
@@ -18,40 +22,40 @@
                 <!-- chứa slider và hình ảnh chi tiết -->
                 <div class="pd-image__left">
                     <div class="img__scroll">
-                        <?php foreach ($data['list_img'] as $item) : ?>
+                        @foreach ($product->images as $image)
                             <button id="img1" class="thunb__img">
-                                <img src="public/images/products/<?= $item['url'] ?>" alt="">
+                                <img src="{{asset('uploads/'.$image->avatar)}} alt="">
                             </button>
-                        <?php endforeach; ?>
+                        @endforeach
                     </div>
                 </div>
                 <div class="pd-image__right">
                     <div class="img__right">
-                        <img src="public/images/products/<?= $data['pros']['avatar'] ?>" alt="">
+                        <img src="{{asset('uploads/'.$product->avatar)}}" alt="">
                     </div>
                 </div>
             </div>
             <div class="pd-info" id="pd-info">
                 <!-- chứa thông tin chi tiết sp -->
                 <form class="pd__right" action="cartClient" method="POST" id="form-add-bag">
-                    <input type="hidden" id="pro_id" name="id" value="<?= $data['pros']['id'] ?>">
+                    <input type="hidden" id="pro_id" name="id" value="{{$product->id}}">
                     <div class="pd-info-head">
                         <div class="pd-brand-sub"><span class="pd-brand-name"><a href="/mind-bridge/b/252">Brand:</a></span></div>
-                        <div class="pd-name"><?= $data['pros']['name'] ?></div>
+                        <div class="pd-name">{{$product->name}}</div>
                     </div>
                     <div class="pd-price ">
                         <div id="price-observer">
-                            <div class="default-price"><span class="currency lc"></span><span class="number"> <?= number_format($data['pros']['price'] - $data['pros']['discount']) ?>đ</span></div>
+                            <div class="default-price"><span class="currency lc"></span><span class="number"> {{number_format($product->price - $product->discount)}}đ</span></div>
 
-                            <?php if ($data['pros']['discount'] > 0) : ?>
+                            {{-- <?php if ($data['pros']['discount'] > 0) : ?>
                                 <div class="price__sale">
                                     <span class="price__sale--fist"><?= number_format($data['pros']['price']) ?>đ</span>
                                     <span class="price__sale--off"><?= number_format($data['pros']['discount'] / $data['pros']['price'] * 100, 0, ',', '.') ?>%</span>
                                 </div>
-                            <?php endif; ?>
+                            <?php endif; ?> --}}
                         </div>
                         <div class="pd-sku">
-                            <p>Kho : <?= $data['pros']['quantity'] ?></p>
+                            <p>Kho : {{$product->quantity}}</p>
                         </div>
                     </div>
                     <div class="pd-processing-time" data-nosnippet="">
@@ -63,22 +67,14 @@
                     <div class="pd-color">
                         <label for="color">Chọn màu sắc</label> <br>
                         <select border-opacity-50 name="color" id="color">
-                            <?php foreach ($data['color'] as $item) : ?>
-                                <?php foreach ($item as $c) : ?>
-                                    <option value="<?= $c['id'] ?>"><?= $c['value'] ?></option>
-                                <?php endforeach; ?>
-                            <?php endforeach; ?>
+                            
                         </select>
                         <div class="errC text-danger"></div>
                     </div>
                     <div class="pd-color">
                         <div class="size">Kích cỡ</div>
                         <select border-opacity-50 name="size" id="size">
-                            <?php foreach ($data['size'] as $item) : ?>
-                                <?php foreach ($item as $s) : ?>
-                                    <option value="<?= $s['id'] ?>"><?= $s['value'] ?></option>
-                                <?php endforeach; ?>
-                            <?php endforeach; ?>
+                            
                         </select> <br>
                         <div class="errS text-danger"></div>
 
@@ -95,11 +91,11 @@
                     <div class="er"></div>
                     <div class="fav-forms-wrap">
                         <div class="animate-button-wrap pd-buttons">
-                            <input type="hidden" id="storage" name="storage" value="<?= $data['pros']['quantity'] ?>">
+                            <input type="hidden" id="storage" name="storage" value="{{$product->quantity}}>">
                             <button type="submit" id="checkout_0" class="pd-checkout animate black loader">Thêm vào giỏ hàng</button>
                             <span onclick="showLove()" class=" btn_add_fa">
                                 <i class="far fa-heart"></i>
-                                <input type="hidden" class="pro_id" name="pro_id" value="<?= $data['pros']['id'] ?>">
+                                <input type="hidden" class="pro_id" name="pro_id" value="{{$product->id}}">
                             </span>
                         </div>
                     </div>
@@ -113,7 +109,7 @@
                             </div>
                             <div class="info__body">
                                 <p>Mô tả</p>
-                                <span><?= $data['pros']['description'] ?></span>
+                                <span>{{$product->description}}</span>
                             </div>
                         </div>
                         <div class="content__detail__info">
@@ -204,7 +200,7 @@
             <p class="vclll">Bạn cũng có thể thích</p class="vclll">
             <div class="slider-album__content">
                 <!-- slider ảnh sp liên quan -->
-                <?php foreach ($data['relate_pros'] as $item) : ?>
+                {{-- <?php foreach ($data['relate_pros'] as $item) : ?>
                     <div class="image-item">
                         <a href="productDetail?action=viewDetail&id=<?= $item['id'] ?>">
                             <div class="item__boxImg">
@@ -214,13 +210,12 @@
                         <p><?= $item['name'] ?></p>
                         <span><b><?= number_format($item['price'], 0, ',') ?> VND</b></span>
                     </div>
-                <?php endforeach; ?>
+                <?php endforeach; ?> --}}
             </div>
         </div>
         <div class="sp-title">
             <p class="vclll">Bình luận của khách hàng</p>
             <div class="form__comment">
-                <?php if (isset($_SESSION['customer']) || isset($_SESSION['admin'])) : ?>
                     <div class="form__top" style="display:flex; align-items:center;">
                         <form action="" method="POST" enctype="multipart/form-data">
                             <div class="input__comment">
@@ -238,50 +233,11 @@
                                 </div>
                             </div>
                         </form>
-                        <?php if (!empty($data['errCmt'])) : ?>
-                            <div class="errCmt text-danger ml-5">
-                                <?php echo $data['errCmt']; ?>
-                                <i class="fa fa-exclamation-circle text-danger" aria-hidden="true"></i>
-                            </div>
-                        <?php endif; ?>
-                        <?php if (!empty($data['errImg'])) : ?>
-                            <div class="errCmt text-danger ml-5">
-                                <?php echo $data['errImg']; ?>
-                                <i class="fa fa-exclamation-circle text-danger" aria-hidden="true"></i>
-                            </div>
-                        <?php endif; ?>
+                        {{-- err cmt --}}
                     </div>
-                <?php endif; ?>
                 <div class="form__content">
                     <div class="comment__itemAll">
-                        <?php foreach ($data['list_cmt'] as $item) : ?>
-                            <div class="item__comment">
-                                <div class="item__ava">
-                                    <img src="./public/images/album/ong1.jpg" alt="" width="100%">
-                                </div>
-                                <div class="item__right">
-                                    <div class="item__name">
-                                        <p><?= $item['fullname'] ?></p>
-                                    </div>
-                                    <div class="item__time">
-                                        <i><?= $item['created_at'] ?></i>
-                                    </div>
-                                    <div class="item__nd">
-                                        <p><?= $item['content'] ?></p>
-                                    </div>
-                                    <div class="item__img">
-                                        <img src="./public/images/upload/<?= $item['image'] ?>" alt="" width="100%">
-                                    </div>
-                                    <div class="item__more">
-                                        <?php if (isset($_SESSION['admin'])) : ?>
-                                            <a href="comment?action=del&cmt_id=<?= $item['id'] ?>&pro_id=<?= $data['pros']['id'] ?>">
-                                                <i class="fas fa-trash-alt"></i>
-                                            </a>
-                                        <?php endif; ?>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
+                        
 
                     </div>
                 </div>
@@ -289,11 +245,11 @@
             <p class="vclll">Hình ảnh chi tiết</p>
             <div class="full-images">
                 <div class="full__box__img">
-                    <?php foreach ($data['list_img'] as $item) : ?>
+                    @foreach ($product->images as $image)
                         <div class="pd__item__img">
-                            <img src="./public/images/products/<?= $item['url'] ?>" alt="" width="100%">
+                            <img src="{{asset('uploads/'.$image->avatar)}}" alt="" width="100%">
                         </div>
-                    <?php endforeach; ?>
+                    @endforeach
                 </div>
                 <div class="gallery_pros">
                     <div class="control_pros_close">
@@ -314,6 +270,9 @@
         <!-- <div class="" id="test"></div> -->
         <div id="toast"></div>
 </main>
+@endsection
+
+@section('plugin-script')
 <!-- end main -->
 <script>
     const proIds = document.querySelector('.pro_id')
@@ -380,3 +339,5 @@
         })
     })
 </script>
+
+@endsection

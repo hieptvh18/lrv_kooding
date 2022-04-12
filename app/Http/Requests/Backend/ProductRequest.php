@@ -31,8 +31,6 @@ class ProductRequest extends FormRequest
      */
     public function rules(Request $request)
     {
-        // find category => ignore validate unique
-        $product = Product::where('name',$request->input('name'))->first();
 
         if($request->file('avatar')){
             $ruleAvatarEdit = "required|image|mimes:jpg,png,jpeg|max:2040";
@@ -44,8 +42,8 @@ class ProductRequest extends FormRequest
         switch($request->method()){
             case"PUT":
                 $rules = [
-                    "name" => ["required","max:30",Rule::unique('products')->ignore(request()->id)],
-                    "slug" => [Rule::unique('products')->ignore(request()->id)],
+                    "name" => ["required","max:30",Rule::unique('products','name')->ignore(request()->id)],
+                    "slug" => [Rule::unique('products','name')->ignore(request()->id)],
                     "avatar" => $ruleAvatarEdit,
                     "discount" => "nullable|integer|11",
                     "price" => "required|integer|max:11",

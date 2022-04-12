@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 // client
 use  App\Http\Controllers\Frontend\HomeController;
+use  App\Http\Controllers\Frontend\ProductController as ProductClientController;
 
 // use  App\Http\Controllers\Auth\LoginAdminController;
 use Illuminate\Support\Facades\Auth;
@@ -34,6 +35,8 @@ Route::get('/google/callback', [GoogleController::class, 'googleCallback'])->nam
 
 Route::get('/', [HomeController::class, 'index'])->name('client.home');
 Route::get('/trang-chu', [HomeController::class, 'index'])->name('client.home');
+Route::get('/cua-hang', [ProductClientController::class, 'index'])->name('client.shop');
+Route::get('/cua-hang/{slug}', [ProductClientController::class, 'show'])->name('client.shop.detail');
 
 
 // ===============ROUTE ADMIN===================

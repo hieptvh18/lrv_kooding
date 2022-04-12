@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use App\Models\User;
 
 
 class UserRequest extends FormRequest
@@ -25,16 +26,33 @@ class UserRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(Request $request)
     {
-        return [
-            "name"=>"required|max:255|min:6",
-            "email"=>"required|unique:users|email",
-            "password"=>"required|min:6|max:30|regex:/\w/",
-            "phone"=>"required|unique:users|regex:/^(0+)\d{9,10}$/",
-            "gender"=>"required",
-            "role_id"=>"required",
-        ];
+        switch($request->method()){
+            case"POST":
+                $rules = [
+                    "name"=>"required|max:255|min:6",
+                    "email"=>"required|unique:users|email",
+                    "password"=>"required|min:6|max:30|regex:/\w/",
+                    "phone"=>"required|unique:users|regex:/^(0+)\d{9,10}$/",
+                    "gender"=>"required",
+                    "role_id"=>"required",
+                ];
+                break;
+                
+            default:
+
+                $rules = [
+                    "name"=>"required|max:255|min:6",
+                    "email"=>["required","email",Rule::unique('users','email')->ignore(request()->id)],
+                    // "password"=>"required|min:6|max:30|regex:/\w/",
+                    "phone"=>["required","regex:/^(0+)\d{9,10}$/", Rule::unique('users','phone')->ignore(request()->id)],
+                    "gender"=>"required",
+                    "role_id"=>"required",
+                ];
+            break;
+        }
+        return $rules;
     }
 
    // customer message
@@ -46,7 +64,8 @@ class UserRequest extends FormRequest
            "min"=>"Độ dài tối thiểu là :min kí tư",
            "unique"=>":attribute đã tồn tại trong dữ liệu",
           "password.regex"=>":attribute chỉ được bao gồm chữ, số và dấu gạch dưới",
-          "phone.regex"=>":attribute không hợp lệ"
+          "phone.regex"=>":attribute không hợp lệ",
+          "email"=>'Email không hợp lệ'
 
        ];
    }

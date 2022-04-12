@@ -20,16 +20,33 @@
             @if (session('msg-suc'))
                 <div class="text-success">{{ session('msg-suc') }}</div>
             @endif
+            <div class="search ">
+                <form action="" method="GET" class="d-flex">
+                    <input type="search" value="{{ old('keyword_user') }}" name="keyword_user" placeholder="search user"
+                        class="form-control-sm" style="height:33px;border:1px solid #ccc;border-radius:10px">
+                    <button class="btn btn-outline-info btn-sm">Tìm kiếm</button>
+                </form>
+
+                @if ($searchTitle)
+                    <h5 class="mt-3 mb-2 text-center">{{$searchTitle}}</h5>
+                @endif
+            </div>
+
+            @if ($listUser->count() > 0 )
+                
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>STT</th>
-                            <th> Họ tên</th>
+                            <th> Họ tên
+                                <a href="?sortBy=name&sortType={{$sortType}}"><i
+                                    class="fas fa-sort"></i></a>
+                            </th>
                             <th>Email</th>
                             <th>Điện thoại</th>
                             <th>Vai trò 
-                                <a href="?sortBy=name&sortType=desc"><i
+                                <a href="?sortBy=role_id&sortType={{$sortType}}"><i
                                     class="fas fa-sort"></i></a>
                             </th>
                             <th>Chức năng</th>
@@ -69,9 +86,13 @@
                     </tbody>
                 </table>
                 <div class="paginate">
-                    {{-- {{ $list_attr_value->links() }} --}}
+                    {{ $listUser->links() }}
                 </div>
             </div>
+            @else
+                <div class="p">Không tìm thấy kết qủa nào!</div>
+            @endif
+
         </div>
 
     </div>

@@ -12,12 +12,7 @@
                 <span class="menu-title {{ Route::is('admin.dashboard') ? 'active-link' : '' }}">Thống kê</span>
             </a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('brand.index') }}">
-                <i class="far fa-chart-bar menu-icon"></i>
-                <span class="menu-title {{ Route::is('brand.index') ? 'active-link' : '' }}">Thuong hieu</span>
-            </a>
-        </li>
+        
         <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#products" aria-expanded="false"
                 aria-controls="ui-basic">
@@ -36,6 +31,12 @@
                             <li class="nav-item"> <a class="nav-link" href="{{route('stock.index')}}">Kho hàng</a></li>
                 </ul>
             </div>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('brand.index') }}">
+                <i class="far fa-chart-bar menu-icon"></i>
+                <span class="menu-title {{ Route::is('brand.index') ? 'active-link' : '' }}">Thuong hieu</span>
+            </a>
         </li>
 
         <li class="nav-item">
