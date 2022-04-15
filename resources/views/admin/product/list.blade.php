@@ -63,6 +63,7 @@
                             </th>
                             <th>Thương hiệu</th>
                             <th>Danh mục</th>
+                            <th>Slug</th>
                             <th>Giá.
                             </th>
                             <th>Ảnh</th>
@@ -80,6 +81,7 @@
                                 <td>{{ $val->name }}</td>
                                 <td>{{ $val->brands->name }}</td>
                                 <td>{{ $val->categories->name }}</td>
+                                <td>{{ $val->slug }}</td>
                                 <td>{{ number_format($val->price, 0) }}vnd</td>
                                 <td><img src="{{ asset('uploads/' . $val->avatar) }}" alt=""> </td>
                                 <td>{{ $val->quantity }}</td>

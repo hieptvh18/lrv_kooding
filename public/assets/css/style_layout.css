@@ -100,6 +100,7 @@ width: 200px;
     padding: 0 5px;
     cursor: pointer;
     color:#555;
+    background: #fff;
     
 }
 .filter-cate option{
@@ -2685,20 +2686,17 @@ a{
     font-size: 15px;
     color: #5e5e5e;
 }
-#color {
+#color ,#size{
     width: 323px;
     height: 42px;
     margin-top: 10px;
     border: 1px solid #b8b8b8;
     outline: none;
+    background: #fff;
+    color: #5e5e5e;
+    font-size: 12px;
 }
-#size{
-    width: 323px;
-    height: 42px;
-    margin-top: 10px;
-    border: 1px solid #b8b8b8;
-    outline: none;
-}
+
 #quantity{
     width: 50px;
     height: 38px;

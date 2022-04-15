@@ -6,7 +6,7 @@
 <main class="body__product">
     <div class="product__header">
         <div class="proH__title">
-            <p>title gi do...</p>
+            <p>{{$pageTitle}}</p>
         </div>
         <div class="proH__text1">
             <p>({{$listProduct->count()}} mặt hàng)</p>
@@ -87,7 +87,7 @@
                                 </span>
                             </div>
                                 <div class="proC__sale">
-                                    <p class="item__sale">-10%</p>
+                                    <p class="item__sale">{{number_format($product->discount / $product->price * 100,0,',')}}%</p>
                                 </div>
                         </form>
 
