@@ -16,13 +16,14 @@ class StockController extends Controller
         $listProductStock = Stock::select('*');
         
         // option: sort search bla bla...
-        $sortType = 'asc';
-        if($request->sort_by){
-            $listProductStock->orderBy($request->sort_by,$request->sort_type);
-            if($request->sort_type == 'asc'){
-                $sortType = 'desc';
+        $type = 'asc';
+        if($request->_sort){
+            if($request->type == 'asc'){
+                $listProduct = $listProductStock->orderBy($request->column,$request->type);
+                $type = 'desc';
             }else{
-                $sortType = 'asc';
+                $listProduct = $listProductStock->orderBy($request->column,$request->type);
+                $type = 'asc';
             }
         }
 
@@ -35,7 +36,7 @@ class StockController extends Controller
 
         $listProductStock = $listProductStock->paginate(10);
 
-        return view('admin.stocks.index',compact('listProductStock','sortType','searchTitle'));
+        return view('admin.stocks.index',compact('listProductStock','type','searchTitle'));
 
     }
     
@@ -106,11 +107,13 @@ class StockController extends Controller
         foreach($request->stock_id as $keyStock=>$valStock){
             foreach($request->new_quantity as $keyQty=>$valQty){
                 if($keyStock == $keyQty){
+                 
                     // update theo id (valStock) cua mang do theo valQTy 
                     Stock::find($valStock)->increment('quantity',$valQty);
 
                     // update total qty of table product
-                    // code...
+                    $stockItem = Stock::find($valStock);
+                    Product::find($stockItem->pro_id)->increment('quantity',$valQty);
                 }
             }
         }
@@ -118,11 +121,15 @@ class StockController extends Controller
         return back()->with('msg-suc','Cập nhật thành công kho!');
     }
 
-    // remove variant
+    // remove variant product
     function destroyVariant($id){
 
         $stockExist = Stock::find($id);
         if($stockExist){
+
+            // decrement quantity of variant in table products
+            Product::find($stockExist->pro_id)->decrement('quantity',$stockExist->quantity);
+
             Stock::destroy($id);            
             return redirect(route('stock.create',$stockExist->pro_id))->with('msg-suc','Xóa thành công sản phẩm trong kho!');
         }

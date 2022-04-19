@@ -95,8 +95,9 @@
                 <thead>
                     <tr>
                         <th>STT</th>
-                        <th>Name</th>
-                        <th>Quantity product</th>
+                        <th>Name <a href="?_sort=true&column=name&type={{ $type }}"><i class="fa fa-sort ml-2"
+                            aria-hidden="true"></a></th>
+                        <th>Quantity product </th>
                         <th>Avatar</th>
                         <th>Slug</th>
                         <th>Service</th>

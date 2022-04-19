@@ -39,7 +39,7 @@
             </div>
             <div class="">
                 <button class="btn btn-sm btn-outline-danger" id="btnRemoveAll">Xóa tất cả</button>
-                <input type="checkbox" class="form-check-label" id="btnCheck"> <label for="btnCheck">
+                <input type="checkbox" class="form-check-label" id="btnCheckAll"> <label for="btnCheckAll">
                     check all</label>
             </div>
         </div>
@@ -53,21 +53,25 @@
         @if ($listProduct->count() > 0)
 
             <div class="table-responsive">
-                <table class="table table-striped table-list-product">
+                <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>Select</th>
                             <th>Tên
-                                <a href="{{ route('product.index') }}?sortName={{ $sortName }}"><i
+                                <a href="{{ route('product.index') }}?_sort=true&column=name&type={{$type}}"><i
                                         class="fas fa-sort"></i></a>
                             </th>
                             <th>Thương hiệu</th>
                             <th>Danh mục</th>
-                            <th>Slug</th>
                             <th>Giá.
+                                <a href="{{ route('product.index') }}?_sort=true&column=price&type={{$type}}"><i
+                                    class="fas fa-sort"></i></a>
                             </th>
                             <th>Ảnh</th>
-                            <th>Số lượng</th>
+                            <th>Số lượng
+                                <a href="{{ route('product.index') }}?_sort=true&column=quantity&type={{$type}}"><i
+                                    class="fas fa-sort"></i></a>
+                            </th>
                             <th>Tình trạng</th>
                             <th>Chức năng</th>
                         </tr>
@@ -76,12 +80,11 @@
                         @foreach ($listProduct as $key => $val)
                             <tr>
                                 <td>
-                                    <input type="checkbox" data-id={{ $val->id }} value="{{ $val->id }}">
+                                    <input type="checkbox" data-id={{ $val->id }} name="proIds[]" value="{{ $val->id }}">
                                 </td>
                                 <td>{{ $val->name }}</td>
                                 <td>{{ $val->brands->name }}</td>
                                 <td>{{ $val->categories->name }}</td>
-                                <td>{{ $val->slug }}</td>
                                 <td>{{ number_format($val->price, 0) }}vnd</td>
                                 <td><img src="{{ asset('uploads/' . $val->avatar) }}" alt=""> </td>
                                 <td>{{ $val->quantity }}</td>
@@ -149,10 +152,16 @@
 @section('script')
     <script>
         $(document).ready(function() {
-
-            $("#btnCheck").click(function() {
+            const proIdsEl = $('input[name="proIds[]"]');
+            
+            $("#btnCheckAll").click(function() {
                 $('input:checkbox').not(this).prop('checked', this.checked);
+                disabledCheckAll()
             });
+
+            proIdsEl.click(function(){
+                disabledCheckAll()
+            })
 
             $('#btnRemoveAll').click(function() {
                 if (!$('table input:checkbox').is(':checked')) {
@@ -173,28 +182,19 @@
                     $('input[name="pro_id"]').attr('value', idArr)
                     formFakeDelMuntiple.submit();
 
-                    // use ajax -> controller
-                    // $.ajaxSetup({
-                    //     headers: {
-                    //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    //     }
-                    // });
-                    // $.ajax({
-                    //     url:'{{ route('product.removeMuntiple') }}',
-                    //     type:"DELETE",
-                    //     data:"id="+idArr,
-                    //     success:function(data){
-                    //         $('.mess-alert').html(data),
-
-                    //     },
-                    //     error:function(er){
-                    //         console.log(er)
-                    //     }
-                    // })
-
                 }
 
             })
+
+            // count checked disabled checkall
+            function disabledCheckAll(){
+                if($('table input:checked').length !== $('table input:checkbox').length){
+                    $("#btnCheckAll").prop('checked',false)
+                }else{
+                    $("#btnCheckAll").prop('checked',true)
+
+                }
+            }
         });
     </script>
 @endsection

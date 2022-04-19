@@ -37,9 +37,22 @@ class CategoryController extends Controller
         //get data
         $listCate = Category::select('*');
         $searchTitle = '';
+        $type = 'asc';//type sort by category
+
         if($request->keyword){
             $searchTitle = $request->keyword;
             $listCate = $listCate->where('name','like','%'.$request->keyword.'%');
+        }
+
+        // sort
+        if($request->_sort){
+            if($request->type == 'asc'){
+                $listProduct = $listCate->orderBy($request->column,$request->type);
+                $type = 'desc';
+            }else{
+                $listProduct = $listCate->orderBy($request->column,$request->type);
+                $type = 'asc';
+            }
         }
 
         $categories = Category::all()->toArray();
@@ -47,7 +60,7 @@ class CategoryController extends Controller
 
         $listSelectSub = getChildCategories($categories);
 
-        return view('admin.categories.add', compact('categories','listSelectSub','listCate','searchTitle'));
+        return view('admin.categories.add', compact('categories','listSelectSub','listCate','searchTitle','type'));
     }
 
     /**

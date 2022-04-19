@@ -59,5 +59,14 @@ class AjaxController extends Controller
         // }
     }
 
+
+    // form modal add voucher , check exist voucher
+    function voucherExist(Request $request){
+
+        if($request->ajax()){
+            return "ok ajax";
+        }
+    }
+
   
 }

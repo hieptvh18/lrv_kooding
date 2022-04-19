@@ -25,9 +25,10 @@ class Stock extends Model
     }
 
     // rela attr , attr_value
-    public function attributeValues(){
-        return $this->belongsToMany(AttributeValue::class,['color_id','size_id','material_id']);
+    public function colors(){
+        return $this->hasOne(AttributeValue::class,'color_id');
     }
+    
 
     // ghi de field render sku
    

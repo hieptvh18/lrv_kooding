@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
     {
         // \App\Models\User::factory(10)->create();
         // seeder
+
+        // roles user
         DB::table('roles')->insert([
             [
                 "name"=>"Khách hàng",
@@ -38,32 +40,52 @@ class DatabaseSeeder extends Seeder
 
             ]
         ]);
-        
 
+        // account
+        DB::table('users')->insert([
+            [
+                "name"=>"hiep hoang tran",
+            "email"=>"hieptvh18@gmail.com",
+            "phone"=>"0123144444",
+            "role_id"=>3,
+            "password"=>bcrypt("123123")
+            ],
+            [
+                "name"=>"toi la khach hang",
+            "email"=>"hipbu18@gmail.com",
+            "phone"=>"0123144442",
+            "role_id"=>1,
+            "password"=>bcrypt("123123")
+            ]
+        ]);
 
-        // DB::table('attributes')->insert([
-        //     [
-        //         "name"=>"Màu sắc"
-        //     ],
-        //     [
-        //         "name"=>"Kích cỡ"
-        //     ],
-        //     ["name"=>"Chất liệu"]
-        // ]);
-        // DB::table('attr_values')->insert([
-        //     ["attr_id"=>1,
-        //     "name"=>"Đỏ cam",
-        //     "value"=>"#ff0000"],
-        //     ["attr_id"=>2,
-        //     "name"=>"Medium",
-        //     "value"=>"M"],
-        //     ["attr_id"=>3,
-        //     "name"=>"Vải gấm",
-        //     "value"=>"Vải gấm"],
-        // ]);
+        // attribute
+        DB::table('attributes')->insert([
+            [
+                "name"=>"Màu sắc"
+            ],
+            [
+                "name"=>"Kích cỡ"
+            ],
+            ["name"=>"Chất liệu"]
+        ]);
 
-        // \App\Models\Brand::factory(5)->create();
-        // \App\Models\Category::factory(5)->create();
-        // \App\Models\Product::factory(15)->create();
+        // attr value
+        DB::table('attr_values')->insert([
+            ["attr_id"=>1,
+            "name"=>"Đỏ cam",
+            "value"=>"#ff0000"],
+            ["attr_id"=>2,
+            "name"=>"Medium",
+            "value"=>"M"],
+            ["attr_id"=>3,
+            "name"=>"Vải gấm",
+            "value"=>"Vải gấm"],
+        ]);
+
+        // brand+ product
+        \App\Models\Brand::factory(5)->create();
+        \App\Models\Category::factory(5)->create();
+        \App\Models\Product::factory(15)->create();
     }
 }

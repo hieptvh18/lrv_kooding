@@ -23,10 +23,12 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        // product options
+        // product options(search, sort)
         $title = '';
         $listCategory = Category::all();
-        $sortName = 'asc'; //default = 0(asc), click = 1(desc);
+
+        $type = 'asc'; //default = 0(asc), click = 1(desc);
+
         $listProduct =Product::select('*');
         if($request->keyword){
             $title = "Kết quả tìm kiếm: " . "'".$request->keyword."'";
@@ -42,18 +44,20 @@ class ProductController extends Controller
         }
 
         // sort name
-        if($request->sortName == 'asc'){
-            $listProduct = $listProduct->orderBy('name','asc');
-            $sortName = 'desc';
-        }else{
-            $listProduct = $listProduct->orderBy('name','desc');
-            $sortName = 'asc';
+        if($request->_sort){
+            if($request->type == 'asc'){
+                $listProduct = $listProduct->orderBy($request->column,$request->type);
+                $type = 'desc';
+            }else{
+                $listProduct = $listProduct->orderBy($request->column,$request->type);
+                $type = 'asc';
+            }
         }
 
         // màn hình danh sách + phan trang
         $listProduct = $listProduct->orderBy('id','desc')->paginate(10);
 
-        return view('admin.product.list', compact('listProduct','title','sortName','listCategory'));
+        return view('admin.product.list', compact('listProduct','title','type','listCategory'));
     }
 
     /**

@@ -34,28 +34,7 @@ class ProductController extends Controller
     // page detail product
     public function show($slug){
         $product = Product::where('slug',$slug)->where('status','!=',0)->first();
-
         if($product){
-            // dd($product->stocks->toArray());
-
-            // attrvalue trung lap -> lay 1 thuoc tinh
-            for ($i=0; $i < count($product->stocks->toArray()); $i++) { 
-
-                    // now items stock is array
-                    $colorExist = $product->stocks->toArray()[$i]['color_id'];
-                $sizeExist = $product->stocks->toArray()[$i]['size_id'];
-
-                if($i  > 0){
-                    // check item - 1 exist -> continue -> next 
-                    if($sizeExist == $product->stocks->toArray()[$i]['size_id']){
-                        continue;
-                    }
-                }
-
-                // display attr
-                // echo getAttributeValue($product->stocks->toArray()[$i]['size_id']);
-                // echo getAttributeValue($product->stocks->toArray()[$i]['color_id']);
-            }
 
             return view('client.shop.detail',compact('product'));
         }

@@ -39,13 +39,13 @@
                     <thead>
                         <tr class="">
                             <th>STT</th>
-                            <th>Sản phẩm <a href="?sort_by=name&sort_type={{ $sortType }}"><i class="fa fa-sort ml-2"
+                            <th>Sản phẩm <a href="?_sort=true&column=name&type={{ $type }}"><i class="fa fa-sort ml-2"
                                         aria-hidden="true"></a></i>
                             </th>
                             <th>Loại sản phẩm</th>
                             <th>Sku</th>
                             {{-- <th>Tình trạng</th> --}}
-                            <th>Số lượng hiện tại<a href="?sort_by=quantity&sort_type={{ $sortType }}"><i
+                            <th>Số lượng hiện tại<a href="?_sort=true&column=quantity&type={{ $type }}"><i
                                         class="fa fa-sort ml-2" aria-hidden="true"></a></th>
                             <th>Thêm số lượng</th>
                             <th>Chức năng</th>
@@ -88,11 +88,11 @@
                                             "><i class="fas fa-trash-alt text-danger fa-1x ml-3"></i></a>
 
                                     {{-- form fake method remove --}}
-                                    <form action="{{ route('stock.destroyVariant', $val->id) }}"
+                                    {{-- <form action="{{ route('stock.destroyVariant', $val->id) }}"
                                         id="formFakeRemovePro{{ $key }}" method="POST">
                                         @method('delete')
                                         @csrf
-                                    </form>
+                                    </form> --}}
                                 </td>
                             </tr>
                         @endforeach

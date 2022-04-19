@@ -98,8 +98,8 @@
             </a>
             <div class="collapse" id="voucher">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="vourcher?action=list">Tổng hợp</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="vourcher?action=add">Thêm mã</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{route('voucher.index')}}">Tổng hợp</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="">Thêm mã</a></li>
                 </ul>
             </div>
         </li>

@@ -27,5 +27,8 @@ Route::any('ajax/get-attr-of-category',[AjaxController::class,'getAttrOfCategory
 
 
 // // Google Sign In
-// Route::get('/google',[GoogleController::class,'redirectToGoogle'])->name('login.google');
-// Route::get('/google/callback',[GoogleController::class,'googleCallback'])->name('login.callback');
+Route::get('/google',[GoogleController::class,'redirectToGoogle'])->name('login.google');
+Route::get('/google/callback',[GoogleController::class,'googleCallback'])->name('login.callback');
+
+// check exist vouvher
+Route::any('ajax/voucher-exist',[AjaxController::class,'voucherExist'])->name('ajax.voucherExist');

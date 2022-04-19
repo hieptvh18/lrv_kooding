@@ -30,5 +30,13 @@ class Product extends Model
         return $this->hasMany(Stock::class,'pro_id');
     }
 
+    // rela attr , attr_value
+    public function colors(){
+        return $this->belongsToMany(AttributeValue::class,'stocks','pro_id','color_id')->distinct();
+    }
+
+    public function sizes(){
+        return $this->belongsToMany(AttributeValue::class,'stocks','pro_id','size_id')->distinct();
+    }
     
 }

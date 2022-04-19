@@ -73,24 +73,12 @@
                             <label for="color">Chọn màu sắc</label> <br>
                             <select border-opacity-50 name="color" id="color">
                                 <option value="" disabled selected>----Chọn màu sắc----</option>
-                                
-                                    @for ($i = 0; $i < count($product->stocks->toArray()); $i++) 
-                                        {{-- // now items stock is array --}}
-                                        @php
-                                         $colorExist = $product->stocks->toArray()[$i]['color_id'];   
-                                         if ($i > 0) {
-                                            // check item - 1 exist -> continue -> next
-                                            if ($colorExist == $product->stocks->toArray()[$i - 1]['color_id']) {
-                                                continue;
-                                            }
-                                        }
-                                        @endphp
-                                    
-                                        <option value="{{$colorExist}}"> {{getAttributeValue($colorExist)->name}}
-                                            </option>`;
-                                    
-                                    @endfor
-                                </select>
+                                @foreach ($product->colors as $color)
+                                    <option value="{{ $color->id }}"> {{$color->name}}
+                                    </option>`;
+                                @endforeach
+
+                            </select>
                             <div class="errC text-danger"></div>
                         </div>
 
@@ -98,11 +86,10 @@
                             <div class="size">Kích cỡ</div>
                             <select border-opacity-50 name="size" id="size">
                                 <option value="" disabled selected>----Chọn kích cỡ----</option>
-                                @foreach ($product->stocks as $stock)
-                                    <option value="{{ $stock->size_id }}">
-                                        {{ getAttributeValue($stock->size_id)->name }}
-                                    </option>
-                                @endforeach
+                                @foreach ($product->sizes as $size)
+                                <option value="{{ $size->id }}"> {{$size->name}}
+                                </option>`;
+                            @endforeach
 
                             </select> <br>
                             <div class="errS text-danger"></div>
@@ -141,7 +128,7 @@
                                 </div>
                                 <div class="info__body">
                                     <p>Mô tả</p>
-                                    <span>{{ $product->description }}</span>
+                                    {{ $product->description }}
                                 </div>
                             </div>
                             <div class="content__detail__info">

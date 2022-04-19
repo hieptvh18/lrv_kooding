@@ -49,8 +49,11 @@
                                 {{-- remove item --}}
                                 <a href="{{ route('stock.destroyVariant', $val->id) }}" onclick="
                                         event.preventDefault();
-                                        document.querySelector('#formFakeRemovePro{{ $key }}').submit()
-                                        "><i class="fas fa-trash-alt text-danger fa-1x ml-3"></i></a>
+                                        if(confirm('Bạn chắc chắn xóa sản phẩm khỏi kho hàng?')){
+                                            document.querySelector('#formFakeRemovePro{{ $key }}').submit()
+                                        }
+                                        "><i class="fas fa-trash-alt text-danger fa-1x ml-3"></i>
+                                        </a>
 
                                 {{-- form fake method remove --}}
                             <form action="{{ route('stock.destroyVariant', $val->id) }}"
