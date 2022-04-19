@@ -22,7 +22,7 @@
             @endif
             <div class="search ">
                 <form action="" method="GET" class="d-flex">
-                    <input type="search" value="{{ old('keyword_user') }}" name="keyword_user" placeholder="search user"
+                    <input type="search" required value="{{ old('keyword_user') }}" name="keyword_user" placeholder="search user"
                         class="form-control-sm" style="height:33px;border:1px solid #ccc;border-radius:10px">
                     <button class="btn btn-outline-info btn-sm">Tìm kiếm</button>
                 </form>

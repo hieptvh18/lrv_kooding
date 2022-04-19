@@ -17,7 +17,7 @@
         <div class="search ">
             <form action="" method="GET" class="d-flex">
                 <input type="search" value="{{ old('keyword_stock') }}" name="keyword_stock" placeholder="search category"
-                    class="form-control-sm" style="height:33px;border:1px solid #ccc;border-radius:10px">
+                    class="form-control-sm" required style="height:33px;border:1px solid #ccc;border-radius:10px">
                 <button class="btn btn-outline-info btn-sm">Tìm kiếm</button>
             </form>
         </div>
@@ -39,8 +39,8 @@
                     <thead>
                         <tr class="">
                             <th>STT</th>
-                            <th>Sản phẩm <a href="?_sort=true&column=name&type={{ $type }}"><i class="fa fa-sort ml-2"
-                                        aria-hidden="true"></a></i>
+                            <th>Sản phẩm <a href="?_sort=true&column=name&type={{ $type }}"><i
+                                        class="fa fa-sort ml-2" aria-hidden="true"></a></i>
                             </th>
                             <th>Loại sản phẩm</th>
                             <th>Sku</th>
@@ -79,20 +79,8 @@
                                 </td>
                                 <td>
                                     {{-- remove item --}}
-                                    <a href="{{ route('stock.destroyVariant', $val->id) }}" onclick="
-                                            event.preventDefault();
-                                            if(confirm('Bạn có chắc chắn xóa? Các mục liên quan cũng sẽ biến mất!')){
-
-                                                document.querySelector('#formFakeRemovePro{{ $key }}').submit()
-                                            }
-                                            "><i class="fas fa-trash-alt text-danger fa-1x ml-3"></i></a>
-
-                                    {{-- form fake method remove --}}
-                                    {{-- <form action="{{ route('stock.destroyVariant', $val->id) }}"
-                                        id="formFakeRemovePro{{ $key }}" method="POST">
-                                        @method('delete')
-                                        @csrf
-                                    </form> --}}
+                                    <a href="{{ route('stock.destroyVariant', $val->id) }}" class="btnRemoveItemStock" data-id="{{ $val->id}}" 
+                                                ><i class="fas fa-trash-alt text-danger fa-1x ml-3"></i></a>
                                 </td>
                             </tr>
                         @endforeach
@@ -111,10 +99,37 @@
 
     </div>
 
-    <!-- js -->
+    {{-- fake method remove stock item --}}
+    <form action="" id="formFakeRemovePro" method="POST">
+        @method('delete')
+        @csrf
+    </form>
 
 @endsection
 
 @section('script')
+
+    {{-- fake method remove stock item --}}
+    <script>
+        const $ = document.querySelector.bind(document)
+        const $$ = document.querySelectorAll.bind(document)
+        const btnRemoveItemStock = $$('.btnRemoveItemStock');
+        const formFakeRemovePro = $('#formFakeRemovePro');
+
+        // console.log(btnRemoveItemStock)
+       btnRemoveItemStock.forEach((val,index)=>{
+           stockItemId = val.dataset.id;
+           val.onclick = function(e){
+               e.preventDefault();
+
+               if(confirm('Are you sure you want to remove')){
+
+                   formFakeRemovePro.action = '/admin/remove-item-stock/' + stockItemId;
+                   formFakeRemovePro.submit();
+               }
+
+           }
+       })
+    </script>   
 
 @endsection

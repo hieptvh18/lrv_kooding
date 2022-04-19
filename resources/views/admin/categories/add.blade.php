@@ -80,7 +80,7 @@
         <div class="mt-4" id="listCategory">
             <h6>List categories</h6>
             <form action="" method="GET">
-                <input type="search" value="{{old('keyword')}}" name="keyword" placeholder="search category" class="form-control-sm" style="height:33px;border:1px solid #ccc;border-radius:10px">
+                <input type="search" value="{{old('keyword')}}" name="keyword" placeholder="search category" class="form-control-sm" required style="height:33px;border:1px solid #ccc;border-radius:10px">
                 <button class="btn btn-outline-info btn-sm">Tìm kiếm</button>
             </form>
 

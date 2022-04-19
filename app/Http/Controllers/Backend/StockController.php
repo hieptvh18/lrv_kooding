@@ -14,6 +14,7 @@ class StockController extends Controller
     {
         // display manage stock
         $listProductStock = Stock::select('*');
+        $stockItemId = null;
         
         // option: sort search bla bla...
         $type = 'asc';
@@ -36,7 +37,7 @@ class StockController extends Controller
 
         $listProductStock = $listProductStock->paginate(10);
 
-        return view('admin.stocks.index',compact('listProductStock','type','searchTitle'));
+        return view('admin.stocks.index',compact('listProductStock','type','searchTitle','stockItemId'));
 
     }
     
@@ -131,7 +132,7 @@ class StockController extends Controller
             Product::find($stockExist->pro_id)->decrement('quantity',$stockExist->quantity);
 
             Stock::destroy($id);            
-            return redirect(route('stock.create',$stockExist->pro_id))->with('msg-suc','Xóa thành công sản phẩm trong kho!');
+            return back()->with('msg-suc','Xóa thành công sản phẩm trong kho!');
         }
         return back()->with('msg-er','Không tìm thấy sản phẩm trong kho!');
     }
