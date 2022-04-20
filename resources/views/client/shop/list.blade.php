@@ -64,7 +64,7 @@
                        
                         <form action="productFavoriteClient" method="GET" class="proC__item">
                             <div class="proC__item__img">
-                                <a href="{{route('client.shop.detail',$product->slug)}}">
+                                <a href="{{route('client.shop.detail',['slug'=>$product->slug,'id'=>$product->id])}}">
                                     <img src="{{asset('uploads/'.$product->avatar)}} " alt="" width="100%">
                                 </a>
                             </div>

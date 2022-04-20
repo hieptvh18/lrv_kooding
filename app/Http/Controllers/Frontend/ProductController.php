@@ -26,14 +26,20 @@ class ProductController extends Controller
             $pageTitle = 'Kết quả tìm kiếm: '."'".$request->keyword."'";
             $listProduct = $listProduct->where('name','like','%'.$request->keyword.'%');
         }
+
+        // get by category
         $listProduct = $listProduct->where('status','!=',0)->orderBy('id','desc')->paginate(30);
 
         return view('client.shop.list',compact('listProduct','pageTitle'));
     }
 
+    //
+    
+
     // page detail product
-    public function show($slug){
+    public function show(Request $request,$slug){
         $product = Product::where('slug',$slug)->where('status','!=',0)->first();
+        dd($request->all());
         if($product){
 
             return view('client.shop.detail',compact('product'));

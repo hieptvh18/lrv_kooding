@@ -16,7 +16,7 @@ if (!function_exists('getAttrByCate')) {
 
 // get child cate
 if(!function_exists('getChildCategories')){
-    function getChildCategories(&$listData,$parentId=null,$level=0){
+    function getChildCategories(&$listData,$parentId=0,$level=0){
         // default truyen $parentId = null vi no la cap 0;
         // note $parentID = sub_categories_id
         $arr = array();

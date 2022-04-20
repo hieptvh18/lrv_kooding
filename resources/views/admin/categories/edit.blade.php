@@ -39,7 +39,7 @@
                                 <label for="">Parent Categories</label>
                                 <select name="parent_id" id="" class="form-control">
     
-                                    <option value="">---select none---</option>
+                                    <option value="0">---select none---</option>
                                     @foreach ($listSelectSub as $key => $item)
                                         <option  value="{{ $item['id'] }}" 
                                         {{--disable chinh no =))--}}

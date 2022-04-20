@@ -2,11 +2,20 @@
 
     <div class="header-top swiper mySwiper">
         <div class="swiper-wrapper">
-            <a href="#" class="swiper-slide slider-top1">
-                <!-- nếu có vourcher thì hiển thị nhiều nhất 2 cái -->
-                Giảm giá
-            </a>
-            <a href="#" class="swiper-slide slider-top2">Vận chuyển nhanh chóng và tin cậy 🚛</a>
+            {{-- check & looop voucher in slider top header --}}
+            @if (\App\Models\Voucher::where('status', 1)->orderBy('id', 'desc')->take(2)->get()->count() > 0)
+                @foreach (\App\Models\Voucher::where('status', 1)->orderBy('id', 'desc')->take(2)->get()
+    as $key=>$voucher)
+                    <a href="#" class="swiper-slide slider-top{{ $key + 1 }}">
+
+                        Nhập mã giảm giá "{{$voucher->code}}" để được giảm {{$voucher->discount}}{{$voucher->category_code == 0 ? '%' : 'vnd'}} cho đơn hàng.
+
+                    </a>
+                @endforeach
+            @else
+                <a href="#" class="swiper-slide slider-top1">Cảm hứng thời trang vô tận với Kooding.</a>
+                <a href="#" class="swiper-slide slider-top2">Vận chuyển nhanh chóng và tin cậy 🚛</a>
+            @endif
         </div>
     </div>
     <!-- end header-top -->
@@ -29,7 +38,8 @@
                         <select name="filter_cate" class="filter-cate">
                             <option value="all">Tất cả</option>
                             @foreach (\App\Models\Category::all() as $category)
-                                <option {{ isset($_GET['filter_cate']) && $_GET['filter_cate'] == $category->id ? 'selected' : '' }}
+                                <option
+                                    {{ isset($_GET['filter_cate']) && $_GET['filter_cate'] == $category->id ? 'selected' : '' }}
                                     value="{{ $category->id }}">{{ $category->name }}</option>
                             @endforeach
                         </select>
@@ -63,8 +73,8 @@
                     </div>
                 @else
                     {{-- admin profile --}}
-                    <a href="{{route('login')}}" class="account pt-4 pb-4"  {{--id="popup-user" data-toggle="modal"
-                        data-target="#box-login-register"--}}>
+                    <a href="{{ route('login') }}" class="account pt-4 pb-4" {{-- id="popup-user" data-toggle="modal"
+                        data-target="#box-login-register" --}}>
                         <span class="title-pop-user">Đăng nhập / Đăng ký</span>
                         <span class="icon__account"><i class="fas fa-user-circle"></i></span>
                     </a>
@@ -249,7 +259,11 @@
         <div class="header-menu">
             <ul class="sub-nav m-0">
                 <li><a href="{{ route('client.shop') }}">#ALL</a></li>
-                <li><a href="productClient?action=list&filtercate=">Tên ...</a></li>
+
+                @foreach (\App\Models\Category::where('parent_id', 0)->get() as $category)
+                    <li><a href="{{ route('client.shop.category', $category->slug) }}">{{ $category->name }}</a>
+                    </li>
+                @endforeach
 
                 @if (session('admin'))
                     <li class="view_admin">
