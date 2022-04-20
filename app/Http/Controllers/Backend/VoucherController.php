@@ -40,8 +40,13 @@ class VoucherController extends Controller
     public function store(Request $request)
     {
         //
+        $newVoucher = new Voucher();
+        $newVoucher->fill($request->all());
+        $newVoucher->active_date = date('Y-m-d H:i:s');
+        
+        $newVoucher->save();
 
-        dd($request->all());
+        return redirect()->route('voucher.index')->with('msg-suc','Tạo thành công voucher!');
     }
 
     /**
@@ -87,5 +92,11 @@ class VoucherController extends Controller
     public function destroy($id)
     {
         //
+        $voucher = Voucher::find($id);
+        if($voucher){
+            Voucher::destroy($id);
+            return redirect(route('voucher.index'))->with('msg-suc','Xóa thành công voucher!');
+        }
+        return redirect()->route('404');
     }
 }

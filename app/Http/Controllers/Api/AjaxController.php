@@ -9,6 +9,7 @@ use App\Models\AttributeValue;
 use App\Models\Attribute;
 use App\Models\Category;
 use App\Models\CateAttribute;
+use App\Models\Voucher;
 
 class AjaxController extends Controller
 {
@@ -64,7 +65,12 @@ class AjaxController extends Controller
     function voucherExist(Request $request){
 
         if($request->ajax()){
-            return "ok ajax";
+            
+            $voucherExist = Voucher::where('code',$request->code)->first();
+            if($voucherExist){
+                return 'exist';
+            }
+            return 'not-exist';
         }
     }
 

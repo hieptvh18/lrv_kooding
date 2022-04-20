@@ -122,7 +122,7 @@
            val.onclick = function(e){
                e.preventDefault();
 
-               if(confirm('Are you sure you want to remove')){
+               if(confirm('Bạn chắc chắn muốn xóa sản phẩm, mọi thứ liên quan sẽ bị xóa theo!')){
 
                    formFakeRemovePro.action = '/admin/remove-item-stock/' + stockItemId;
                    formFakeRemovePro.submit();

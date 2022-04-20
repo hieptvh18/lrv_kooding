@@ -4,18 +4,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\Api\GoogleController;
+use App\Http\Controllers\Api\FacebookController;
 
 use App\Http\Controllers\Api\AjaxController;
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -29,6 +21,10 @@ Route::any('ajax/get-attr-of-category',[AjaxController::class,'getAttrOfCategory
 // // Google Sign In
 Route::get('/google',[GoogleController::class,'redirectToGoogle'])->name('login.google');
 Route::get('/google/callback',[GoogleController::class,'googleCallback'])->name('login.callback');
+
+// login fb
+Route::get('/facebook',[FacebookController::class,'redirectToFacebookLogin'])->name('login.facebook');
+Route::get('/facebook/callback',[FacebookController::class,'facebookCallback'])->name('login.facebook.callback');
 
 // check exist vouvher
 Route::any('ajax/voucher-exist',[AjaxController::class,'voucherExist'])->name('ajax.voucherExist');

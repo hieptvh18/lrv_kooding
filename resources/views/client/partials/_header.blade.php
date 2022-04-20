@@ -63,11 +63,11 @@
                     </div>
                 @else
                     {{-- admin profile --}}
-                    <div class="account pt-4 pb-4" id="popup-user" data-toggle="modal"
-                        data-target="#box-login-register">
+                    <a href="{{route('login')}}" class="account pt-4 pb-4"  {{--id="popup-user" data-toggle="modal"
+                        data-target="#box-login-register"--}}>
                         <span class="title-pop-user">Đăng nhập / Đăng ký</span>
                         <span class="icon__account"><i class="fas fa-user-circle"></i></span>
-                    </div>
+                    </a>
                     <!-- pops up login -->
                     <div class="modal fade " role="dialog" id="box-login-register" style="z-index: 100;">
                         <div class="modal-dialog">

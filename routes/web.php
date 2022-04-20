@@ -29,8 +29,6 @@ Route::prefix('auth')->group(function () {
 
 
 // Google Sign In
-// Route::get('/google', [GoogleController::class, 'redirectToGoogle'])->name('login.google');
-// Route::get('/google/callback', [GoogleController::class, 'googleCallback'])->name('login.callback');
 
 // =================ROUTE CLIENT===============
 

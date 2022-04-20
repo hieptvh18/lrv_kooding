@@ -30,9 +30,17 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
     'google' => [
-        'client_id' => '1062077071111-5lo5gd7v6678ngrs094rqgk4rqaiqkpp.apps.googleusercontent.com',
-        'client_secret' => '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',
-        'redirect' => 'http://127.0.0.1:8000/google/callback'
+        // 1062077071111-5lo5gd7v6678ngrs094rqgk4rqaiqkpp.apps.googleusercontent.com
+        //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
+        //http://127.0.0.1:8000/google/callback
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_APP_CALLBACK_URL')
+    ],
+    'facebook' => [
+        'client_id' => env('FACEBOOK_APP_ID'),
+        'client_secret' => env('FACEBOOK_APP_SECRET'),
+        'redirect' => env('FACEBOOK_APP_CALLBACK_URL'),
     ],
 
 ];

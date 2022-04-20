@@ -16,7 +16,8 @@
     <!-- inject:css -->
     <link rel="stylesheet" href="{{ asset('assets/css/vertical-layout-light/style.css') }}">
     {{-- fontawesome --}}
-    <link rel="stylesheet" href="{{ asset('assets/css/lib/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     <!-- endinject -->
     <link rel="shortcut icon" href="{{ asset('assets/images/layout/kooding-app-icon.ico') }}" />
 </head>

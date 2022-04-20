@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('google_id')->unique()->nullable();
+            $table->string('facebook_id')->unique()->nullable();
             $table->string('phone')->unique()->nullable();
             $table->tinyInteger('gender')->nullable();
             $table->unsignedBigInteger('role_id');

@@ -70,11 +70,14 @@
             @endif
             <a href="{{ route('register') }}" class="btn btn-link">Đăng kí</a>
         </div>
-        <div class="mt-3">
-            <a href="{{route('login.google')}}" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">ĐĂNG
-                NHẬP BẰNG GOOGLE <i class="fa fa-google ml-2" aria-hidden="true"></i>
+        <div class="mt-3 d-flex justify-content-between">
+            <a href="{{route('login.google')}}" class=""> <i class="fa fa-google ml-2 fa-2x" aria-hidden="true"></i>
+            </a>
+            <a href="{{route('login.facebook')}}" class=""> <i class="fa fa-facebook-square fa-2x" aria-hidden="true"></i>
+    
             </a>
         </div>
+    
 
     </form>
 @endsection
