@@ -35,32 +35,32 @@ class CategoryController extends Controller
     public function create(Request $request)
     {
         //get data
-        $listCate = Category::select('*');
+        $categories = Category::select('*');
         $searchTitle = '';
         $type = 'asc';//type sort by category
 
         if($request->keyword){
             $searchTitle = $request->keyword;
-            $listCate = $listCate->where('name','like','%'.$request->keyword.'%');
+            $categories = $categories->where('name','like','%'.$request->keyword.'%');
         }
 
         // sort
         if($request->_sort){
             if($request->type == 'asc'){
-                $listProduct = $listCate->orderBy($request->column,$request->type);
+                $categories = $categories->orderBy($request->column,$request->type);
                 $type = 'desc';
             }else{
-                $listProduct = $listCate->orderBy($request->column,$request->type);
+                $categories = $categories->orderBy($request->column,$request->type);
                 $type = 'asc';
             }
         }
 
-        $categories = Category::all()->toArray();
-        $listCate = $listCate->orderByDesc('categories.id')->paginate(3);
+        $categoryToArray = Category::all()->toArray();
+        $categories = $categories->orderByDesc('categories.id')->paginate(3);
 
-        $listSelectSub = getChildCategories($categories);
+        $listSelectSub = getChildCategories($categoryToArray);
 
-        return view('admin.categories.add', compact('categories','listSelectSub','listCate','searchTitle','type'));
+        return view('admin.categories.add', compact('categoryToArray','listSelectSub','categories','searchTitle','type'));
     }
 
     /**
@@ -109,11 +109,10 @@ class CategoryController extends Controller
         //
         $myCategory = Category::find($id);
         $categoryArray = Category::all()->toArray();
-        $listAttr = Attribute::all();
         $listSelectSub = getChildCategories($categoryArray);
 
         // dd($attrOfCategories);
-        return view('admin.categories.edit', compact('myCategory', 'listAttr','listSelectSub'));
+        return view('admin.categories.edit', compact('myCategory', 'listSelectSub'));
     }
 
     /**

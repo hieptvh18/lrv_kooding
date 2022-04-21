@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use App\Models\Voucher;
+use App\Models\Product;
 use Carbon\Carbon;
 
 
@@ -21,6 +22,7 @@ class ExpiryCheck
     {
         // check hạn sử dụng voucher và => status
         $vouchers = Voucher::all();
+        $products = Product::all();
         $currentTime = strtotime(Carbon::now());
 
         foreach($vouchers as $voucher){
@@ -28,6 +30,18 @@ class ExpiryCheck
                 // update lai status
                 $voucher->status = 0;
                 $voucher->save();
+            }
+        }
+
+        // product status
+        foreach($products as $product){
+            $newProduct =  Product::find($product->id);
+            if($product->quantity == 0){
+                $newProduct->status = 0;
+                $newProduct->save();
+            }else{
+                $newProduct->status = 1;
+                $newProduct->save();
             }
         }
 

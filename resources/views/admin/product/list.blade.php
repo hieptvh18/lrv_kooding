@@ -25,8 +25,8 @@
                     <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
                         aria-labelledby="notificationDropdown">
                         @foreach ($listCategory as $key => $category)
-                            <a href="{{ route('product.index') }}?filterByCategory={{ $category->id }}"
-                                class="dropdown-item">{{ $category->name }}</a>
+                            <a href="{{ route('product.index') }}?filterByCategory={{ $category['id']}}"
+                                class="dropdown-item">{{ str_repeat('---', $category['level']) }}{{ $category['name'] }}</a>
                         @endforeach
 
                     </div>
@@ -50,7 +50,7 @@
             @endif
         </div>
 
-        @if ($listProduct->count() > 0)
+        @if ($products->count() > 0)
 
             <div class="table-responsive">
                 <table class="table table-striped">
@@ -77,7 +77,7 @@
                         </tr>
                     </thead>
                     <tbody class="list-product">
-                        @foreach ($listProduct as $key => $val)
+                        @foreach ($products as $key => $val)
                             <tr>
                                 <td>
                                     <input type="checkbox" data-id={{ $val->id }} name="proIds[]" value="{{ $val->id }}">
@@ -89,7 +89,7 @@
                                 <td><img src="{{ asset('uploads/' . $val->avatar) }}" alt=""> </td>
                                 <td>{{ $val->quantity }}</td>
                                 <td>
-                                    @if ($val->quantity == 0)
+                                    @if ($val->status == 0)
                                         <label class="badge badge-danger">Hết hàng</label>
                                     @else
                                         <label class="badge badge-success">Còn hàng</label>
@@ -128,7 +128,7 @@
                     </tbody>
                 </table>
                 <div class="paginate">
-                    {{ $listProduct->links() }}
+                    {{ $products->links() }}
                 </div>
 
             </div>

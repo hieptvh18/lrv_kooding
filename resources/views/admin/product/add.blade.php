@@ -78,7 +78,7 @@
                             <label for="" class="">Thuong Hieu</label>
                             <select id="" name="brand_id" class="form-control">
                                 <option selected disabled value="">---chon thuong hieu---</option>
-                                @foreach ($listBrand as $val)
+                                @foreach ($brands as $val)
                                     <option value="{{ $val->id }}"
                                         {{ old('brand_id') == $val->id ? 'selected' : '' }}>{{ $val->name }}</option>
                                 @endforeach

@@ -90,7 +90,7 @@
                 @endif
             </div>
 
-        @if ($listCate->count() > 0)
+        @if ($categories->count() > 0)
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -104,7 +104,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($listCate as $key => $val)
+                    @foreach ($categories as $key => $val)
                         <tr>
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $val['name'] }}</td>
@@ -136,7 +136,7 @@
                 </tbody>
             </table>
             <div class="paginate">
-                {{ $listCate->links() }}
+                {{ $categories->links() }}
             </div>
             @endif
         </div>

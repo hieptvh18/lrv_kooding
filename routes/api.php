@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\Api\GoogleController;
 use App\Http\Controllers\Api\FacebookController;
+use App\Http\Controllers\Api\CategoryController;
 
 use App\Http\Controllers\Api\AjaxController;
 
@@ -16,6 +17,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // handle ajax request
 Route::any('ajax/get-attr-value-exist',[AjaxController::class,'attrValueExist'])->name('ajax.attr-value-exist');
 Route::any('ajax/get-attr-of-category',[AjaxController::class,'getAttrOfCategory'])->name('ajax.get-attr-of-category');
+Route::any('ajax/get-child-category-by-parent-id',[AjaxController::class,'getChildCategoryByParentId'])->name('ajax.getChildCategoryByParentId');
 
 
 // // Google Sign In
@@ -28,3 +30,7 @@ Route::get('/facebook/callback',[FacebookController::class,'facebookCallback'])-
 
 // check exist vouvher
 Route::any('ajax/voucher-exist',[AjaxController::class,'voucherExist'])->name('ajax.voucherExist');
+
+// categories 
+Route::get('get-categories',[CategoryController::class,'index'])->name('api.category');
+

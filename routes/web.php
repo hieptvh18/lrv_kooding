@@ -21,7 +21,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Backend\UserController;
 
-// check hạn sử dụng voucher
+// check hạn sử dụng voucher + slg sản phẩm -> status
 Route::middleware(['all.checkExpiry'])->group(function () {
 
     // =================auth======================
@@ -42,9 +42,14 @@ Route::middleware(['all.checkExpiry'])->group(function () {
     Route::prefix('cua-hang')->group(function () {
         Route::get('', [ProductClientController::class, 'index'])->name('client.shop');
 
-        Route::get('/{category-slug}', [ProductClientController::class, 'index'])->name('client.shop.category');
-        Route::get('/{slug}-{id}', [ProductClientController::class, 'show'])->name('client.shop.detail');
+        Route::get('/{slug}', [ProductClientController::class, 'index'])->name('client.shop.category');
+        Route::get('/{slug}/{id}', [ProductClientController::class, 'show'])->name('client.shop.detail');
     });
+
+    // social
+    Route::get('/social',function(){
+        return view('client.pages.album');
+    })->name('client.social');
 
 
     // ===============ROUTE ADMIN===================

@@ -22,7 +22,7 @@ class UserController extends Controller
     public function index(Request $rq)
     {
         // list account & option
-        $listUser = User::select('*');
+        $users = User::select('*');
         $searchTitle = '';
         $sortType = 'asc';
 
@@ -30,12 +30,12 @@ class UserController extends Controller
         if($rq -> keyword_user){
             
             $searchTitle = "Kết quả tìm kiếm "."'".$rq -> keyword_user."'";
-            $listUser = $listUser->where('name','like','%'.$rq->keyword_user.'%');
+            $users = $users->where('name','like','%'.$rq->keyword_user.'%');
         }
 
         // sort 
         if($rq->sortBy && $rq -> sortType){
-            $listUser = $listUser->orderBy($rq->sortBy,$rq->sortType);
+            $users = $users->orderBy($rq->sortBy,$rq->sortType);
             if($rq->sortType == 'asc'){
                 $sortType = 'desc';
             }else{
@@ -43,9 +43,9 @@ class UserController extends Controller
             }
         }
 
-        $listUser= $listUser->paginate(10);
+        $users= $users->paginate(10);
 
-        return view('admin.account.list', compact('listUser','searchTitle','sortType'));
+        return view('admin.account.list', compact('users','searchTitle','sortType'));
     }
 
     /**

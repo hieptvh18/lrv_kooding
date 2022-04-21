@@ -74,5 +74,16 @@ class AjaxController extends Controller
         }
     }
 
+    // get child category by parent id -> render in menu child header
+    public function getChildCategoryByParentId(Request $request){
+
+        if($request->ajax()){
+            
+            $childCategories = Category::where('parent_id',$request->id)->get();
+            return $childCategories;
+        }
+        return ' ko cos ajax';
+    }
+
   
 }

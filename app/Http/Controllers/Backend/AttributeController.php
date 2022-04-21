@@ -17,16 +17,16 @@ class AttributeController extends Controller
     public function index()
     {
         //get data
-        $listAttr = Attribute::all();
-        $list_attr_value = AttributeValue::select('attr_values.*','attributes.name as attr_name')
+        $attributes = Attribute::all();
+        $attributeValues = AttributeValue::select('attr_values.*','attributes.name as attr_name')
                                             ->join('attributes','attributes.id','attr_values.attr_id')
                                             ->paginate(10);
         //check attributes > 0 => btn add attrValue disable? 
         $btnStatus = '';
-        if($listAttr->count() == 0){
+        if($attributes->count() == 0){
             $btnStatus = 'disabled';
         }
-        return view('admin.attribute.list', compact('listAttr','list_attr_value','btnStatus'));
+        return view('admin.attribute.list', compact('attributes','attributeValues','btnStatus'));
     }
 
    

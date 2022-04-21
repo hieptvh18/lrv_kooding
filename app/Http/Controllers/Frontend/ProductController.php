@@ -5,44 +5,61 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Category;
 
 class ProductController extends Controller
 {
     // trang cua hang(ds sarn pham)
-    public function index(Request $request){
+    public function index(Request $request, $categorySlug = null)
+    {
         // get data
         $pageTitle = 'Tất cả sản phẩm';
-        $listProduct = Product::select('*');
+        $products = Product::select('products.*');
         $keyCategory = $request->filter_cate;
 
-        if($request->filter_cate){
-            $categoryExist = Product::select('*')->where('category_id',$request->filter_cate)->get();
-            if($categoryExist){
-                $listProduct = $listProduct->where('category_id',$request->filter_cate);
+        // exist category-slug url
+        if ($categorySlug) {
+            $categoryExist = Category::where('slug', $categorySlug)->first();
+            if ($categoryExist) {
+                $pageTitle = "'".$categoryExist->name."'";
+                $products = $products
+                ->join('categories','products.category_id','categories.id')
+                ->where('categories.slug', $categorySlug);
             }
         }
-        // option
-        if($request->keyword){
-            $pageTitle = 'Kết quả tìm kiếm: '."'".$request->keyword."'";
-            $listProduct = $listProduct->where('name','like','%'.$request->keyword.'%');
+
+        // search with category id
+        else if ($request->filter_cate) {
+            if ($request->filter_cate != 'all') {
+                $categoryExist = Product::select('*')->where('products.category_id', $request->filter_cate)->get();
+                if ($categoryExist) {
+                    $products = $products->where('products.category_id', $request->filter_cate);
+                }
+            }
+        }
+
+        // option search
+        if ($request->keyword) {
+            $pageTitle = 'Kết quả tìm kiếm: ' . "'" . $request->keyword . "'";
+            $products = $products->where('products.name', 'like', '%' . $request->keyword . '%');
         }
 
         // get by category
-        $listProduct = $listProduct->where('status','!=',0)->orderBy('id','desc')->paginate(30);
-
-        return view('client.shop.list',compact('listProduct','pageTitle'));
+        $products = $products->orderBy('products.id', 'desc')->paginate(20);
+        // dd($products->lastPage());
+        return view('client.shop.list', compact('products', 'pageTitle'));
     }
 
     //
-    
+
 
     // page detail product
-    public function show(Request $request,$slug){
-        $product = Product::where('slug',$slug)->where('status','!=',0)->first();
-        dd($request->all());
-        if($product){
+    public function show(Request $request, $slug,$id)
+    {
+        $product = Product::where('slug', $slug)->first();
+        if ($product) {
 
-            return view('client.shop.detail',compact('product'));
+            return view('client.shop.detail', compact('product'));
         }
         return redirect(route('404'));
     }

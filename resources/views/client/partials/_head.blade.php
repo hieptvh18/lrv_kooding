@@ -1,4 +1,6 @@
 <head>
+    {{-- token laravel --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- ico -->
     <link rel="shortcut icon" type="image/png" href="{{asset('assets/images/layout/kooding-app-icon.ico')}}"/>
     <!-- lib album -->

@@ -32,7 +32,7 @@
                 @endif
             </div>
 
-            @if ($listUser->count() > 0 )
+            @if ($users->count() > 0 )
                 
             <div class="table-responsive">
                 <table class="table table-striped">
@@ -53,7 +53,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($listUser as $key => $user)
+                        @foreach ($users as $key => $user)
                             <tr>
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $user->name }}</td>
@@ -86,7 +86,7 @@
                     </tbody>
                 </table>
                 <div class="paginate">
-                    {{ $listUser->links() }}
+                    {{ $users->links() }}
                 </div>
             </div>
             @else

@@ -25,39 +25,40 @@ class ProductController extends Controller
     {
         // product options(search, sort)
         $title = '';
-        $listCategory = Category::all();
+        $categories = Category::all()->toArray();
+        $listCategory = getChildCategories($categories);
 
         $type = 'asc'; //default = 0(asc), click = 1(desc);
 
-        $listProduct =Product::select('*');
+        $products =Product::select('*');
         if($request->keyword){
             $title = "Kết quả tìm kiếm: " . "'".$request->keyword."'";
 
-            $listProduct = $listProduct->where('name','like','%'.$request->keyword.'%');
+            $products = $products->where('name','like','%'.$request->keyword.'%');
         }
 
         // filter by category
         if($request->filterByCategory){
             $cateFitler = Category::find($request->filterByCategory);
             $title = 'Kết quả lọc theo danh mục: '."'".$cateFitler->name."'";
-            $listProduct = $listProduct->where('category_id',$request->filterByCategory);
+            $products = $products->where('category_id',$request->filterByCategory);
         }
 
         // sort name
         if($request->_sort){
             if($request->type == 'asc'){
-                $listProduct = $listProduct->orderBy($request->column,$request->type);
+                $products = $products->orderBy($request->column,$request->type);
                 $type = 'desc';
             }else{
-                $listProduct = $listProduct->orderBy($request->column,$request->type);
+                $products = $products->orderBy($request->column,$request->type);
                 $type = 'asc';
             }
         }
 
         // màn hình danh sách + phan trang
-        $listProduct = $listProduct->orderBy('id','desc')->paginate(10);
+        $products = $products->orderBy('id','desc')->paginate(10);
 
-        return view('admin.product.list', compact('listProduct','title','type','listCategory'));
+        return view('admin.product.list', compact('products','title','type','listCategory'));
     }
 
     /**
@@ -68,14 +69,13 @@ class ProductController extends Controller
     public function create()
     {
         //get data
-        $listBrand = Brand::all();
-        $listAttr =  Attribute::all();
+        $brands = Brand::all();
         $categories = Category::all()->toArray();
         $listSelectCategory = getChildCategories($categories);
         
         // $listAttrOfCategory = ;
 
-        return view('admin.product.add',compact('listSelectCategory','listBrand','listAttr'));
+        return view('admin.product.add',compact('listSelectCategory','brands'));
     }
 
     /**

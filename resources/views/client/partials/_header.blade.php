@@ -5,10 +5,11 @@
             {{-- check & looop voucher in slider top header --}}
             @if (\App\Models\Voucher::where('status', 1)->orderBy('id', 'desc')->take(2)->get()->count() > 0)
                 @foreach (\App\Models\Voucher::where('status', 1)->orderBy('id', 'desc')->take(2)->get()
-    as $key=>$voucher)
-                    <a href="#" class="swiper-slide slider-top{{ $key + 1 }}">
+    as $key => $voucher)
+                    <a href="#" class="swiper-slide slider-top{{ $key + 1 }} text-sm">
 
-                        Nhập mã giảm giá "{{$voucher->code}}" để được giảm {{$voucher->discount}}{{$voucher->category_code == 0 ? '%' : 'vnd'}} cho đơn hàng.
+                        {{ $voucher->name }} nhập mã "{{ $voucher->code }}" để được giảm
+                        {{ $voucher->discount }}{{ $voucher->category_code == 0 ? '%' : 'vnd' }} cho đơn hàng.
 
                     </a>
                 @endforeach
@@ -37,7 +38,7 @@
                     <div class="pop-input">
                         <select name="filter_cate" class="filter-cate">
                             <option value="all">Tất cả</option>
-                            @foreach (\App\Models\Category::all() as $category)
+                            @foreach (\App\Models\Category::where('parent_id', 0)->get() as $category)
                                 <option
                                     {{ isset($_GET['filter_cate']) && $_GET['filter_cate'] == $category->id ? 'selected' : '' }}
                                     value="{{ $category->id }}">{{ $category->name }}</option>
@@ -258,12 +259,25 @@
         </div>
         <div class="header-menu">
             <ul class="sub-nav m-0">
-                <li><a href="{{ route('client.shop') }}">#ALL</a></li>
+                <li><a href="{{ route('client.shop') }}"
+                        class="{{ Route::currentRouteName() == 'client.shop' ? 'menu-active' : '' }}">#ALL</a>
+                </li>
 
-                @foreach (\App\Models\Category::where('parent_id', 0)->get() as $category)
-                    <li><a href="{{ route('client.shop.category', $category->slug) }}">{{ $category->name }}</a>
-                    </li>
-                @endforeach
+                <div class="d-flex sub-nav_item">
+                    @foreach (\App\Models\Category::where('parent_id', 0)->get() as $category)
+                        <li class="sub-nav_item-li" data-id="{{ $category->id }}">
+                            <a href="{{ route('client.shop.category', $category->slug) }}"
+                                class="{{ request()->is('cua-hang/' . $category->slug) ? 'menu-active' : '' }}">
+                                {{ $category->name }}
+                            </a>
+                            {{-- none child menu --}}
+                        </li>
+                    @endforeach
+                    <div class="header-menu-container__child-menu hidden">
+                        <div class="header-menu__child-menu">
+                        </div>
+                    </div>
+                </div>
 
                 @if (session('admin'))
                     <li class="view_admin">
@@ -272,8 +286,12 @@
                     </li>
                 @endif
 
-                <li><a href="newsClient">Tin tức</a></li>
-                <li><a href="albumClient">#KOODING</a></li>
+                <li><a href="newsClient"
+                        class="{{ Route::currentRouteName() == 'client.news' ? 'menu-active' : '' }}">Tin tức</a>
+                </li>
+                <li><a href="{{ route('client.social') }}"
+                        class="{{ Route::currentRouteName() == 'client.social' ? 'menu-active' : '' }}">#KOODING</a>
+                </li>
                 @if (Auth::check() && Auth::user()->role_id != 1)
                     <li><a href="{{ route('admin.dashboard') }}">Trang quản trị <i class="ml-2 fa fa-unlock-alt"
                                 aria-hidden="true"></i>
@@ -281,12 +299,59 @@
                 @endif
             </ul>
         </div>
-
     </div>
     <!-- end header-main -->
 
 </header>
+
+{{-- script --}}
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
 <script>
+    $(document).ready(function() {
+        const subNavItemsEl = document.querySelectorAll('.sub-nav_item-li');
+        const childMenuEl = document.querySelector('.header-menu__child-menu');
+
+        // use axios get data tu api category
+        axios.get('{{ route('api.category') }}')
+            .then(res => {
+                const dataCategories = res.data;
+                const childCategories = [];
+                // loop data => respone ve child category of dataid ma minh hover
+                subNavItemsEl.forEach(itemEl => {
+                    itemEl.onmouseover = function() {
+                        const id = this.dataset.id;
+
+                        dataCategories.forEach(val => {
+                            if (val.parent_id == id) {
+                                childCategories.push(val);
+                            }
+                        });
+
+                        // map + inner html childCate
+                        html = '';
+                        childCategories.forEach(val => {
+                            html += `
+                            <div class="child-menu_item">
+                                    <div class="item-title"><a href="./cua-hang/${val.slug}">${val.name}</a></div>
+                                    <ul >
+                                            <li><a href="">child 1</a></li>
+                                        </ul>
+                                </div>
+                        `;
+                        });
+
+                        // render success -> remove
+                        childMenuEl.innerHTML = html;
+                        childCategories.length = 0;
+                    }
+                });
+
+            })
+            .catch(er => {
+                console.log(er);
+            })
 
 
+    })
 </script>

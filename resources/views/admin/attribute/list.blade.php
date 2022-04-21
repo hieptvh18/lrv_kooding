@@ -32,7 +32,7 @@
                             <div class="form-group">
                                 <label for="exampleInputName1">Thuộc tính</label>
                                 <select name="attr_id" id="attr_id" class="form-control">
-                                    @foreach ($listAttr as $a)
+                                    @foreach ($attributes as $a)
                                         <option value="{{ $a->id }}">{{ $a->name }}</option>
                                     @endforeach
                                 </select>
@@ -81,7 +81,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($list_attr_value as $key => $item)
+                        @foreach ($attributeValues as $key => $item)
                             <tr>
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $item->attr_name }}</td>
@@ -108,7 +108,7 @@
                     </tbody>
                 </table>
                 <div class="paginate">
-                    {{ $list_attr_value->links() }}
+                    {{ $attributeValues->links() }}
                 </div>
             </div>
         </div>

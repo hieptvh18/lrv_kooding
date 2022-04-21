@@ -145,7 +145,8 @@
                                                 document.querySelector('#formFakeRemoveVoucher{{ $key }}').submit();
                                             }
                                         "><i class="fas fa-trash-alt text-danger fa-2x"></i></a>
-
+                                <a href=""><i
+                                    class="fas fa-pen-square text-warning fa-2x "></i></a>
                                 <form id="formFakeRemoveVoucher{{ $key }}"
                                     action="{{ route('voucher.destroy', $voucher->id) }}" method="post">
                                     @csrf

@@ -24,7 +24,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($listBrand as $key => $val)
+                        @foreach ($brands as $key => $val)
                             <tr>
                                 <td>{{ $key + 1 }}</td>
                                 <td>{{ $val->name }}</td>
