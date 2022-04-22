@@ -22,7 +22,7 @@ return new class extends Migration
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             
             $table->integer('price');
-            $table->integer('discount')->comment('gia giam')->nullable(0);
+            $table->integer('discount')->comment('gia giam')->nullable()->default(0);
             
             $table->foreignId('brand_id');
             $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
@@ -30,9 +30,9 @@ return new class extends Migration
             $table->string('avatar',355);
             $table->longText('description');
             // note :quantity se la tong so luong cua bien the sp trong stock + lai
-            $table->integer('quantity')->comment('save to stock');
-            $table->tinyInteger('status')->comment('tinh trang cua san pham')->nullable(0);
-            $table->bigInteger('view')->nullable(0);
+            $table->integer('quantity')->comment('save to stock')->nullable()->default(0);
+            $table->tinyInteger('status')->nullable()->default(0)->comment('tinh trang cua san pham');
+            $table->bigInteger('view')->nullable()->default(0);
             $table->timestamps();
         });
     }

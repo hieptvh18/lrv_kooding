@@ -45,7 +45,7 @@ class ProductController extends Controller
         }
 
         // get by category
-        $products = $products->orderBy('products.id', 'desc')->paginate(20);
+        $products = $products->where('products.status','!=','0')->orderBy('products.id', 'desc')->paginate(20);
         // dd($products->lastPage());
         return view('client.shop.list', compact('products', 'pageTitle'));
     }
@@ -56,7 +56,7 @@ class ProductController extends Controller
     // page detail product
     public function show(Request $request, $slug,$id)
     {
-        $product = Product::where('slug', $slug)->first();
+        $product = Product::where('slug', $slug)->where('products.status','!=','0')->first();
         if ($product) {
 
             return view('client.shop.detail', compact('product'));

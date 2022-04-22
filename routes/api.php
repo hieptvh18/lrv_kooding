@@ -6,6 +6,7 @@ use Laravel\Socialite\Facades\Socialite;
 use App\Http\Controllers\Api\GoogleController;
 use App\Http\Controllers\Api\FacebookController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\VoucherController;
 
 use App\Http\Controllers\Api\AjaxController;
 
@@ -18,6 +19,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::any('ajax/get-attr-value-exist',[AjaxController::class,'attrValueExist'])->name('ajax.attr-value-exist');
 Route::any('ajax/get-attr-of-category',[AjaxController::class,'getAttrOfCategory'])->name('ajax.get-attr-of-category');
 Route::any('ajax/get-child-category-by-parent-id',[AjaxController::class,'getChildCategoryByParentId'])->name('ajax.getChildCategoryByParentId');
+Route::post('ajax/change-status-product',[AjaxController::class,'changeStatusProduct'])->name('ajax.changeStatusProduct');
 
 
 // // Google Sign In
@@ -33,4 +35,6 @@ Route::any('ajax/voucher-exist',[AjaxController::class,'voucherExist'])->name('a
 
 // categories 
 Route::get('get-categories',[CategoryController::class,'index'])->name('api.category');
+// vouchers 
+Route::get('get-vouchers',[VoucherController::class,'index'])->name('api.voucher.index');
 

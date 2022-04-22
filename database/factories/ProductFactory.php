@@ -21,7 +21,7 @@ class ProductFactory extends Factory
             //
             'name'=>$this->faker->name(),
             "slug"=>Str::slug($this->faker->name()),
-            "category_id"=>$this->faker->numberBetween(1,5),
+            "category_id"=>$this->faker->numberBetween(1,3),
             "price"=>$this->faker->numerify(),
             "discount"=>1000,
             "brand_id"=>$this->faker->numberBetween(1,5),
@@ -29,7 +29,7 @@ class ProductFactory extends Factory
             "description"=>$this->faker->text(),
             "quantity"=>0,
             "status"=>1,
-            "view"=>1
+            "view"=>0
         ];
     }
 }

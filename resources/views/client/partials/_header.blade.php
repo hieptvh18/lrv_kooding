@@ -2,18 +2,26 @@
 
     <div class="header-top swiper mySwiper">
         <div class="swiper-wrapper">
-            {{-- check & looop voucher in slider top header --}}
-            @if (\App\Models\Voucher::where('status', 1)->orderBy('id', 'desc')->take(2)->get()->count() > 0)
-                @foreach (\App\Models\Voucher::where('status', 1)->orderBy('id', 'desc')->take(2)->get()
-    as $key => $voucher)
-                    <a href="#" class="swiper-slide slider-top{{ $key + 1 }} text-sm">
 
+            {{-- check & looop voucher in slider top header --}}
+            @if (\App\Models\Voucher::where('status', 1)->orderBy('id', 'desc')->get()->count() >= 2)
+                @foreach (\App\Models\Voucher::where('status', 1)->orderBy('id', 'desc')->take(2)->get() as $key => $voucher)
+                    <a href="#" class="swiper-slide slider-top{{ $key + 1 }} text-sm">
                         {{ $voucher->name }} nhập mã "{{ $voucher->code }}" để được giảm
                         {{ $voucher->discount }}{{ $voucher->category_code == 0 ? '%' : 'vnd' }} cho đơn hàng.
-
                     </a>
                 @endforeach
+
+            @elseif(\App\Models\Voucher::where('status', 1)->orderBy('id', 'desc')->get()->count() ==1)
+                @foreach (\App\Models\Voucher::where('status', 1)->get() as $key => $voucher)
+                <a href="#" class="swiper-slide slider-top{{ $key + 1 }} text-sm">
+                    {{ $voucher->name }} nhập mã "{{ $voucher->code }}" để được giảm
+                    {{ $voucher->discount }}{{ $voucher->category_code == 0 ? '%' : 'vnd' }} cho đơn hàng.
+                </a>
+                @endforeach
+                <a href="#" class="swiper-slide slider-top2">Vận chuyển nhanh chóng và tin cậy 🚛</a>
             @else
+            {{-- default --}}
                 <a href="#" class="swiper-slide slider-top1">Cảm hứng thời trang vô tận với Kooding.</a>
                 <a href="#" class="swiper-slide slider-top2">Vận chuyển nhanh chóng và tin cậy 🚛</a>
             @endif

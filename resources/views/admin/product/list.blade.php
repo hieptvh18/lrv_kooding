@@ -90,11 +90,10 @@
                                 <td>{{ $val->quantity }}</td>
                                 <td>
                                     @if ($val->status == 0)
-                                        <label class="badge badge-danger">Hết hàng</label>
+                                        <button class="badge badge-danger status btn-status" data-status="1" data-id="{{$val->id}}">Ẩn</button>
                                     @else
-                                        <label class="badge badge-success">Còn hàng</label>
+                                        <button class="badge badge-success status btn-status" data-status="0" data-id="{{$val->id}}">Hiện</button></label>
                                     @endif
-
                                 </td>
                                 <td>
                                     <div class="mb-2">
@@ -153,6 +152,43 @@
     <script>
         $(document).ready(function() {
             const proIdsEl = $('input[name="proIds[]"]');
+            const btnChangeStatus = document.querySelectorAll('.btn-status');
+
+            // change status product
+            btnChangeStatus.forEach((val,index)=>{
+                const status = val.dataset.status;
+                const proId = val.dataset.id;
+
+                val.onclick = function(){
+
+                    if(!confirm('Bạn chắc chắn thay đổi trạng thái?')){
+                        return;
+                    }
+                    $.ajaxSetup({
+                        headers:{
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    })
+                    $.ajax({
+                        url:'{{route('ajax.changeStatusProduct')}}',
+                        type:'POST',
+                        data:{
+                            proId:proId,
+                            status:status
+                        },
+                        success:function(data){
+                            if(data == 1){
+                                window.location.reload();
+                            }else{
+                                alert('Thay đổi trạng thái thất bại! vui lòng thử lại!');
+                            }
+                        },
+                        error:function(er){
+                            alert('Có lỗi xảy ra! vui lòng thử lại!');
+                        }
+                    })
+                }
+            })
             
             $("#btnCheckAll").click(function() {
                 $('input:checkbox').not(this).prop('checked', this.checked);

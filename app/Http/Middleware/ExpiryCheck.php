@@ -34,16 +34,6 @@ class ExpiryCheck
         }
 
         // product status
-        foreach($products as $product){
-            $newProduct =  Product::find($product->id);
-            if($product->quantity == 0){
-                $newProduct->status = 0;
-                $newProduct->save();
-            }else{
-                $newProduct->status = 1;
-                $newProduct->save();
-            }
-        }
 
         return $next($request);
     }

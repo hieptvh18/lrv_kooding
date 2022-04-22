@@ -4182,7 +4182,6 @@ label.error{
 /* child menu client */
 /* hover */
 .sub-nav_item:hover  .header-menu-container__child-menu{
-    height: 70vh;
     display: block;
     z-index: 99;
     transition:  1.5s; 
@@ -4204,7 +4203,8 @@ label.error{
     top: 42px;
     left: 0;
     right: 0;
-    height: 75vh;
+    height: 60vh;
+    box-shadow:  0px 3px 6px #ccc;
 }
 .child-menu_item{
     width: 20%;
@@ -4239,3 +4239,12 @@ label.error{
     padding: 20px 0 10px 0;
     border-bottom: 1px solid rgb(228, 227, 227);
 }   
+
+.status{
+
+    cursor: pointer !important;
+}
+.btn-status:hover{
+
+    opacity: .3;
+}

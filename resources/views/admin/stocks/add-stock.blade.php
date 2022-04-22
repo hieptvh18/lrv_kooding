@@ -19,7 +19,7 @@
             <div class="card-body">
                 <h4 class="card-title">Thêm sản phẩm vào kho</h4>
                 <p class="card-description">
-                    Thêm sản phẩm mới vào kho hàng
+                    Thêm biến thể sản phẩm mới vào kho hàng
                 </p>
                 @if (session('msg-er'))
                     <div class="alert alert-danger">{{ session('msg-er') }}</div>

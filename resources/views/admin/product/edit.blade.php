@@ -129,6 +129,12 @@
                     </div>
 
                     <div class="form-group">
+                        <label >Tình trạng:</label>
+                        <input type="radio" {{$product->status == 1 ? 'checked':''}} value="1" class="ml-3 mr-2" name="status" id="status"><label for="status">Hoạt động</label>
+                        <input type="radio" {{$product->status == 0 ? 'checked':''}} value="0" class="ml-3 mr-2" name="status" id="status2"><label for="status2">Ẩn</label>
+                    </div>
+
+                    <div class="form-group">
                         <label for="local-upload">Mô tả thông tin sản phẩm</label>
                         <textarea class="form-control" id="local-upload" name="description" rows="4">{{ $product->description }}</textarea>
                         @error('description')

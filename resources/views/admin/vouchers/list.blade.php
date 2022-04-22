@@ -8,12 +8,12 @@
 
         <div class="" style="display: flex; align-items:center;">
             <!-- Button to Open the Modal -->
-            <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#myModal">
+            <button type="button" class="btn btn-outline-primary btnAddVoucher mr-3" data-toggle="modal" data-target="#modalFormVoucher">
                 Thêm mới+
             </button>
 
             <!-- The Modal -->
-            <div class="modal" id="myModal">
+            <div class="modal" id="modalFormVoucher">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
 
@@ -55,7 +55,7 @@
                                     <div class="form-group col-6">
                                         <label for="">Số lượng</label>
                                         <input name="quantity" type="number" class="form-control form-control-sm" min="1"
-                                            id="" placeholder="Số lượng " value="1">
+                                            id="" placeholder="Số lượng ">
                                         <label for="quantity" class="error"
                                             style="display: none !important;"></label>
                                     </div>
@@ -90,13 +90,11 @@
                 </div>
             </div>
 
-            <div class="filter ml-3">
-                <select name="filter_status" id="">
-                    <option value="" disabled selected>Lọc mã</option>
-                    <option value="1">Còn hiệu lực</option>
-                    <option value="0">Hết hiệu lực</option>
-                </select>
-            </div>
+            <form action="" method="GET">
+                <input type="search" value="{{ old('keyword') }}" name="keyword" placeholder="Enter key search"
+                    class="form-control-sm" required style="height:33px;border:1px solid #ccc;border-radius:10px">
+                <button class="btn btn-outline-info btn-sm">Tìm kiếm</button>
+            </form>
         </div>
         @if (session('msg-er'))
             <div class="alert alert-danger">{{ session('msg-er') }}</div>
@@ -111,10 +109,18 @@
                         <th>STT</th>
                         <th>Tên mã</th>
                         <th>Mã code</th>
-                        <th>Giá giảm</th>
-                        <th>Số lượng hiện tại</th>
-                        <th>Ngày tạo</th>
-                        <th>Ngày hết hạn</th>
+                        <th>Loại</th>
+                        <th>Số lượng hiện tại
+                            <a href="?_sort=true&column=name&type=asc"><i
+                                class="fas fa-sort"></i></a>
+                        </th>
+                        <th>Ngày tạo 
+                             <a href=""><i
+                            class="fas fa-sort"></i></a></th>
+                        <th>Ngày hết hạn
+                            <a href="?_sort=true&column=name&type=asc"><i
+                                class="fas fa-sort"></i></a>
+                        </th>
                         <th>Tình trạng</th>
                         <th>Chức năng</th>
                     </tr>
@@ -140,13 +146,15 @@
 
                             <td>
                                 <a href="" onclick="
-                                        event.preventDefault()
-                                            if(confirm('Bạn chắc chắn xóa voucher?')){
-                                                document.querySelector('#formFakeRemoveVoucher{{ $key }}').submit();
-                                            }
-                                        "><i class="fas fa-trash-alt text-danger fa-2x"></i></a>
-                                <a href=""><i
-                                    class="fas fa-pen-square text-warning fa-2x "></i></a>
+                                                    event.preventDefault()
+                                                        if(confirm('Bạn chắc chắn xóa voucher?')){
+                                                            document.querySelector('#formFakeRemoveVoucher{{ $key }}').submit();
+                                                        }
+                                                    "><i class="fas fa-trash-alt text-danger fa-2x"></i></a>
+
+                                <a href="" class="btnOpenModalEdit" data-id="{{ $voucher->id }}"><i
+                                        class="fas fa-pen-square text-warning fa-2x "></i></a>
+
                                 <form id="formFakeRemoveVoucher{{ $key }}"
                                     action="{{ route('voucher.destroy', $voucher->id) }}" method="post">
                                     @csrf
@@ -164,7 +172,8 @@
 @endsection
 
 @section('plugin-script')
-    {{-- <script src="{{asset('assets/js/handle/validateform.js')}}"></script> --}}
+    {{-- axios --}}
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <script>
         const erCodeEl = $('.er-code');
@@ -259,7 +268,7 @@
         }, "Vui lòng nhập Vourcher không chứa ký tự đặc biệt");
 
         // check date > now date
-        var today = new Date();
+        const today = new Date();
         // const dateNow = new date();
         $.validator.addMethod("dateValidate", function(value) {
             let values = new Date(value);
@@ -280,5 +289,61 @@
 
             }
         });
+    </script>
+
+    {{-- update voucher use modal boostrap --}}
+    <script>
+        const modal = document.getElementById('modalFormVoucher')
+        const formVoucher = document.getElementById('formVoucher')
+        const btnEditModal = document.querySelectorAll('.btnOpenModalEdit');
+        const apiVoucher = '{{ route('api.voucher.index') }}';
+        const btnAddVoucher = document.querySelector('.btnAddVoucher');
+        const titleModal = document.querySelector('.modal-title')
+
+        // reset value khi an add
+        btnAddVoucher.onclick = function(){
+            formVoucher.action = '{{route('voucher.store')}}';
+            document.querySelector('input[name="name"]').value = ''
+            // document.querySelector('input[name="category_code"]').value = ''
+            document.querySelector('input[name="code"]').value = ''
+            document.querySelector('input[name="discount"]').value = ''
+            document.querySelector('input[name="quantity"]').value = ''
+            document.querySelector('input[name="expired_date"]').value = '';
+        }
+
+        const dataVoucher = axios.get(apiVoucher)
+            .then(res => {
+
+                // get id voucher
+                btnEditModal.forEach((val, index) => {
+                    val.onclick = function(e) {
+                        e.preventDefault();
+
+                        // get voucher by id
+                        const voucherId = val.dataset.id;
+                        voucher = res.data.find(data => data.id == voucherId)
+                        // open modal & render data
+                        renderUpdate(voucher);
+                    }
+                });
+            })
+            .catch(er => console.error(er))
+
+        // render
+        function renderUpdate(data) {
+            titleModal.innerHTML = 'Chỉnh sửa mã giảm giá!';
+            formVoucher.action = '';
+            
+            // render data to modal
+            let expired_date = new Date(data.expired_date);
+
+            document.querySelector('input[name="name"]').value = data.name
+            // document.querySelector('input[name="category_code"]').value = data.category_code
+            document.querySelector('input[name="code"]').value = data.code
+            document.querySelector('input[name="discount"]').value = data.discount
+            document.querySelector('input[name="quantity"]').value = data.quantity
+            document.querySelector('input[name="expired_date"]').value = expired_date.toISOString().slice(0, 19);
+            $('#modalFormVoucher').modal('toggle');
+        }
     </script>
 @endsection

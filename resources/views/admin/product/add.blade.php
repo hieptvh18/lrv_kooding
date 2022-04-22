@@ -68,7 +68,7 @@
                         </div> --}}
                         <div class="form-group col-4">
                             <label for="" class="">Giam gia</label>
-                            <input type="number" name="discount" class="form-control" value="{{ old('quantity') }}"
+                            <input type="number" name="discount" class="form-control" value="{{ old('discount') }}"
                                 placeholder="Giá giảm">
                             @error('discount')
                                 <small class="text-danger">{{ $message }}</small>
@@ -113,6 +113,11 @@
                             @endif('err-avatars')
 
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <label >Tình trạng:</label>
+                        <input type="checkbox" value="1" class="ml-3 mr-2" name="status" id="status" 
+                        {{old('status') == '1' ?'checked':''}}><label for="status">Hoạt động</label>
                     </div>
 
                     <div class="form-group">

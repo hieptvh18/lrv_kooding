@@ -33,6 +33,20 @@
             </div>
         </li>
         <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#voucher" aria-expanded="false"
+                aria-controls="ui-basic">
+                <i class="icon-layout menu-icon"></i>
+                <span class="menu-title">Mã giảm giá</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="voucher">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="{{route('voucher.index')}}">Tổng hợp</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="">Thêm mã</a></li>
+                </ul>
+            </div>
+        </li>
+        <li class="nav-item">
             <a class="nav-link" href="{{ route('brand.index') }}">
                 <i class="far fa-chart-bar menu-icon"></i>
                 <span class="menu-title {{ Route::is('brand.index') ? 'active-link' : '' }}">Thuong hieu</span>
@@ -89,20 +103,7 @@
                 </ul>
             </div>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#voucher" aria-expanded="false"
-                aria-controls="ui-basic">
-                <i class="icon-layout menu-icon"></i>
-                <span class="menu-title">Mã giảm giá</span>
-                <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="voucher">
-                <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="{{route('voucher.index')}}">Tổng hợp</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="">Thêm mã</a></li>
-                </ul>
-            </div>
-        </li>
+        
 
         <li class="nav-item">
             <a class="nav-link" href="display">

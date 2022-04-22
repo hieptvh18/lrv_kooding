@@ -16,7 +16,7 @@
 
         <div class="search ">
             <form action="" method="GET" class="d-flex">
-                <input type="search" value="{{ old('keyword_stock') }}" name="keyword_stock" placeholder="search category"
+                <input type="search" value="{{ old('keyword_stock') }}" name="keyword_stock" placeholder="search stock"
                     class="form-control-sm" required style="height:33px;border:1px solid #ccc;border-radius:10px">
                 <button class="btn btn-outline-info btn-sm">Tìm kiếm</button>
             </form>

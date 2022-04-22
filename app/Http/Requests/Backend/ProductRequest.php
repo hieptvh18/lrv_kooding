@@ -86,6 +86,7 @@ class ProductRequest extends FormRequest
             "min"=>"Độ dài tối thiểu là :min kí tư",
             "unique"=>":attribute đã tồn tại trong dữ liệu",
             "avatar.image"=>"File tải lên phải là ảnh",
+            "avatar.max"=>"Ảnh không được quá 2mb!",
             "avatar.mimes"=>"Chỉ nhận file ảnh dạng jpg,png,jpeg",
             "integer" =>"Giá trị phải là số nguyên",
 
