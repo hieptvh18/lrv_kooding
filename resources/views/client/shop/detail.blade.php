@@ -59,7 +59,7 @@
                                 @endif
                             </div>
                             <div class="pd-sku">
-                                <p>Kho : {{ $product->quantity }}</p>
+                                <p>Kho : <span class="product-quantity">{{ $product->quantity }}</span></p>
                             </div>
                         </div>
                         <div class="pd-processing-time" data-nosnippet="">
@@ -306,82 +306,102 @@
             const apiProductUrl = "{{ route('api.product.findOne', $product_id) }}";
             const apiProductStockUrl = "{{ route('api.stock.all', $product_id) }}";
 
-            // call api 
-            axios.get(apiProductStockUrl)
-                .then(res => {
-                    return res.data
-                })
-                .then(data => {
-                    const action = "addBag";
-                    
-                    // check nếu sl chọn mua nhỏ vượt qua slg trong kho thì mess err
-                    $('.btnAddCart').click(function() {
-                        const quantity = $('input[name="quantity"]').val();
-                        const size = $('#size').val();
-                        const color = $('#color').val();
+            // get data api
+            const productPending = async () => {
+                const productsStock = await axios.get(apiProductStockUrl)
+                return productsStock.data;
+            }
 
-                        if (!color) {
-                            $('.errC').html('Vui lòng chọn màu sắc');
-                            return;
-                        } else {
-                            $('.errC').html('');
-                        }
-                        if (!size) {
-                            $('.errS').html('Vui lòng chọn kích cỡ');
-                            return;
-                        }else{
-                            $('.errS').html('');
-                        }
-                        $('.errS').html('');
+            const productData = productPending();
+            productData.then(data => {
+                $('.btnAddCart').click(function() {
+                    const quantity = $('input[name="quantity"]').val();
+                    const size = $('#size').val();
+                    const color = $('#color').val();
+
+                    if (!color) {
+                        $('.errC').html('Vui lòng chọn màu sắc');
+                        return;
+                    } else {
                         $('.errC').html('');
-
-
-                        data.forEach((el, index) => {
-                            if (el.size_id == size && el.color_id == color) {
-                                if (quantity > el.quantity) {
-                                    alert('đù lớn hơn r')
-                                    $('.errQty').html(
-                                        'Số lượng sản phẩm còn lại không đủ để bán cho bạn!'
-                                    )
-                                    return;
-                                } 
-                                else {
-                                    $('.errQty').html()
-                                    showSuccess()
-                                    $.ajax({
-                                        url: '{{ route('client.addCart') }}',
-                                        method: 'POST',
-                                        data: {
-                                            action: action,
-                                            pro_id: id,
-                                            color: $('#color'),
-                                            size: $('#size'),
-                                            quantity: quantity
-                                        },
-                                        success: function(data) {
-                                            console.log('gui data thanh cong');
-                                            $('#test').html(data)
-                                        }
-                                    });
-                                    return;
-                                }
-                            }
-                        });
-                    });
-
-                    // display quantity của từng biến thê
-                    $('#color').change(function(){
-                        displayQty();
-                    });
-                    $('#size').change(function(){
-                        displayQty();
-                    })
-
-
-                    function displayQty(){
-                        //  get id value rồi check vói data xem còn bn qty => inner
+                        $('.errS').html('');
                     }
-                })
+                    if (!size) {
+                        $('.errS').html('Vui lòng chọn kích cỡ');
+                        return;
+                    } else {
+                        $('.errC').html('');
+                        $('.errS').html('');
+                    }
+                    $('.errS').html('');
+                    $('.errC').html('');
+
+
+                    data.forEach((el, index) => {
+                        if (el.size_id == size && el.color_id == color) {
+                            if (quantity > el.quantity) {
+                                $('.errQty').html(
+                                    'Số lượng sản phẩm còn lại không đủ để bán cho bạn!'
+                                )
+                                return;
+                            } else {
+                                $('.errQty').html()
+                                showSuccess()
+                                $.ajaxSetup({
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]')
+                                            .attr('content')
+                                    }
+                                })
+                                $.ajax({
+                                    url: '{{ route('client.addCart') }}',
+                                    method: 'POST',
+                                    data: {
+                                        pro_id: id,
+                                        color: $('#color'),
+                                        size: $('#size'),
+                                        quantity: quantity
+                                    },
+                                    success: function(data) {
+                                        console.log(data);
+                                    },
+                                    error: function(er) {
+                                        console.log(er);
+                                    }
+                                });
+                                return;
+                            }
+                        }
+                    });
+                });
+
+                // display quantity của từng biến thê
+                $('#color').change(function() {
+                    if ($('#size').val()) {
+                        displayQty($('#color').val(), $('#size').val());
+                    }
+                });
+                $('#size').change(function() {
+                    if ($('#color').val()) {
+                        displayQty($('#color').val(), $('#size').val());
+                    }
+                });
+
+                // handle hiern thi slg cua bien the
+                function displayQty(color, size) {
+                    //  get id value rồi check vói data xem còn bn qty => inner
+                    data.forEach((el, index) => {
+                        if (el.color_id == color && el.size_id == size) {
+                            $('.product-quantity').html(el.quantity)
+                        }
+                    })
+                }
+            })
+            // console.log(productData);
+            // call api 
+
+
+
 
         })
     </script>
