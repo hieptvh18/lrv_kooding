@@ -41,8 +41,6 @@
                                         class="numB">{{ $i }}</a>
                                 @endif
                             @endfor
-
-
                         </li>
                         @if ($products->currentPage() < $products->lastPage())
                            
@@ -55,7 +53,7 @@
 
 
             <div class="proC__filters">
-                <form class="form__filter" method="POST">
+                <form class="form__filter" method="">
                     <div class="select__price">
                         <div id="price" class="filter__title">
                             <p>Giá</p>
@@ -63,8 +61,8 @@
                         </div>
                         <div class="box__filter__price none">
                             <!-- khi ng dùng thay đổi value input hidden -> show khoảng giá dưới trên range -->
-                            <input type="hidden" name="min_price" id="hidden_minimum_price" value="">
-                            <input type="hidden" name="max_price" id="hidden_maximum_price" value="">
+                            <input type="hidden" name="min_price" id="hidden_minimum_price" value="1000">
+                            <input type="hidden" name="max_price" id="hidden_maximum_price" value="10000000">
                             <p id="price_show">
                                 show price filter
                             </p>
@@ -73,7 +71,7 @@
                             </div>
                             <!-- btn filter -->
                             <button type="submit" class="text-center btn btn-secondary mt-2 form-control"
-                                name="btn_filter_price">Áp dụng</button>
+                                >Áp dụng</button>
 
                         </div>
                     </div>
@@ -159,12 +157,18 @@
 @endsection
 
 @section('plugin-script')
+
+<script>
+
+
+    // filter product
+</script>
     <script>
         const proIds = document.querySelectorAll('.pro_id')
         const btn = document.querySelectorAll('.btn_add_fa')
 
-        btn.forEach((index, e) => {
-            index.addEventListener('click', function() {
+        btn.forEach((value, e) => {
+            value.addEventListener('click', function() {
                 var toilanghia = proIds[e].value
                 var action = "add";
                 // gửi value -> php qua ajax (module favorite product)

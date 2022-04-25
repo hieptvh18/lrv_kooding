@@ -203,7 +203,7 @@
                     </div>
                 </div>
                 <div class="box-cart pt-4 pb-4">
-                    <a href="cartClient" class="cart">
+                    <a href="{{route('client.cart')}}" class="cart">
                         <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                     </a>
                     <div class="notifi">

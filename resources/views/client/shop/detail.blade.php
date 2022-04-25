@@ -74,7 +74,7 @@
                             <select border-opacity-50 name="color" id="color">
                                 <option value="" disabled selected>----Chọn màu sắc----</option>
                                 @foreach ($product->colors as $color)
-                                    <option value="{{ $color->id }}"> {{$color->name}}
+                                    <option value="{{ $color->id }}"> {{ $color->name }}
                                     </option>`;
                                 @endforeach
 
@@ -87,9 +87,9 @@
                             <select border-opacity-50 name="size" id="size">
                                 <option value="" disabled selected>----Chọn kích cỡ----</option>
                                 @foreach ($product->sizes as $size)
-                                <option value="{{ $size->id }}"> {{$size->name}}
-                                </option>`;
-                            @endforeach
+                                    <option value="{{ $size->id }}"> {{ $size->name }}
+                                    </option>`;
+                                @endforeach
 
                             </select> <br>
                             <div class="errS text-danger"></div>
@@ -109,12 +109,11 @@
                         <div class="er"></div>
                         <div class="fav-forms-wrap">
                             <div class="animate-button-wrap pd-buttons">
-                                <input type="hidden" id="storage" name="storage" value="{{ $product->quantity }}>">
-                                <button type="submit" id="checkout_0" class="pd-checkout animate black loader">Thêm vào giỏ
+                                <button type="button" id="checkout_0"
+                                    class="pd-checkout animate black loader btnAddCart">Thêm vào giỏ
                                     hàng</button>
                                 <span onclick="showLove()" class=" btn_add_fa">
                                     <i class="far fa-heart"></i>
-                                    <input type="hidden" class="pro_id" name="pro_id" value="{{ $product->id }}">
                                 </span>
                             </div>
                         </div>
@@ -298,8 +297,98 @@
 
 @section('plugin-script')
     <!-- end main -->
+
+    <!-- add to bag -->
     <script>
-        const proIds = document.querySelector('.pro_id')
+        $(document).ready(function() {
+
+            const id = "{{ $product_id }}";
+            const apiProductUrl = "{{ route('api.product.findOne', $product_id) }}";
+            const apiProductStockUrl = "{{ route('api.stock.all', $product_id) }}";
+
+            // call api 
+            axios.get(apiProductStockUrl)
+                .then(res => {
+                    return res.data
+                })
+                .then(data => {
+                    const action = "addBag";
+                    
+                    // check nếu sl chọn mua nhỏ vượt qua slg trong kho thì mess err
+                    $('.btnAddCart').click(function() {
+                        const quantity = $('input[name="quantity"]').val();
+                        const size = $('#size').val();
+                        const color = $('#color').val();
+
+                        if (!color) {
+                            $('.errC').html('Vui lòng chọn màu sắc');
+                            return;
+                        } else {
+                            $('.errC').html('');
+                        }
+                        if (!size) {
+                            $('.errS').html('Vui lòng chọn kích cỡ');
+                            return;
+                        }else{
+                            $('.errS').html('');
+                        }
+                        $('.errS').html('');
+                        $('.errC').html('');
+
+
+                        data.forEach((el, index) => {
+                            if (el.size_id == size && el.color_id == color) {
+                                if (quantity > el.quantity) {
+                                    alert('đù lớn hơn r')
+                                    $('.errQty').html(
+                                        'Số lượng sản phẩm còn lại không đủ để bán cho bạn!'
+                                    )
+                                    return;
+                                } 
+                                else {
+                                    $('.errQty').html()
+                                    showSuccess()
+                                    $.ajax({
+                                        url: '{{ route('client.addCart') }}',
+                                        method: 'POST',
+                                        data: {
+                                            action: action,
+                                            pro_id: id,
+                                            color: $('#color'),
+                                            size: $('#size'),
+                                            quantity: quantity
+                                        },
+                                        success: function(data) {
+                                            console.log('gui data thanh cong');
+                                            $('#test').html(data)
+                                        }
+                                    });
+                                    return;
+                                }
+                            }
+                        });
+                    });
+
+                    // display quantity của từng biến thê
+                    $('#color').change(function(){
+                        displayQty();
+                    });
+                    $('#size').change(function(){
+                        displayQty();
+                    })
+
+
+                    function displayQty(){
+                        //  get id value rồi check vói data xem còn bn qty => inner
+                    }
+                })
+
+        })
+    </script>
+
+    {{-- add to favorite --}}
+    {{-- <script>
+        const proIds = $('input[name="pro_if"]').val();
         const btn = document.querySelector('.btn_add_fa')
         btn.addEventListener('click', function() {
             var id = proIds.value
@@ -322,46 +411,5 @@
 
 
         })
-    </script>
-    <!-- add to bag -->
-    <script>
-        $(document).ready(function() {
-            $('#form-add-bag').submit(function(e) {
-                e.preventDefault()
-
-                var action = "addBag";
-                var pro_id = $('#pro_id').val()
-                var color = $('#color').val()
-                var size = $('#size').val()
-                var quantity = $('#quantity').val()
-                var storage = $('#storage').val()
-
-                // check nếu sl chọn mua nhỏ vượt qua slg trong kho thì mess err
-
-                if (quantity > storage) {
-                    // alert('đù lớn hơn r')
-                    $('.errQty').html('Số lượng sản phẩm còn lại không đủ để bán cho bạn!')
-                } else {
-                    showSuccess()
-                    $.ajax({
-                        url: 'cartClient',
-                        method: 'POST',
-                        data: {
-                            action: action,
-                            pro_id: pro_id,
-                            color: color,
-                            size: size,
-                            quantity: quantity
-                        },
-                        success: function(data) {
-                            $('#test').html(data)
-                        }
-                    })
-                }
-
-
-            })
-        })
-    </script>
-
+    </script> --}}
 @endsection

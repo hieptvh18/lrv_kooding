@@ -30,12 +30,17 @@ $(document).ready(function () {
         min: 10000,
         max: 10000000,
         values: [10000, 10000000],
-        step: 50000,
+        step: 20000,
         stop: function (event, ui) {
-            $('#price_show').html('Từ :' + ui.values[0] + '-' + ui.values[1])
+            $('#price_show').html('Từ :' + formatNumber(ui.values[0]) + '-' + formatNumber(ui.values[1]))
             $('#hidden_minimum_price').val(ui.values[0])
             $('#hidden_maximum_price').val(ui.values[1])
             // filter_data();
         }
-    })
+    });
+
+    function formatNumber(num) {
+        return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+      }
+      
 });

@@ -20,6 +20,7 @@ use App\Http\Controllers\Api\GoogleController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Backend\UserController;
+use App\Http\Controllers\Frontend\ShoppingController;
 
 // check hạn sử dụng voucher + slg sản phẩm -> status
 Route::middleware(['all.checkExpiry'])->group(function () {
@@ -45,6 +46,10 @@ Route::middleware(['all.checkExpiry'])->group(function () {
         Route::get('/{slug}', [ProductClientController::class, 'index'])->name('client.shop.category');
         Route::get('/{slug}/{id}', [ProductClientController::class, 'show'])->name('client.shop.detail');
     });
+
+    // cart
+    Route::get('cart',[ShoppingController::class,'cart'])->name('client.cart');
+    Route::post('add-to-cart',[ShoppingController::class,'addToCart'])->name('client.addCart');
 
     // social
     Route::get('/social',function(){

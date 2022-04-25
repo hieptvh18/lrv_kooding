@@ -46,7 +46,7 @@ class ProductRequest extends FormRequest
                     "slug" => [Rule::unique('products','name')->ignore(request()->id)],
                     "avatar" => $ruleAvatarEdit,
                     "discount" => "nullable|integer|11",
-                    "price" => "required|integer|max:11",
+                    "price" => "required|integer|between:10000,10000000",
                     // "quantity" => "required|integer",
                     "description" => "required|min:30|max:4000000",
 
@@ -59,16 +59,11 @@ class ProductRequest extends FormRequest
                 $rules = [
                     "name" => ["required","unique:products","max:300"],
                     "category_id" => "required",
-                    "price" => "required|regex:/^\d{1,11}$/",
+                    "price" => "required|integer|between:10000,10000000",
                     "discount" => "nullable|regex:/^\d{1,11}$/",
                     "brand_id" => "required",
-                    // "quantity" => "required|regex:/^\d{1,11}$/",
                     "description" => "required|min:30|max:4000000",
                     "avatar" => "required|image|mimes:jpg,png,jpeg|max:2040",
-                    // "avatars" => "nullable|image|mimes:jpg,png,jpeg|max:2040",
-                    // "color_id"=>"required",
-                    // "size_id"=>"required",
-                    // "material_id"=>"required",
                     
                 ];
                 break;
@@ -89,6 +84,7 @@ class ProductRequest extends FormRequest
             "avatar.max"=>"Ảnh không được quá 2mb!",
             "avatar.mimes"=>"Chỉ nhận file ảnh dạng jpg,png,jpeg",
             "integer" =>"Giá trị phải là số nguyên",
+            "between"=>"Giá trị phải nằm trong khoảng 10000 - 10000000"
 
         ];
     }

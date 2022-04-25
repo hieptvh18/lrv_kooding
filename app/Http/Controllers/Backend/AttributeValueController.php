@@ -90,7 +90,8 @@ class AttributeValueController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // check value đã được sd ở các nơi trc khi xóa, nếu đã dc dùng thì k cho xóa
+        
         AttributeValue::destroy($id);
 
         return redirect(route('attribute.index'))->with('msg','Xóa thành công giá trị');

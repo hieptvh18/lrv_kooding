@@ -44,6 +44,12 @@ class ProductController extends Controller
             $products = $products->where('products.name', 'like', '%' . $request->keyword . '%');
         }
 
+        // filter price
+        if($request->min_price && $request->max_price){
+            
+            $products = $products->whereBetween('price',[(int)$request->min_price,(int)$request->max_price]);
+        }
+
         // get by category
         $products = $products->where('products.status','!=','0')->orderBy('products.id', 'desc')->paginate(20);
         // dd($products->lastPage());
@@ -58,8 +64,9 @@ class ProductController extends Controller
     {
         $product = Product::where('slug', $slug)->where('products.status','!=','0')->first();
         if ($product) {
+            $product_id  = $product->id;
 
-            return view('client.shop.detail', compact('product'));
+            return view('client.shop.detail', compact('product','product_id'));
         }
         return redirect(route('404'));
     }
