@@ -297,7 +297,6 @@
 
 @section('plugin-script')
     <!-- end main -->
-
     <!-- add to bag -->
     <script>
         $(document).ready(function() {
@@ -307,13 +306,13 @@
             const apiProductStockUrl = "{{ route('api.stock.all', $product_id) }}";
 
             // get data api
-            const productPending = async () => {
-                const productsStock = await axios.get(apiProductStockUrl)
-                return productsStock.data;
+            const productStockPending = async () => {
+                const data = await axios.get(apiProductStockUrl)
+                return data.data;
             }
 
-            const productData = productPending();
-            productData.then(data => {
+            const productStocks = productStockPending();
+            productStocks.then(data => {
                 $('.btnAddCart').click(function() {
                     const quantity = $('input[name="quantity"]').val();
                     const size = $('#size').val();
@@ -336,17 +335,15 @@
                     $('.errS').html('');
                     $('.errC').html('');
 
-
+                    // loop data + check qty
                     data.forEach((el, index) => {
                         if (el.size_id == size && el.color_id == color) {
                             if (quantity > el.quantity) {
                                 $('.errQty').html(
                                     'Số lượng sản phẩm còn lại không đủ để bán cho bạn!'
                                 )
-                                return;
                             } else {
                                 $('.errQty').html()
-                                showSuccess()
                                 $.ajaxSetup({
                                     headers: {
                                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]')
@@ -358,19 +355,20 @@
                                     method: 'POST',
                                     data: {
                                         pro_id: id,
-                                        color: $('#color'),
-                                        size: $('#size'),
+                                        color: color,
+                                        size: size,
                                         quantity: quantity
                                     },
                                     success: function(data) {
+                                        showSuccess();
                                         console.log(data);
                                     },
                                     error: function(er) {
                                         console.log(er);
                                     }
                                 });
-                                return;
                             }
+                            return;
                         }
                     });
                 });
@@ -392,7 +390,8 @@
                     //  get id value rồi check vói data xem còn bn qty => inner
                     data.forEach((el, index) => {
                         if (el.color_id == color && el.size_id == size) {
-                            $('.product-quantity').html(el.quantity)
+                            $('.product-quantity').html(el.quantity);
+                            return;
                         }
                     })
                 }

@@ -313,7 +313,6 @@
 </header>
 
 {{-- script --}}
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
 <script>
     $(document).ready(function() {

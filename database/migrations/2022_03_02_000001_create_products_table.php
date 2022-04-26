@@ -22,13 +22,13 @@ return new class extends Migration
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             
             $table->integer('price');
-            $table->integer('discount')->comment('gia giam')->nullable()->default(0);
+            $table->integer('discount')->nullable()->default(0)->comment('gia giam');
             
             $table->foreignId('brand_id');
             $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
 
             $table->string('avatar',355);
-            $table->longText('description');
+            $table->string('description',500);
             // note :quantity se la tong so luong cua bien the sp trong stock + lai
             $table->integer('quantity')->comment('save to stock')->nullable()->default(0);
             $table->tinyInteger('status')->nullable()->default(0)->comment('tinh trang cua san pham');
