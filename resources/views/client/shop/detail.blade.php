@@ -293,6 +293,7 @@
             <!-- <div class="" id="test"></div> -->
             <div id="toast"></div>
     </main>
+    {{-- {{dd(session('carts'))}} --}}
 @endsection
 
 @section('plugin-script')
@@ -351,17 +352,18 @@
                                     }
                                 })
                                 $.ajax({
-                                    url: '{{ route('client.addCart') }}',
+                                    url: '{{ route('client.cart.add') }}',
                                     method: 'POST',
                                     data: {
-                                        pro_id: id,
-                                        color: color,
-                                        size: size,
+                                        product_id: id,
+                                        color_id: color,
+                                        size_id: size,
                                         quantity: quantity
                                     },
                                     success: function(data) {
                                         showSuccess();
-                                        console.log(data);
+                                            // console.log('msg: '+data);
+                                            console.log(data);
                                     },
                                     error: function(er) {
                                         console.log(er);
