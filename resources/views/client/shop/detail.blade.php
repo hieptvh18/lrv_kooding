@@ -109,7 +109,7 @@
                         <div class="er"></div>
                         <div class="fav-forms-wrap">
                             <div class="animate-button-wrap pd-buttons">
-                                <button type="button" id="checkout_0"
+                                <button type="button"  id="checkout_0"
                                     class="pd-checkout animate black loader btnAddCart">Thêm vào giỏ
                                     hàng</button>
                                 <span onclick="showLove()" class=" btn_add_fa">
@@ -223,17 +223,17 @@
                 <p class="vclll">Bạn cũng có thể thích</p class="vclll">
                 <div class="slider-album__content">
                     <!-- slider ảnh sp liên quan -->
-                    {{-- <?php foreach ($data['relate_pros'] as $item) : ?>
+                    @foreach ($relatePros as $item)
                     <div class="image-item">
-                        <a href="productDetail?action=viewDetail&id=<?= $item['id'] ?>">
+                        <a href="{{route('client.shop.detail',['slug'=>$item->slug,'id'=>$item->id])}}">
                             <div class="item__boxImg">
-                                <img src="./public/images/products/<?= $item['avatar'] ?>" alt="">
+                                <img src="{{asset('uploads')}}/{{$item->avatar}}" alt="">
                             </div>
                         </a>
-                        <p><?= $item['name'] ?></p>
-                        <span><b><?= number_format($item['price'], 0, ',') ?> VND</b></span>
+                        <p>{{$item->name}}</p>
+                        <span><b>{{ number_format($item->price - $item->discount, 0, ',') }} VND</b></span>
                     </div>
-                <?php endforeach; ?> --}}
+                    @endforeach
                 </div>
             </div>
             <div class="sp-title">
@@ -362,8 +362,11 @@
                                     },
                                     success: function(data) {
                                         showSuccess();
-                                            // console.log('msg: '+data);
                                             console.log(data);
+                                            $('.notifi-cart').html(data.length);
+                                            $('.btnAddCart').html('Đã thêm vào giỏ hàng!');
+                                            $('.btnAddCart').attr('disabled',true);
+                                            $('.btnAddCart').addClass('btn-exist-cart');
                                     },
                                     error: function(er) {
                                         console.log(er);

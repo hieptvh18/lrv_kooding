@@ -27,7 +27,7 @@
     <!-- css -->
     <link rel="stylesheet" href="{{asset('assets/css/style_layout.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/style.css')}}">
-    <link rel="stylesheet" href="{{asset('assets/css/album.css')}}">
+    {{-- <link rel="stylesheet" href="{{asset('assets/css/album.css')}}"> --}}
 
     @yield('plugin-head')
     <meta charset="UTF-8">

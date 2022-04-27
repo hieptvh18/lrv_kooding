@@ -2703,9 +2703,24 @@ a{
 #quantity{
     width: 50px;
     height: 38px;
-    margin-top: 10px;
+    /* margin-top: 10px; */
     padding: 5px;
     border: 1px solid #b8b8b8;
+    outline: none;
+}
+.btn-exist-cart{
+    background: rgb(92, 167, 124) !important;
+    color: rgb(255, 255, 255) !important;
+}
+.btn-number{
+    cursor: pointer;
+
+};
+.btn-number:hover{
+    opacity: .3;
+}
+.input-number{
+    border: none !important;
     outline: none;
 }
 #checkout_0{
@@ -4184,7 +4199,7 @@ label.error{
 .sub-nav_item:hover  .header-menu-container__child-menu{
     display: block;
     z-index: 99;
-    transition:  1.5s; 
+    /* transition:  1.5s;  */
 }
 .header-menu-container__child-menu{
     transition: .2s;

@@ -6,58 +6,39 @@
     <main class="body__index">
 
         <div class="banner single-item">
-            <a href="productClient?action=list&filtercate=" class="banner-item">
+            <div class="banner-item">
                 <div class="banner_imgBox">
                     <img src="public/images/categories/1" alt="" width="100%">
                 </div>
-            </a>
-            <a href="productClient?action=list&filtercate=1" class="banner-item">
+            </div>
+            <div class="banner-item">
                 <div class="banner_imgBox">
                     <img src="public/images/categories/1" alt="" width="100%">
                 </div>
-            </a>
+            </div>
         </div>
         <!-- end banner -->
         <div class="category-banner">
-            <a href="productClient?action=list&filtercate=1" class="box-cate">
-                test
-            </a>
-            <a href="productClient?action=list&filtercate=1" class="box-cate">
-                test
-            </a>
+            @foreach ($categoryRandom as $category)
+                <a href="{{ route('client.shop.category', $category->slug) }}" class="box-cate">
+                    {{ $category->name }}
+                </a>
+            @endforeach
         </div>
         <!-- end category-banner -->
         <div class="theme-hot">
-            <div class="theme-hot__item">
-                <div class="box-img">
-                    <img src="public/images/products/" alt="">
+            @foreach ($categoryTop as $category)
+                <div class="theme-hot__item">
+                    <div class="box-img">
+                        <img src="{{asset('uploads')}}/{{$category->avatar}}" alt="">
+                    </div>
+                    <div class="theme-hot__title mt-3">
+                        {{$category->name}}
+                    </div>
+                    <span>Bộ sưu tập hàng cao cấp</span>
+                    <a href="{{ route('client.shop.category', $category->slug) }}" class="btn-theme">Khám phá ngay</a>
                 </div>
-                <div class="theme-hot__title mt-3">
-                    Sản phẩm 1
-                </div>
-                <span>Bộ sưu tập hàng cao cấp</span>
-                <a href="productDetail?action=viewDetail&id=1" class="btn-theme">Khám phá ngay</a>
-            </div>
-            <div class="theme-hot__item">
-                <div class="box-img">
-                    <img src="public/images/products/" alt="">
-                </div>
-                <div class="theme-hot__title mt-3">
-                    Sản phẩm 1
-                </div>
-                <span>Bộ sưu tập hàng cao cấp</span>
-                <a href="productDetail?action=viewDetail&id=1" class="btn-theme">Khám phá ngay</a>
-            </div>
-            <div class="theme-hot__item">
-                <div class="box-img">
-                    <img src="public/images/products/" alt="">
-                </div>
-                <div class="theme-hot__title mt-3">
-                    Sản phẩm 1
-                </div>
-                <span>Bộ sưu tập hàng cao cấp</span>
-                <a href="productDetail?action=viewDetail&id=1" class="btn-theme">Khám phá ngay</a>
-            </div>
+            @endforeach
         </div>
         <!-- end theme hot -->
         <div class="product-news">
@@ -66,75 +47,33 @@
                     mới: 10+ sản phẩm mới hàng ngày
                 </div>
                 <!-- <div class="toggle-filter " style="display: flex;align-items: center;">
-                    <span class="pb-2 pr-3">Nam</span>
-                    <div class="ckbx-style-8">
-                        <input type="checkbox" id="filter_new" value="0" name="ckbx-style-8">
-                        <label for="filter_new"></label>
-                    </div>
-                    <span class="pb-2 pl-4">Nữ</span>
-                </div> -->
+                            <span class="pb-2 pr-3">Nam</span>
+                            <div class="ckbx-style-8">
+                                <input type="checkbox" id="filter_new" value="0" name="ckbx-style-8">
+                                <label for="filter_new"></label>
+                            </div>
+                            <span class="pb-2 pl-4">Nữ</span>
+                        </div> -->
             </div>
             <div class="slick__slider">
 
                 <div class="pro-news-slider slide-news" id="slide-top-pros">
 
-                    <a href="productDetail?action=viewDetail&id=1" class="pro-news-item">
-                        <img src="public/images/products/1" alt="">
-                        <div class="">
-                            <div class="pro-name bg-white pt-2 text-center">
-                                Sản phẩm 1
+                    @foreach ($productsNew as $pro)
+                        <a href="{{ route('client.shop.detail', ['slug' => $pro->slug, 'id' => $pro->id]) }}"
+                            class="pro-news-item">
+                            <img src="{{ asset('uploads') }}/{{ $pro->avatar }}" alt="">
+                            <div class="">
+                                <div class="pro-name bg-white pt-2 text-center">
+                                    {{ $pro->name }}
+                                </div>
+                                <div class="pro-des bg-white">
+                                    <span> {{ number_format($pro->price - $pro->discount, 0, ',') }}</span>
+                                </div>
                             </div>
-                            <div class="pro-des bg-white">
-                                <span> 100000</span>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="productDetail?action=viewDetail&id=1" class="pro-news-item">
-                        <img src="public/images/products/1" alt="">
-                        <div class="">
-                            <div class="pro-name bg-white pt-2 text-center">
-                                Sản phẩm 1
-                            </div>
-                            <div class="pro-des bg-white">
-                                <span> 100000</span>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="productDetail?action=viewDetail&id=1" class="pro-news-item">
-                        <img src="public/images/products/1" alt="">
-                        <div class="">
-                            <div class="pro-name bg-white pt-2 text-center">
-                                Sản phẩm 1
-                            </div>
-                            <div class="pro-des bg-white">
-                                <span> 100000</span>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="productDetail?action=viewDetail&id=1" class="pro-news-item">
-                        <img src="public/images/products/1" alt="">
-                        <div class="">
-                            <div class="pro-name bg-white pt-2 text-center">
-                                Sản phẩm 1
-                            </div>
-                            <div class="pro-des bg-white">
-                                <span> 100000</span>
-                            </div>
-                        </div>
-                    </a>
-                    <a href="productDetail?action=viewDetail&id=1" class="pro-news-item">
-                        <img src="public/images/products/1" alt="">
-                        <div class="">
-                            <div class="pro-name bg-white pt-2 text-center">
-                                Sản phẩm 1
-                            </div>
-                            <div class="pro-des bg-white">
-                                <span> 100000</span>
-                            </div>
-                        </div>
-                    </a>
+                        </a>
+                    @endforeach
                 </div>
-
             </div>
 
         </div>
@@ -153,7 +92,7 @@
 
                     </a>
                     <div class="pro-name">
-                       pro name
+                        pro name
                     </div>
                     <span><?= substr('bl abl short desc', 0, 200) ?></span>
                     <a href="newsClient?action=viewDetail&id=" class="btn-discover mt-2">
@@ -186,28 +125,31 @@
                     Đang là xu hướng
                 </div>
                 <!-- <div class="toggle-filter " style="display: flex;align-items: center;">
-                    <span class="pb-2 pr-3">Nam</span>
-                    <div class="ckbx-style-8">
-                        <input type="checkbox" id="trending" value="0" name="ckbx-style-8">
-                        <label for="trending"></label>
-                    </div>
-                    <span class="pb-2 pl-4">Nữ</span>
-                </div> -->
+                            <span class="pb-2 pr-3">Nam</span>
+                            <div class="ckbx-style-8">
+                                <input type="checkbox" id="trending" value="0" name="ckbx-style-8">
+                                <label for="trending"></label>
+                            </div>
+                            <span class="pb-2 pl-4">Nữ</span>
+                        </div> -->
             </div>
             <!-- xu hướng -->
             <div class="slick__slider">
                 <div class="pro-news-slider slide-news" id="slide-trending">
 
-                    {{-- loop top view --}}
-                    <a href="productDetail?action=viewDetail&id=" class="pro-news-item">
-                        <img src="public/images/products/" alt="">
-                        <div class="pro-name bg-white pt-2 text-center">
-                            pro name
-                        </div>
-                        <div class="pro-des bg-white">
-                            <?= substr('desc', 0, 25) . '...' ?>
-                        </div>
-                    </a>
+                    @foreach ($productsTopView as $pro)
+                        {{-- loop top view --}}
+                        <a href="{{ route('client.shop.detail', ['slug' => $pro->slug, 'id' => $pro->id]) }}"
+                            class="pro-news-item">
+                            <img src="{{ asset('uploads') }}/{{ $pro->avatar }}" alt="">
+                            <div class="pro-name bg-white pt-2 text-center">
+                                {{ $pro->name }}
+                            </div>
+                            <div class="pro-des bg-white">
+                                <?= substr($pro->description, 0, 25) . '...' ?>
+                            </div>
+                        </a>
+                    @endforeach
 
                 </div>
             </div>
@@ -238,7 +180,7 @@
             <!-- album -->
             <div class="slick__slider">
                 <div class="slider-album__content pb-3">
-                    <a href="albumClient#lg=1&slide=0" class="album_link">
+                    <a href="{{ route('client.social') }}#lg=1&slide=0" class="album_link">
                         <div class="album__overlay">
                             <div class="album__overlay_icon">
                                 <i class="fab fa-twitter"></i>
@@ -248,11 +190,11 @@
                             </div>
                         </div>
                         <div class="slider_album_boxImg">
-                            <img src="./public/images/album/1.jpg" alt="">
+                            <img src="{{ asset('assets/images/album/1.jpg') }}" alt="">
                         </div>
 
                     </a>
-                    <a href="albumClient#lg=1&slide=2" class="album_link">
+                    <a href="{{ route('client.social') }}#lg=1&slide=2" class="album_link">
                         <div class="album__overlay">
                             <div class="album__overlay_icon">
                                 <i class="fab fa-instagram"></i>
@@ -262,11 +204,11 @@
                             </div>
                         </div>
                         <div class="slider_album_boxImg">
-                            <img src="./public/images/album/3.jpg" alt="">
+                            <img src="{{ asset('assets/images/album/3.jpg') }}" alt="">
                         </div>
 
                     </a>
-                    <a href="albumClient#lg=1&slide=3" class="album_link">
+                    <a href="{{ route('client.social') }}#lg=1&slide=3" class="album_link">
                         <div class="album__overlay">
                             <div class="album__overlay_icon">
                                 <i class="fab fa-facebook"></i>
@@ -276,10 +218,10 @@
                             </div>
                         </div>
                         <div class="slider_album_boxImg">
-                            <img src="./public/images/album/4.jpg" alt="">
+                            <img src="{{ asset('assets/images/album/4.jpg') }}" alt="">
                         </div>
                     </a>
-                    <a href="albumClient#lg=1&slide=11" class="album_link">
+                    <a href="{{ route('client.social') }}#lg=1&slide=11" class="album_link">
                         <div class="album__overlay">
                             <div class="album__overlay_icon">
                                 <i class="fab fa-facebook"></i>
@@ -289,10 +231,10 @@
                             </div>
                         </div>
                         <div class="slider_album_boxImg">
-                            <img src="./public/images/album/12.jpg" alt="">
+                            <img src="{{ asset('assets/images/album/12.jpg') }}" alt="">
                         </div>
                     </a>
-                    <a href="albumClient#lg=1&slide=1" class="album_link">
+                    <a href="{{ route('client.social') }}#lg=1&slide=1" class="album_link">
                         <div class="album__overlay">
                             <div class="album__overlay_icon">
                                 <i class="fab fa-twitter"></i>
@@ -302,10 +244,10 @@
                             </div>
                         </div>
                         <div class="slider_album_boxImg">
-                            <img src="./public/images/album/2.jpg" alt="">
+                            <img src="{{ asset('assets/images/album/2.jpg') }}" alt="">
                         </div>
                     </a>
-                    <a href="albumClient#lg=1&slide=8" class="album_link">
+                    <a href="{{ route('client.social') }}#lg=1&slide=8" class="album_link">
                         <div class="album__overlay">
                             <div class="album__overlay_icon">
                                 <i class="fab fa-facebook"></i>
@@ -315,10 +257,10 @@
                             </div>
                         </div>
                         <div class="slider_album_boxImg">
-                            <img src="./public/images/album/15.jpg" alt="">
+                            <img src="{{ asset('assets/images/album/15.jpg') }}" alt="">
                         </div>
                     </a>
-                    <a href="albumClient#lg=1&slide=15" class="album_link">
+                    <a href="{{ route('client.social') }}#lg=1&slide=15" class="album_link">
                         <div class="album__overlay">
                             <div class="album__overlay_icon">
                                 <i class="fab fa-twitter"></i>
@@ -328,10 +270,10 @@
                             </div>
                         </div>
                         <div class="slider_album_boxImg">
-                            <img src="./public/images/album/17.jpg" alt="">
+                            <img src="{{ asset('assets/images/album/17.jpg') }}" alt="">
                         </div>
                     </a>
-                    <a href="albumClient#lg=1&slide=17" class="album_link">
+                    <a href="{{ route('client.social') }}#lg=1&slide=17" class="album_link">
                         <div class="album__overlay">
                             <div class="album__overlay_icon">
                                 <i class="fab fa-facebook"></i>
@@ -341,10 +283,10 @@
                             </div>
                         </div>
                         <div class="slider_album_boxImg">
-                            <img src="./public/images/album/19.jpg" alt="">
+                            <img src="{{ asset('assets/images/album/19.jpg') }}" alt="">
                         </div>
                     </a>
-                    <a href="albumClient#lg=1&slide=16" class="album_link">
+                    <a href="{{ route('client.social') }}#lg=1&slide=16" class="album_link">
                         <div class="album__overlay">
                             <div class="album__overlay_icon">
                                 <i class="fab fa-instagram"></i>
@@ -354,10 +296,10 @@
                             </div>
                         </div>
                         <div class="slider_album_boxImg">
-                            <img src="./public/images/album/18.jpg" alt="">
+                            <img src="{{ asset('assets/images/album/18.jpg') }}" alt="">
                         </div>
                     </a>
-                    <a href="albumClient#lg=1&slide=10" class="album_link">
+                    <a href="{{ route('client.social') }}#lg=1&slide=10" class="album_link">
                         <div class="album__overlay">
                             <div class="album__overlay_icon">
                                 <i class="fab fa-instagram"></i>
@@ -367,28 +309,28 @@
                             </div>
                         </div>
                         <div class="slider_album_boxImg">
-                            <img src="./public/images/album/11.jpg" alt="">
+                            <img src="{{ asset('assets/images/album/11.jpg') }}" alt="">
                         </div>
                     </a>
                 </div>
             </div>
-            <a href="albumClient" class="album-button ">
+            <a href="{{ route('client.social') }}" class="album-button ">
                 Xem thư viện
             </a>
         </div>
         <!-- end slide album -->
         <div class="press-bar">
             <a href="">
-                <img src="public/images/layout/soompi.png" alt="">
+                <img src="{{ asset('assets') }}/images/layout/soompi.png" alt="">
             </a>
             <a href="">
-                <img src="public/images/layout/buzzfeed.png" alt="">
+                <img src="{{ asset('assets') }}/images/layout/buzzfeed.png" alt="">
             </a>
             <a href="">
-                <img src="public/images/layout/klog.png" alt="">
+                <img src="{{ asset('assets') }}/images/layout/klog.png" alt="">
             </a>
             <a href="">
-                <img src="public/images/layout/chinabrands.png" alt="">
+                <img src="{{ asset('assets') }}/images/layout/chinabrands.png" alt="">
             </a>
         </div>
         <!-- end press -->

@@ -21,10 +21,10 @@ class ProductController extends Controller
         if ($categorySlug) {
             $categoryExist = Category::where('slug', $categorySlug)->first();
             if ($categoryExist) {
-                $pageTitle = "'".$categoryExist->name."'";
+                $pageTitle = "'" . $categoryExist->name . "'";
                 $products = $products
-                ->join('categories','products.category_id','categories.id')
-                ->where('categories.slug', $categorySlug);
+                    ->join('categories', 'products.category_id', 'categories.id')
+                    ->where('categories.slug', $categorySlug);
             }
         }
 
@@ -45,13 +45,13 @@ class ProductController extends Controller
         }
 
         // filter price
-        if($request->min_price && $request->max_price){
-            
-            $products = $products->whereBetween('price',[(int)$request->min_price,(int)$request->max_price]);
+        if ($request->min_price && $request->max_price) {
+
+            $products = $products->whereBetween('price', [(int)$request->min_price, (int)$request->max_price]);
         }
 
         // get by category
-        $products = $products->where('products.status','!=','0')->orderBy('products.id', 'desc')->paginate(20);
+        $products = $products->where('products.status', '!=', '0')->orderBy('products.id', 'desc')->paginate(20);
         // dd($products->lastPage());
         return view('client.shop.list', compact('products', 'pageTitle'));
     }
@@ -60,13 +60,21 @@ class ProductController extends Controller
 
 
     // page detail product
-    public function show(Request $request, $slug,$id)
+    public function show(Request $request, $slug, $id)
     {
-        $product = Product::where('slug', $slug)->where('products.status','!=','0')->first();
+        $product = Product::where('slug', $slug)->where('products.status', '!=', '0')->first();
         if ($product) {
+
+            // relate pro
+            $relatePros = Product::where('category_id',$product->category_id)
+                                    ->where('id','!=',$id)
+                                    ->where('status','!=',0)->get();
+            // increment view
+            $product->increment('view',1);
+
             $product_id  = $product->id;
 
-            return view('client.shop.detail', compact('product','product_id'));
+            return view('client.shop.detail', compact('product', 'product_id','relatePros'));
         }
         return redirect(route('404'));
     }

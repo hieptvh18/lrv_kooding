@@ -9,7 +9,11 @@
         </div>
 
         {{-- 2 case login or session --}}
-
+        @if (session('msg-suc'))
+            <div class="bg-success text-light p-2">{{ session('msg-suc') }}</div>
+        @elseif (session('msg-er'))
+            <div class="bg-danger text-light p-2">{{ session('msg-er') }}</div>
+        @endif
         @if (session('carts') && count(session('carts')) != 0)
             <div class="cart__content">
                 <div class="cart__checkout">
@@ -20,17 +24,19 @@
                     </div>
                     <div class="cart__checkout__content">
                         <ul class="cart__items">
-
+                            @php
+                                $total = 0;
+                            @endphp
                             @foreach (session('carts') as $key => $item)
                                 @php
-                                    $total = 0;
                                     $thanhtien = $item['price'] * $item['quantity'];
                                 @endphp
                                 <li class="ci__wrap">
                                     <div class="ci__wrap__content">
                                         <div class="cart__left">
                                             <div class="cart__left__img">
-                                                <a href="{{route('client.shop.detail',['slug'=>$item['slug'],'id'=>$item['product_id']])}}">
+                                                <a
+                                                    href="{{ route('client.shop.detail', ['slug' => $item['slug'], 'id' => $item['product_id']]) }}">
                                                     <img src="{{ asset('uploads') }}/{{ $item['avatar'] }}" alt=""
                                                         width="100%"></a>
                                             </div>
@@ -47,13 +53,16 @@
                                             </div>
                                         </div>
                                         <div class="cart__quanty">
-                                            <form action="" method="POST">
-                                                <input type="hidden" name="action" value="update_cart">
+                                            <form action="{{route('client.cart.update')}}" method="POST">
+                                                @csrf
+                                                @method('put')
                                                 <input type="hidden" name="id" value="{{ $item['id'] }}">
                                                 <input type="hidden" name="product_id" value="{{ $item['product_id'] }}">
+                                                <input type="hidden" name="color_id" value="{{ $item['color_id'] }}">
+                                                <input type="hidden" name="size_id" value="{{ $item['size_id'] }}">
                                                 <input type="number" name="quantity" min="1" step="0"
                                                     value="{{ $item['quantity'] }}">
-                                                <button type="submit" class="btn btn-info"><i class="fa fa-refresh"
+                                                <button type="submit" class="btn btn-info btn-sm"><i class="fa fa-refresh"
                                                         aria-hidden="true"></i>
                                                 </button>
                                             </form>
@@ -63,7 +72,16 @@
                                         </div>
                                     </div>
                                     <div class="cart__remove">
-                                        <a href="" class="text-danger">Xóa</a>
+                                        <a href="{{ route('client.cart.remove', $item['id']) }}" onclick="
+                                                    event.preventDefault();
+                                                    document.forms['formFakeRemoveCart'].submit();
+                                                " class="text-danger">Xóa</a>
+                                        {{-- form fake --}}
+                                        <form action="{{ route('client.cart.remove', $item['id']) }}"
+                                            name="formFakeRemoveCart" method="post">
+                                            @csrf
+                                            @method('delete')
+                                        </form>
                                     </div>
                                 </li>
                                 @php
@@ -109,12 +127,12 @@
                     @foreach ($recommened as $item)
                         <div class="cart__item">
                             <div class="cart__item__img">
-                                <a href="{{route('client.shop.detail',['slug'=>$item->slug,'id'=>$item->id])}}">
-                                    <img src="{{asset('uploads')}}/{{$item->avatar}}" alt="" width="100%">
+                                <a href="{{ route('client.shop.detail', ['slug' => $item->slug, 'id' => $item->id]) }}">
+                                    <img src="{{ asset('uploads') }}/{{ $item->avatar }}" alt="" width="100%">
                                 </a>
                             </div>
                             <div class="cart__item__Name">
-                                <p>{{$item->name}}</p>
+                                <p>{{ $item->name }}</p>
                             </div>
                             <div class="cart__item__PC">
                                 <div class="cart__item__price">
@@ -122,7 +140,7 @@
                                 </div>
                                 <div class="cart__item__color">
 
-                                    <img src="{{asset('assets/images/layout/colorwheel-2.png')}}" alt="">
+                                    <img src="{{ asset('assets/images/layout/colorwheel-2.png') }}" alt="">
                                 </div>
                             </div>
                         </div>
@@ -137,7 +155,7 @@
                     <a href="{{ route('client.shop') }}" class="text-primary text-center">Mua sắm ngay</a>
                 </div>
                 <div class="">
-                    <img src="./public/images/layout/empty-orders.jpg" alt="">
+                    <img src="{{asset('assets/images/layout/empty-orders.jpg')}}" alt="">
                 </div>
             </div>
         @endif

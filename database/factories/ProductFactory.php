@@ -22,7 +22,7 @@ class ProductFactory extends Factory
             'name'=>$this->faker->name(),
             "slug"=>Str::slug($this->faker->name()),
             "category_id"=>$this->faker->numberBetween(1,3),
-            "price"=>$this->faker->numerify(),
+            "price"=>$this->faker->numberBetween(1000,10000000),
             "discount"=>1000,
             "brand_id"=>$this->faker->numberBetween(1,5),
             "avatar"=>$this->faker->image(),

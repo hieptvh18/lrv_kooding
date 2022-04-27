@@ -50,12 +50,17 @@ Route::middleware(['all.checkExpiry'])->group(function () {
     // cart
     Route::get('cart',[CartController::class,'index'])->name('client.cart');
     Route::post('add-to-cart',[CartController::class,'add'])->name('client.cart.add');
+    Route::delete('remove-cart/{id}',[CartController::class,'remove'])->name('client.cart.remove');
+    Route::put('update-cart',[CartController::class,'update'])->name('client.cart.update');
 
     // social
     Route::get('/social',function(){
         return view('client.pages.album');
     })->name('client.social');
 
+    Route::get('terms-of-use',function(){
+        return view('client.pages.termsofuse');
+    })->name('client.termsofuse');
 
     // ===============ROUTE ADMIN===================
 

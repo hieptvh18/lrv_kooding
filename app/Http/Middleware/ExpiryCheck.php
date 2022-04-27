@@ -34,6 +34,12 @@ class ExpiryCheck
         }
 
         // product status
+        foreach($products as $product){
+            if($product->quantity == 0){
+                $product->status = 0;
+                $product->save();
+            }
+        }
 
         return $next($request);
     }

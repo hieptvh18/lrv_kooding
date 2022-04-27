@@ -206,8 +206,12 @@
                     <a href="{{route('client.cart')}}" class="cart">
                         <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                     </a>
-                    <div class="notifi">
-                        1
+                    <div class="notifi notifi-cart">
+                        @if (session('carts'))
+                        {{count(session('carts'))}}
+                        @else
+                        0
+                        @endif
                     </div>
                     <!-- start popup-cart -->
                     {{-- <div class="pop-cart">

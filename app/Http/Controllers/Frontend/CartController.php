@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
-use App\Models\Cart;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Illuminate\Support\Facades\DB;
+use App\Models\Stock;
 
 class CartController extends Controller
 {
@@ -16,8 +16,11 @@ class CartController extends Controller
     public function index()
     {
         // get recommend radom
-        $recommened = Product::inRandomOrder()->limit(15)->get();
-        return view('client.cart.cart',compact('recommened'));
+        $recommened = Product::inRandomOrder()->where('status','!=',0)->limit(15)->get();
+
+        // check 
+
+        return view('client.cart.cart', compact('recommened'));
     }
 
     // action add to cart(use session)
@@ -29,57 +32,37 @@ class CartController extends Controller
         $size = $request->size_id;
         $quantity = (int)$request->quantity;
 
-        if (Auth::check()) {
+        $item = [
+            'id' => 1,
+            'product_id' => $request->product_id,
+            'color_id' => $color,
+            'size_id' => $size,
+            'price' => (int)$product['price'],
+            'dicount' => (int)$product['discount'],
+            'avatar' => $product['avatar'],
+            'slug' => $product['slug'],
+            'quantity' => $quantity,
+        ];
 
-            if(session()->has('carts')){
-                session()->pull('carts');
-            }
+        // check session cart exist != null
+        if ($request->session()->has('carts')) {
 
-            //    save cart to database
-            $cartUser = Cart::where('user_id', Auth::user()->id)->first();
+            $cartData = session('carts');
+            // check trung bien the or khac
+            foreach ($cartData as $key => $cart) {
+                if ($cart['product_id'] == $request->product_id && $cart['color_id'] == $color && $cart['size_id'] == $size) {
+                    $cartData[$key]['quantity'] += $quantity;
 
-            if ($cartUser) {
-                // case trung bien the
-                foreach ($cartUser as $key => $cart) {
-                    if ($cart->product_id == $request->product_id && $cart->color_id == $color && $cart->size_id == $size) {
-                        Cart::find($cart->id)->increment('quantity', $quantity);
-                        return 'da login! ton tai cart va trung bien the nen tang slg!';
-                    }
+                    // set lai session voi slg moi dc them
+                    session()->pull('carts');
+                    session()->put('carts', $cartData);
+                    return session('carts');
                 }
-
-                // case k trung thi add new item
-                $cart = new Cart();
-                $cart->user_id = Auth::user()->id;
-                $cart->product_id = $request->product_id;
-                $cart->color_id = $color;
-                $cart->size_id = $size;
-                $cart->quantity = $quantity;
-                $save = $cart->save();
-                if ($save) {
-                    return 'da login -> luu thanh cong vao database!';
-                }
-                return 'da login -> luu khong thanh cong vao database!';
             }
-            $cart = new Cart();
-            $cart->user_id = Auth::user()->id;
-            $cart->color_id = $color;
-            $cart->color_id = $size;
-            $cart->product_id = $request->product_id;
-            $cart->price = (int)$product['price'];
-            $cart->discount = (int)$product['discount'];
-            $cart->avatar = $product['avatar'];
-            $cart->quantity = $quantity;
-            $save = $cart->save();
-            if ($save) {
-                return 'da login -> luu thanh cong vao database!';
-            }
-            return 'da login -> luu khong thanh cong vao database!';
 
-        } else {
-            // not login => save cart to session
-            // return $request->session()->pull('carts');
+            // != => add new item
             $item = [
-                'id' => 1,
+                "id" => count(session('carts')) + 1,
                 'product_id' => $request->product_id,
                 'color_id' => $color,
                 'size_id' => $size,
@@ -90,48 +73,56 @@ class CartController extends Controller
                 'quantity' => $quantity,
             ];
 
-            // check session cart exist != null
-            if ($request->session()->has('carts')) {
+            $request->session()->push('carts', $item);
+            return session('carts');
+        } else {
 
-                $cartData = session('carts');
-                // check trung bien the or khac
-                foreach ($cartData as $key => $cart) {
-                    if ($cart['product_id'] == $request->product_id && $cart['color_id'] == $color && $cart['size_id'] == $size) {
-                        $cartData[$key]['quantity'] += $quantity;
-
-                        // set lai session voi slg moi dc them
-                        session()->pull('carts');
-                        session()->put('carts',$cartData);
-                        return 'chua login! da ton tai session cart va trung bien the nen tang so luong';
-                    }
-                }
-
-                // != => add new item
-                $item = [
-                    "id"=>count(session('carts')) + 1,
-                    'product_id' => $request->product_id,
-                    'color_id' => $color,
-                    'size_id' => $size,
-                    'price' => (int)$product['price'],
-                    'dicount' => (int)$product['discount'],
-                    'avatar' => $product['avatar'],
-                    'slug' => $product['slug'],
-                    'quantity' => $quantity,
-                ];
-
-                $request->session()->push('carts', $item);
-                return 'chua login ! ton tai session va k trung bien the nen add new item';
-            } else {
-
-                // add new carts    
-                $request->session()->put('carts', [$item]);
-                return 'them moi item vao mang cart chua co san thanh cong';
-            }
+            // add new carts    
+            $request->session()->put('carts', [$item]);
+            return session('carts');
         }
     }
 
     // update qty item cart
-    public function updateQuantity()
+    public function update(Request $request)
     {
+        if(session('carts')){
+            // check qty con lai
+            $qtyExist = Stock::where('pro_id',$request->product_id)
+                                ->where('color_id',$request->color_id)
+                                ->where('size_id',$request->size_id)->first();
+
+            if($request->quantity > $qtyExist->quantity){
+                return redirect(route('client.cart'))->with('msg-er','Cập nhật số lượng không thành công do sản phẩm không đủ số lượng bạn cần!');
+            }
+
+            $cartData = session('carts');
+            foreach($cartData as $key=>$val){
+                if($val['id'] == $request->id){
+                    $cartData[$key]['quantity'] = $request->quantity;
+                    session()->pull('carts');
+                    session()->put('carts',$cartData);
+                    break;
+                }
+            }
+            return redirect(route('client.cart'))->with('msg-suc','Cập nhật thành công item');
+        }
+
+    }
+
+    // remove item cart
+    public function remove($id){
+        if(session('carts')){
+            $cartData = session('carts');
+            foreach($cartData as $key=>$val){
+                if($val['id'] == $id){
+                    unset($cartData[$key]);
+                    session()->pull('carts');
+                    session()->put('carts',$cartData);
+                    break;
+                }
+            }
+            return redirect(route('client.cart'))->with('msg-suc','Xóa thành công item khỏi giỏ hàng');
+        }
     }
 }

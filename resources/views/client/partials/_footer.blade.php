@@ -47,7 +47,7 @@
                 <div class="footer-title text-title">
                     Quốc gia
                 </div>
-                <a href=""><img src="public/images/layout/vietnam.png" alt="" width="50px"></a>
+                <a href=""><img src="{{asset('assets')}}/images/layout/vietnam.png" alt="" width="50px"></a>
 
             </div>
         </div>
@@ -56,9 +56,9 @@
                 KOODING.com &copy; 2021 . All rights reserved
             </div>
             <div class="right">
-                <a href="checkoutClient?action=viewdieukhoan">Điều khoản sử dụng</a>
-                <a href="checkoutClient?action=viewdieukhoan">Chính sách bảo mật</a>
-                <a href="checkoutClient?action=viewdieukhoan">
+                <a href="{{route('client.termsofuse')}}">Điều khoản sử dụng</a>
+                <a href="{{route('client.termsofuse')}}">Chính sách bảo mật</a>
+                <a href="{{route('client.termsofuse')}}">
                     <i class="fa fa-universal-access" aria-hidden="true"></i>
                     Hiển thị Công cụ Hỗ trợ Tiếp cận</a>
             </div>
