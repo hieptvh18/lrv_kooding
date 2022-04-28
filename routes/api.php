@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\ProductController;
 
 use App\Http\Controllers\Api\AjaxController;
 use App\Http\Controllers\Api\StockController;
+use App\Http\Controllers\Api\VnpayController;
 use App\Models\Role;
 use App\Models\Stock;
 
@@ -44,5 +45,18 @@ Route::get('get-vouchers',[VoucherController::class,'index'])->name('api.voucher
 Route::get('find-one-product/{id}',[ProductController::class,'findOne'])->name('api.product.findOne');
 // stock
 Route::get('get-stocks/{productId}',[StockController::class,'getByProductId'])->name('api.stock.all');
+
+// render geography checkout
+Route::post('get-geography',[AjaxController::class,'renderGeography'])->name('api.renderGeography');
+
+// paypal
+Route::get('create-transaction-paypal', [PayPalController::class, 'createTransaction'])->name('createTransaction');
+Route::get('process-transaction-paypal', [PayPalController::class, 'processTransaction'])->name('processTransaction');
+Route::get('success-transaction-paypal', [PayPalController::class, 'successTransaction'])->name('successTransaction');
+Route::get('cancel-transaction-paypal', [PayPalController::class, 'cancelTransaction'])->name('cancelTransaction');
+
+// vnpay
+Route::get('payment_vnpay',[VnpayController::class,'create'])->name('api.payment_vnpay');
+
 
 

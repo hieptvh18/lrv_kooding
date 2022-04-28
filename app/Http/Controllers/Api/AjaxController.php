@@ -8,7 +8,9 @@ use Illuminate\Http\Request;
 use App\Models\AttributeValue;
 use App\Models\Attribute;
 use App\Models\Category;
-use App\Models\CateAttribute;
+use App\Models\Province;
+use App\Models\District;
+use App\Models\Ward;
 use App\Models\Voucher;
 use App\Models\Product;
 
@@ -58,7 +60,7 @@ class AjaxController extends Controller
     }
 
     // ajax.changeStatusProduct'
-    public function changeStatusProduct(Request $request) : int
+    public function changeStatusProduct(Request $request): int
     {
         if ($request->ajax()) {
             $productUpdate = Product::find($request->proId);
@@ -67,5 +69,37 @@ class AjaxController extends Controller
             return 1;
         }
         return 0;
+    }
+
+    // render tinh thanh viet nam in checkout
+    public function renderGeography(Request $request)
+    {
+        if ($request->ajax()) {
+
+            // render district
+            if ($request->provinceId) {
+                $districts = District::where('provinceid', "$request->provinceId")->get();
+                $html = '<option selected disabled>----Chọn quận huyện----</option>';
+                foreach ($districts as $val) {
+                    $html .= '
+                    <option value="' . $val->districtid . '">' . $val->name . '</option>
+                ';
+                }
+                return $html;
+            }
+
+            // render ward
+            if ($request->districtId) {
+                $wards = Ward::where('districtid', "$request->districtId")->get();
+                $html = '<option selected disabled>----Chọn phường xã----</option>';
+                foreach ($wards as  $val) {
+                    $html .= '
+                            <option value="' . $val->wardid . '">' . $val->name . '</option>
+                        ';
+                }
+
+                return $html;
+            }
+        }
     }
 }

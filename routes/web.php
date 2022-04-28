@@ -21,6 +21,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Backend\UserController;
 use App\Http\Controllers\Frontend\CartController;
+use App\Http\Controllers\Frontend\CheckoutController;
 
 // check hạn sử dụng voucher + slg sản phẩm -> status
 Route::middleware(['all.checkExpiry'])->group(function () {
@@ -30,9 +31,6 @@ Route::middleware(['all.checkExpiry'])->group(function () {
 
         Route::get('login', [LoginController::class, 'showLoginForm'])->name('auth.loginForm');
     });
-
-
-    // Google Sign In
 
     // =================ROUTE CLIENT===============
 
@@ -53,6 +51,10 @@ Route::middleware(['all.checkExpiry'])->group(function () {
     Route::delete('remove-cart/{id}',[CartController::class,'remove'])->name('client.cart.remove');
     Route::put('update-cart',[CartController::class,'update'])->name('client.cart.update');
 
+    // checkout
+    Route::get('checkout',[CheckoutController::class,'index'])->name('client.checkout')->middleware('auth');
+    Route::post('checkout',[CheckoutController::class,'handleCheckout'])->name('client.handleCheckout')->middleware('auth');
+
     // social
     Route::get('/social',function(){
         return view('client.pages.album');
@@ -63,7 +65,6 @@ Route::middleware(['all.checkExpiry'])->group(function () {
     })->name('client.termsofuse');
 
     // ===============ROUTE ADMIN===================
-
     Route::prefix('admin')->middleware(['auth', 'auth.admin'])->group(function () {
 
         // dashboard

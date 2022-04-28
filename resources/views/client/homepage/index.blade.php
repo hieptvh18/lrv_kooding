@@ -8,12 +8,12 @@
         <div class="banner single-item">
             <div class="banner-item">
                 <div class="banner_imgBox">
-                    <img src="public/images/categories/1" alt="" width="100%">
+                    <img src="{{asset('assets/images/categories/5f3c3ce98d1c4e3e07ab5ebc4126a3cbdb33aadb.jpg')}}" alt="" width="100%">
                 </div>
             </div>
             <div class="banner-item">
                 <div class="banner_imgBox">
-                    <img src="public/images/categories/1" alt="" width="100%">
+                    <img src="{{asset('assets/images/categories/f832067d261414c34f337dd8765c9fa539649c82.jpg')}}" alt="" width="100%">
                 </div>
             </div>
         </div>

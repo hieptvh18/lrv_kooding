@@ -364,6 +364,7 @@
                                         showSuccess();
                                             console.log(data);
                                             $('.notifi-cart').html(data.length);
+
                                             $('.btnAddCart').html('Đã thêm vào giỏ hàng!');
                                             $('.btnAddCart').attr('disabled',true);
                                             $('.btnAddCart').addClass('btn-exist-cart');

@@ -51,3 +51,16 @@ $("#form_vourcher").validate({
       form.submit();
     }
  });
+
+ $('#checkout').validate({
+     rules:{
+         agree: {
+            required:true
+         }
+     },
+     messages:{
+         agree:{
+             required:'Bạn phải chấp nhận điều khoản của chúng tôi!'
+         }
+     }
+ })

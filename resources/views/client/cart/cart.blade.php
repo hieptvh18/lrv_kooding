@@ -29,7 +29,7 @@
                             @endphp
                             @foreach (session('carts') as $key => $item)
                                 @php
-                                    $thanhtien = $item['price'] * $item['quantity'];
+                                    $thanhtien = ($item['price'] - $item['discount']) * $item['quantity'];
                                 @endphp
                                 <li class="ci__wrap">
                                     <div class="ci__wrap__content">
@@ -68,7 +68,7 @@
                                             </form>
                                         </div>
                                         <div class="cart__price">
-                                            <span>{{ number_format($thanhtien, 0, ',') }}đ</span>
+                                            <span>{{ number_format($item['price'] - $item['discount'], 0, ',') }}đ</span>
                                         </div>
                                     </div>
                                     <div class="cart__remove">
@@ -105,7 +105,7 @@
                             </div>
                         </div>
                         <div class="cart__btn__order">
-                            <a href="checkoutClient?action=checkout">
+                            <a href="{{route('client.checkout')}}">
                                 <button type="button">Thủ tục thanh toán</button>
                             </a>
                         </div>
