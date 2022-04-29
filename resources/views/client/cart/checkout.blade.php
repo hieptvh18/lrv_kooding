@@ -83,7 +83,7 @@
                     </div>
                     <div class="address">
                         <label for="">Số điện thoại</label>
-                        <input name="phone" value="{{old('phone')}}" type="text">
+                        <input name="phone" value="{{ old('phone') }}" type="text">
                         <label for="phone" class="error" style="display: none;"></label>
 
                     </div>
@@ -119,7 +119,8 @@
                             </div>
                             @php $total += $tt;@endphp
                         @endforeach
-                        <input type="hidden" name="total" value="{{ session('newPrice') ? session('newPrice') : $total }}">
+                        <input type="hidden" name="total"
+                            value="{{ session('newPrice') ? session('newPrice') : $total }}">
 
                         <div class="order__chage">
                             <a href="{{ route('client.cart') }}" class="text-primary">Chỉnh sửa giỏ hàng</a>
@@ -140,6 +141,16 @@
                                 hàng</label>
                         </div>
 
+
+                        <div class="order__bottom__item mt-3 d-flex align-items-center justify-content-between">
+                            <span> <input type="radio" name="method" id="method3" value="2"> <label class="m-0 pl-3"
+                                    for="method3">Thanh toán
+                                    Vnpay</label></span>
+                            <div>
+                                <img src="{{ asset('assets/images/layout/vnpay.png') }}" alt="" width="100px">
+                            </div>
+                        </div>
+
                         <div class="order__bottom__item mt-3 d-flex align-items-center justify-content-between">
                             <span> <input type="radio" name="method" id="method2" value="1"> <label class="m-0 pl-3"
                                     for="method2">Thanh toán
@@ -147,16 +158,6 @@
                             <div>
                                 {{-- <img src="{{ asset('assets/images/layout/paypal.png') }}" alt="" width="100px"> --}}
                                 <div id="paypal-button"></div>
-                            </div>
-                        </div>
-
-                        <div class="order__bottom__item mt-3 d-flex align-items-center justify-content-between">
-                            <span> <input type="radio" name="method" id="method3" value="1"> <label class="m-0 pl-3"
-                                    for="method3">Thanh toán
-                                    Vnpay</label></span>
-                            <div>
-                                <a href="{{ route('api.payment_vnpay') }}"><img
-                                        src="{{ asset('assets/images/layout/vnpay.png') }}" alt="" width="100px"></a>
                             </div>
                         </div>
 

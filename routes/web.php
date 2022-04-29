@@ -19,10 +19,13 @@ use  App\Http\Controllers\Backend\VoucherController;
 use App\Http\Controllers\Api\GoogleController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Backend\OrderController;
 use App\Http\Controllers\Backend\UserController;
 use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\ProfileController;
+
+use App\Http\Controllers\Backend\VnpayController;
 
 // check hạn sử dụng voucher + slg sản phẩm -> status
 Route::middleware(['all.checkExpiry'])->group(function () {
@@ -47,29 +50,34 @@ Route::middleware(['all.checkExpiry'])->group(function () {
     });
 
     // cart
-    Route::get('cart',[CartController::class,'index'])->name('client.cart');
-    Route::post('add-to-cart',[CartController::class,'add'])->name('client.cart.add');
-    Route::delete('remove-cart/{id}',[CartController::class,'remove'])->name('client.cart.remove');
-    Route::put('update-cart',[CartController::class,'update'])->name('client.cart.update');
+    Route::get('cart', [CartController::class, 'index'])->name('client.cart');
+    Route::post('add-to-cart', [CartController::class, 'add'])->name('client.cart.add');
+    Route::delete('remove-cart/{id}', [CartController::class, 'remove'])->name('client.cart.remove');
+    Route::put('update-cart', [CartController::class, 'update'])->name('client.cart.update');
 
     // checkout
-    Route::get('checkout',[CheckoutController::class,'index'])->name('client.checkout')->middleware('auth');
-    Route::get('dat-hang-thanh-cong',[CheckoutController::class,'resultCheckout'])->name('client.result-checkout')->middleware('auth');
-    Route::post('checkout',[CheckoutController::class,'handleCheckout'])->name('client.handleCheckout')->middleware('auth');
+    Route::get('checkout', [CheckoutController::class, 'index'])->name('client.checkout')->middleware('auth');
+    Route::get('dat-hang-thanh-cong', [CheckoutController::class, 'resultCheckout'])->name('client.result-checkout')->middleware('auth');
+    Route::post('checkout', [CheckoutController::class, 'handleCheckout'])->name('client.handleCheckout')->middleware('auth');
 
     // profile
-    Route::get('profile',[ProfileController::class,'index'])->name('client.profile');
-    Route::put('profile',[ProfileController::class,'updateProfile'])->name('client.updateProfile');
-    Route::post('change-password',[ProfileController::class,'changePassword'])->name('client.changePassword');
+    Route::get('profile', [ProfileController::class, 'index'])->name('client.profile');
+    Route::put('profile', [ProfileController::class, 'updateProfile'])->name('client.updateProfile');
+    Route::post('change-password', [ProfileController::class, 'changePassword'])->name('client.changePassword');
 
     // social
-    Route::get('/social',function(){
+    Route::get('/social', function () {
         return view('client.pages.album');
     })->name('client.social');
 
-    Route::get('terms-of-use',function(){
+    Route::get('terms-of-use', function () {
         return view('client.pages.termsofuse');
     })->name('client.termsofuse');
+
+    // api
+
+    // vnpay
+    Route::get('checkout/thanh-toan-thanh-cong', [CheckoutController::class, 'handlePaymentVnpay'])->name('payment.urlReturn');
 
     // ===============ROUTE ADMIN===================
     Route::prefix('admin')->middleware(['auth', 'auth.admin'])->group(function () {
@@ -119,6 +127,9 @@ Route::middleware(['all.checkExpiry'])->group(function () {
         Route::resource('voucher', VoucherController::class)->only([
             'index', 'destroy', 'store', 'update'
         ])->middleware(['auth.permission:admin']);
+
+        // order
+        Route::get('orders',[OrderController::class,'index'])->name('admin.order.index');
     });
 
     // ================errors================

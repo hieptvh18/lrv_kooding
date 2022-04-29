@@ -180,7 +180,7 @@
                             if(data == 1){
                                 window.location.reload();
                             }else{
-                                alert('Thay đổi trạng thái thất bại! vui lòng thử lại!');
+                                alert('Không thể thay đổi trạng thái active cho sản phẩm không tồn tại trong kho!');
                             }
                         },
                         error:function(er){

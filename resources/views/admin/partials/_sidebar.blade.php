@@ -54,7 +54,7 @@
         </li>
 
         <li class="nav-item">
-            <a class="nav-link" href="order">
+            <a class="nav-link" href="{{route('admin.order.index')}}">
                 <i class="fas fa-shipping-fast menu-icon"></i>
                 <span class="menu-title">Đơn hàng</span>
             </a>

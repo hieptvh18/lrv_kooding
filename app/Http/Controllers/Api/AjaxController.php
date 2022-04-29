@@ -13,6 +13,7 @@ use App\Models\District;
 use App\Models\Ward;
 use App\Models\Voucher;
 use App\Models\Product;
+use App\Models\Stock;
 
 class AjaxController extends Controller
 {
@@ -64,11 +65,17 @@ class AjaxController extends Controller
     {
         if ($request->ajax()) {
             $productUpdate = Product::find($request->proId);
+           
+            // check exist in stock
+            $productStock = Stock::where('pro_id', $productUpdate->id)->count();
+            if ($productStock == 0) {
+                return 0;
+            }
+
             $productUpdate->status = $request->status;
             $productUpdate->save();
             return 1;
         }
-        return 0;
     }
 
     // render tinh thanh viet nam in checkout

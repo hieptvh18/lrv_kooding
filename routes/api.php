@@ -56,7 +56,7 @@ Route::get('success-transaction-paypal', [PayPalController::class, 'successTrans
 Route::get('cancel-transaction-paypal', [PayPalController::class, 'cancelTransaction'])->name('cancelTransaction');
 
 // vnpay
-Route::get('payment_vnpay',[VnpayController::class,'create'])->name('api.payment_vnpay');
+Route::get('payment_vnpay', [VnpayController::class, 'create'])->name('api.payment.vnpay');
 
 
 

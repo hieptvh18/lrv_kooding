@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use App\Models\Voucher;
 use App\Models\Product;
+use App\Models\Stock;
 use Carbon\Carbon;
 
 
@@ -35,10 +36,13 @@ class ExpiryCheck
 
         // product status
         foreach($products as $product){
-            if($product->quantity == 0){
+
+            $productCount = Stock::where('pro_id',$product->id)->count();
+            if($productCount == 0){
                 $product->status = 0;
                 $product->save();
             }
+
         }
 
         return $next($request);
