@@ -21,6 +21,10 @@ return new class extends Migration
             $table->string('name',225);
             $table->integer('total_price');
             $table->longText('address');
+            $table->string('payment');
+            $table->string('note')->nullable();
+            $table->string('code_voucher')->nullable();
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });
     }

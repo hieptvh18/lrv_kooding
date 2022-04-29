@@ -368,6 +368,8 @@
                                             $('.btnAddCart').html('Đã thêm vào giỏ hàng!');
                                             $('.btnAddCart').attr('disabled',true);
                                             $('.btnAddCart').addClass('btn-exist-cart');
+
+                                            // window.location.reload();
                                     },
                                     error: function(er) {
                                         console.log(er);

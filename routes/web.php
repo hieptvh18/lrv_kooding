@@ -22,6 +22,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Backend\UserController;
 use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\CheckoutController;
+use App\Http\Controllers\Frontend\ProfileController;
 
 // check hạn sử dụng voucher + slg sản phẩm -> status
 Route::middleware(['all.checkExpiry'])->group(function () {
@@ -53,7 +54,13 @@ Route::middleware(['all.checkExpiry'])->group(function () {
 
     // checkout
     Route::get('checkout',[CheckoutController::class,'index'])->name('client.checkout')->middleware('auth');
+    Route::get('dat-hang-thanh-cong',[CheckoutController::class,'resultCheckout'])->name('client.result-checkout')->middleware('auth');
     Route::post('checkout',[CheckoutController::class,'handleCheckout'])->name('client.handleCheckout')->middleware('auth');
+
+    // profile
+    Route::get('profile',[ProfileController::class,'index'])->name('client.profile');
+    Route::put('profile',[ProfileController::class,'updateProfile'])->name('client.updateProfile');
+    Route::post('change-password',[ProfileController::class,'changePassword'])->name('client.changePassword');
 
     // social
     Route::get('/social',function(){

@@ -23,6 +23,7 @@
                     <div class="address">
                         <label for="">Họ tên</label>
                         <input name="fullname" type="text" name="fullname" value="{{ Auth::user()->name }}">
+                        <label for="fullname" class="error" style="display: none;"></label>
 
                     </div>
 
@@ -64,23 +65,26 @@
                                                 <option value="" selected disabled>Chưa chọn quận huyện</option>
                                             </select>
                                         </div>
+
                                     </div>
                                 </div>
 
                             </div>
                         </div>
-                        <label for="village" class="error" style="display: none;"></label>
+                        <label for="xa" class="error" style="display: none;"></label>
                     </div>
 
                     <div class="address">
                         <label for="">Địa chỉ cụ thể</label>
                         <textarea name="address" id="" cols="30" rows="3" class=""
                             style="border:1px solid #d7d7d7;border-radius: 5px;">{{ old('address') }}</textarea>
+                        <label for="address" class="error" style="display: none;"></label>
 
                     </div>
                     <div class="address">
                         <label for="">Số điện thoại</label>
-                        <input name="phone" value="" type="text">
+                        <input name="phone" value="{{old('phone')}}" type="text">
+                        <label for="phone" class="error" style="display: none;"></label>
 
                     </div>
                 </div>
@@ -115,10 +119,10 @@
                             </div>
                             @php $total += $tt;@endphp
                         @endforeach
-                            <input type="hidden" name="total" value="{{$total}}">
+                        <input type="hidden" name="total" value="{{ session('newPrice') ? session('newPrice') : $total }}">
 
                         <div class="order__chage">
-                            <a href="{{route('client.cart')}}" class="text-primary">Chỉnh sửa giỏ hàng</a>
+                            <a href="{{ route('client.cart') }}" class="text-primary">Chỉnh sửa giỏ hàng</a>
                         </div>
                     </div>
                 </div>
@@ -151,7 +155,8 @@
                                     for="method3">Thanh toán
                                     Vnpay</label></span>
                             <div>
-                                <a href="{{route('api.payment_vnpay')}}"><img src="{{ asset('assets/images/layout/vnpay.png') }}" alt="" width="100px"></a>
+                                <a href="{{ route('api.payment_vnpay') }}"><img
+                                        src="{{ asset('assets/images/layout/vnpay.png') }}" alt="" width="100px"></a>
                             </div>
                         </div>
 
@@ -166,15 +171,16 @@
                     </div>
                     <div class="right__content__body">
                         <div class="content__input--vocher" style="border:1px solid #d7d7d7;border-radius: 5px;">
-                            <input id="vocher" name="vocher" value="" type="text" placeholder="Nhập phiếu giảm giá">
-
+                            <input id="vocher" name="code" value="" type="text" placeholder="Nhập phiếu giảm giá">
                             <div class="sub__vorcher">
-                                <button type="submit" name="btn_apply">Áp dụng</button>
+                                <button type="submit" name="btn_apply_voucher" value="true">Áp dụng</button>
                             </div>
                         </div>
 
                         {{-- er vc --}}
-                        <div class="text-danger"></div>
+                        @if (session('er-voucher'))
+                            <small class="text-danger ml-3">{{ session('er-voucher') }}</small>
+                        @endif
                         <!-- <label for="vocher" class="error" style="display: none; margin-left: 20px !important;"></label> -->
                         <div class="content__subtotal">
                             <span>Tổng giá:</span>
@@ -185,14 +191,15 @@
                             <p>30,000đ</p>
                         </div>
 
-                        <div class="content__subtotal">
-                            <span>Mã giảm giá:</span>
-
-                        </div>
+                        @if (session('newPrice'))
+                            <div class="content__subtotal">
+                                <span>Mã giảm giá: {{ session('codeVoucher') }}</span>
+                            </div>
+                        @endif
                         <div class="contnet__all">
 
                             <span><b>Số tiền phải thanh tóan</b>:
-                                ...
+                                {{ session('newPrice') ? number_format(session('newPrice'), 0, ',') : number_format($total, 0, ',') }}
                                 đ</span>
 
                             <p></p>

@@ -67,7 +67,7 @@
                         <span class="title-pop-user">Hồ sơ<i class="fa fa-angle-down ml-2"
                                 aria-hidden="true"></i></span>
                         <div class="pop-profile">
-                            <a href="accountClient?action=viewProfileClient">Bảng điều khiển</a>
+                            <a href="{{route('client.profile')}}">Bảng điều khiển</a>
 
                             <a href="{{ route('logout') }}" onclick="
                                     event.preventDefault()
@@ -393,7 +393,7 @@
             })
 
             // inner total cart pop
-            $('.total-price-pop').html($('input["name=total"]').val())
+            $('.total-price-pop').html($('input[name="total"]').val())
 
     })
 </script>
