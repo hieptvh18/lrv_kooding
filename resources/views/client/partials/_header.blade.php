@@ -278,7 +278,7 @@
                             <input type="hidden" name="total" value="{{$total}}">
 
                             <div class="pop-cart__bottom">
-                                <a href="" class="text-white bg-secondary">Thanh toán</a>
+                                <a href="{{route('client.checkout')}}" class="text-white bg-secondary">Thanh toán</a>
                                 <a href="{{route('client.cart')}}" class="">Vào giỏ hàng</a>
 
                             </div>

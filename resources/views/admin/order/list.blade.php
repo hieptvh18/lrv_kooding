@@ -19,12 +19,14 @@
         <thead>
           <tr>
             <th>ID </th>
-            <th>Tên khách hàng</th>
-            <th>Tổng tiền hàng</th>
+            <th>Tên </th>
+            <th>Tổng tiền</th>
             <th>Thanh toán</th>
             <th>Điện thoại</th>
-            <th>Đặt hàng</th>
-            <th>Cập nhật</th>
+            <th>Đặt hàng <a href="?_sort=true&column=name&type=asc"><i class="fa fa-sort ml-2"
+              aria-hidden="true"></a></th>
+            <th>Cập nhật <a href="?_sort=true&column=name&type=asc"><i class="fa fa-sort ml-2"
+              aria-hidden="true"></a></th>
             <th>Tình trạng</th>
             <th>#</th>
           </tr>

@@ -1,18 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class VnpayController extends Controller
 {
     //trang thanh toasn
     public function create(Request $request)
     {
+        // session url
+        session(['url_prev' => url()->previous()]);
+        // dd(session('dataOrders'),session('carts'));->oke
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
         // page tra ve khi thanh toan tcong
-        $vnp_Returnurl = "http://localhost:8000/checkout/thanh-toan-thanh-cong";
+        $vnp_Returnurl = "http://localhost:8000/return-vnpay";
         $vnp_TmnCode = "DGPENNGZ"; //Mã website tại VNPAY 
         $vnp_HashSecret = "RTYGLRHZQXCRNLROHBLWUJFXSLFQXERD"; //Chuỗi bí mật
 
@@ -66,15 +70,15 @@ class VnpayController extends Controller
         return redirect($vnp_Url);
     }
 
-    // trả về
+    // trả về(kieerm tra tinh toan ven, thanh toan thanh cong hoac that bai)
     public function return(Request $request)
     {
-        $url = session('url_prev', '/');
+        $urlPrev = session('url_prev');
         if ($request->vnp_ResponseCode == "00") {
-            $this->apSer->thanhtoanonline(session('cost_id'));
-            return redirect($url)->with('success', 'Đã thanh toán phí dịch vụ');
+            // $this->apSer->thanhtoanonline(session('cost_id'));
+            return redirect(route('payment.handleSave'))->with('payment-success', 'Đã thanh toán phí dịch vụ');
         }
-        session()->forget('url_prev');
-        return redirect($url)->with('errors', 'Lỗi trong quá trình thanh toán phí dịch vụ');
+        // session()->forget('url_prev');
+        return redirect($urlPrev)->with('payment-error', 'Lỗi trong quá trình thanh toán phí dịch vụ');
     }
 }

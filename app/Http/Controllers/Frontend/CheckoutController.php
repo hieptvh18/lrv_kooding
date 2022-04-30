@@ -18,11 +18,6 @@ class CheckoutController extends Controller
 {
     public function __construct(Request $request)
     {
-        // reset voucher
-        if (session()->has('newPrice')) {
-            session()->pull('newPrice');
-            session()->pull('codeVoucher');
-        }
     }
 
     // display checkout
@@ -139,9 +134,12 @@ class CheckoutController extends Controller
 
             default:
                 // vnpay
-                // luu data vao session de ti thanh toan thanh cong thi save db bang session do-> save xong thi huy
+                // vnpay redirect ve se huy toan bo session nen phai truyen data qua request url
+                session('codeVoucher') ? $codeVoucher = session('codeVoucher') : null;
+
                 session()->put('dataOrders',$request->all());
-                return redirect(route('api.payment.vnpay') . "?amount=$request->total");
+
+                return redirect(route('api.payment.vnpay') . "?amount=$request->total?");
 
                 break;
         }
@@ -156,8 +154,8 @@ class CheckoutController extends Controller
 
         // $payment_vnpay->fill($request->all());
         // $payment_vnpay->save();
-
-        $dataOrder = session('dataOrders');
+        $dataOrder = $request->session()->get('dataOrders');
+        dd($dataOrder,session('carts'));
         $province = $dataOrder['tinh'];
         $district = $dataOrder['huyen'];
         $ward = $dataOrder['xa'];
@@ -192,13 +190,12 @@ class CheckoutController extends Controller
         session()->pull('dataOrders');
 
         return redirect()->route('client.result-checkout')->with('msg-suc', 'Đặt hàng thành công!');
-
-
     }
 
     // display client.result-checkout
     public function resultCheckout()
     {
+        // xu li thanh cong het thi destroy
         session()->pull('carts');
 
         return view('client.pages.result-checkout');

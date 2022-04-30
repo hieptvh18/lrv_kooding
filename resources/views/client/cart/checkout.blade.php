@@ -3,6 +3,11 @@
 @section('page-title', 'Cửa hàng | Kooding')
 @section('main')
     <main class="body__order">
+        @if (session('payment-success'))
+            <div class="bg-success p-2 text-light">{{ session('payment-success') }}</div>
+        @elseif(session('payment-error'))
+            <div class="bg-danger p-2 text-light">{{ session('payment-error') }}</div>
+        @endif
         <form action="{{ route('client.handleCheckout') }}" id="checkout" class="body__order__content" method="POST">
             @csrf
             <div class="body__order__left">

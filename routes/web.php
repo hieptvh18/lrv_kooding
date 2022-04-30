@@ -25,7 +25,7 @@ use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\ProfileController;
 
-use App\Http\Controllers\Backend\VnpayController;
+use App\Http\Controllers\Frontend\VnpayController;
 
 // check hạn sử dụng voucher + slg sản phẩm -> status
 Route::middleware(['all.checkExpiry'])->group(function () {
@@ -77,7 +77,10 @@ Route::middleware(['all.checkExpiry'])->group(function () {
     // api
 
     // vnpay
-    Route::get('checkout/thanh-toan-thanh-cong', [CheckoutController::class, 'handlePaymentVnpay'])->name('payment.urlReturn');
+    Route::get('payment_vnpay', [VnpayController::class, 'create'])->name('api.payment.vnpay');
+    Route::get('return-vnpay', [VnpayController::class, 'return'])->name('api.payment.return-vnpay');
+    
+    Route::get('checkout/thanh-toan-thanh-cong', [CheckoutController::class, 'handlePaymentVnpay'])->name('payment.handleSave');
 
     // ===============ROUTE ADMIN===================
     Route::prefix('admin')->middleware(['auth', 'auth.admin'])->group(function () {
@@ -129,7 +132,7 @@ Route::middleware(['all.checkExpiry'])->group(function () {
         ])->middleware(['auth.permission:admin']);
 
         // order
-        Route::get('orders',[OrderController::class,'index'])->name('admin.order.index');
+        Route::get('orders', [OrderController::class, 'index'])->name('admin.order.index');
     });
 
     // ================errors================
