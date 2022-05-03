@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Favorite extends Model
+class Cart extends Model
 {
     use HasFactory;
-    protected $table = 'favorites';
-    protected $fillable = ['user_id','product_id','size_id','color_id'];
+    protected $table = 'carts';
+    protected $fillable = ['user_id','product_id','size_id','color_id','quantity'];
 }

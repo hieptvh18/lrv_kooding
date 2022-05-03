@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Cart;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
@@ -16,22 +17,53 @@ class CartController extends Controller
     public function index()
     {
         // get recommend radom
-        $recommened = Product::inRandomOrder()->where('status','!=',0)->limit(15)->get();
+        $recommened = Product::inRandomOrder()->where('status', '!=', 0)->limit(15)->get();
 
-        // check 
+        // check login
+        if (Auth::check()) {
+            $cartUser = Cart::where('user_id', Auth::user()->id)->get()->toArray();
+            return view('client.cart.cart-save-database', compact('recommened', 'cartUser'));
+        }
 
         return view('client.cart.cart', compact('recommened'));
     }
 
-    // action add to cart(use session)
+    //  add to cart(use session)
     public function add(Request $request)
     {
-        // handle add to cart
+        // define
         $product = Product::find($request->product_id)->toArray();
         $color = $request->color_id;
         $size = $request->size_id;
         $quantity = (int)$request->quantity;
 
+        // add cart save db
+        if (Auth::check()) {
+            $cartExist = Cart::all();
+            foreach ($cartExist as $key => $item) {
+                if ($item->product_id == $product['id'] && $item->color_id == $color && $item->size_id == $size) {
+
+                    // increament qty
+                    $item->quantity = $item['quantity'] + $quantity;
+                    $item->save();
+
+                    return Cart::all()->toArray();
+                }
+            }
+
+            // add new
+            Cart::create([
+                'user_id' => Auth::user()->id,
+                'product_id' => $product['id'],
+                'color_id' => $color,
+                'size_id' => $size,
+                'quantity' => $quantity
+            ]);
+
+            return Cart::all()->toArray();
+        }
+
+        // add to cart use session
         $item = [
             'id' => 1,
             'product_id' => $request->product_id,
@@ -83,46 +115,76 @@ class CartController extends Controller
         }
     }
 
+
     // update qty item cart
     public function update(Request $request)
     {
-        if(session('carts')){
-            // check qty con lai
-            $qtyExist = Stock::where('pro_id',$request->product_id)
-                                ->where('color_id',$request->color_id)
-                                ->where('size_id',$request->size_id)->first();
 
-            if($request->quantity > $qtyExist->quantity){
-                return redirect(route('client.cart'))->with('msg-er','Cập nhật số lượng không thành công do sản phẩm không đủ số lượng bạn cần!');
+        // update cart use db
+        // check qty con lai
+
+        $qtyExist = Stock::where('pro_id', $request->product_id)
+            ->where('color_id', $request->color_id)
+            ->where('size_id', $request->size_id)->first();
+
+        if ($request->quantity > $qtyExist->quantity) {
+            return redirect(route('client.cart'))->with('msg-er', 'Cập nhật số lượng không thành công do sản phẩm không đủ số lượng bạn cần!');
+        }
+
+        if (Auth::check()) {
+
+            $cartUser = Cart::where('user_id', Auth::user()->id)->get();
+            foreach($cartUser as $key=>$val){
+                if ($val['id'] == $request->id) {
+                    $val->quantity = $val->quantity = $request->quantity;
+                    $val->save();
+                    break;
+                }
             }
 
+        } else {
+            // update cart use session
+            // cap nhat slg moi
+
             $cartData = session('carts');
-            foreach($cartData as $key=>$val){
-                if($val['id'] == $request->id){
+            foreach ($cartData as $key => $val) {
+                if ($val['id'] == $request->id) {
                     $cartData[$key]['quantity'] = $request->quantity;
                     session()->pull('carts');
-                    session()->put('carts',$cartData);
+                    session()->put('carts', $cartData);
                     break;
                 }
             }
-            return redirect(route('client.cart'))->with('msg-suc','Cập nhật thành công item');
         }
 
+
+        return redirect(route('client.cart'))->with('msg-suc', 'Cập nhật thành công item');
     }
+
 
     // remove item cart
-    public function remove($id){
-        if(session('carts')){
+    public function remove($id)
+    {
+        if(Auth::check()){
+            $cartUser = Cart::all();
+            foreach($cartUser as $key=>$val){
+                if ($val->id == $id) {
+                    Cart::destroy($id);    
+                    break;                
+                }
+            }
+        }else {
             $cartData = session('carts');
-            foreach($cartData as $key=>$val){
-                if($val['id'] == $id){
+            foreach ($cartData as $key => $val) {
+                if ($val['id'] == $id) {
                     unset($cartData[$key]);
                     session()->pull('carts');
-                    session()->put('carts',$cartData);
+                    session()->put('carts', $cartData);
                     break;
                 }
             }
-            return redirect(route('client.cart'))->with('msg-suc','Xóa thành công item khỏi giỏ hàng');
         }
+        return redirect(route('client.cart'))->with('msg-suc', 'Xóa thành công item khỏi giỏ hàng');
     }
+
 }

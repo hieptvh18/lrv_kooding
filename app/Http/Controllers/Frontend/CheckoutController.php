@@ -13,6 +13,7 @@ use App\Models\District;
 use App\Models\Ward;
 use App\Models\PaymentVnPay;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Cart;
 
 class CheckoutController extends Controller
 {
@@ -23,20 +24,19 @@ class CheckoutController extends Controller
     // display checkout
     public function index()
     {
-
-        if (!session('carts') || count(session('carts')) == 0) {
+        $cartUser = Cart::all();
+        if (!session('carts') || count(session('carts')) == 0 || !$cartUser) {
             return redirect(route('client.home'));
         }
 
         // get data
         $provinces = Province::all();
 
-
         return view('client.cart.checkout', compact('provinces'));
     }
 
     // handle checkout
-    public function handleCheckout(Request $request)
+    public function postCheckout(Request $request)
     {
         // ktra voucher
         if ($request->btn_apply_voucher) {
@@ -87,11 +87,12 @@ class CheckoutController extends Controller
             $voucherExist->decrement('quantity', 1);
         }
 
+        
         // ktra method payment & handle save
         return $this->payment($request);
     }
 
-    // check payment
+    // check payment = method nao
     private function payment($request)
     {
         switch ($request->method) {
@@ -137,9 +138,9 @@ class CheckoutController extends Controller
                 // vnpay redirect ve se huy toan bo session nen phai truyen data qua request url
                 session('codeVoucher') ? $codeVoucher = session('codeVoucher') : null;
 
-                session()->put('dataOrders',$request->all());
+                session()->put('dataOrders', $request->all());
 
-                return redirect(route('api.payment.vnpay') . "?amount=$request->total?");
+                return redirect(route('payment.handleSave'));
 
                 break;
         }
@@ -148,14 +149,9 @@ class CheckoutController extends Controller
     // handle payment & save db
     public function handlePaymentVnpay(Request $request)
     {
-
+        
         // save bill to db(total = 0)
-        // $payment_vnpay = new PaymentVnPay();
-
-        // $payment_vnpay->fill($request->all());
-        // $payment_vnpay->save();
-        $dataOrder = $request->session()->get('dataOrders');
-        dd($dataOrder,session('carts'));
+        $dataOrder = session()->get('dataOrders');
         $province = $dataOrder['tinh'];
         $district = $dataOrder['huyen'];
         $ward = $dataOrder['xa'];
@@ -166,8 +162,7 @@ class CheckoutController extends Controller
         $bill->name = $dataOrder['fullname'];
 
         $bill->address = Ward::where('wardid', "$ward")->first()->name . '-' . District::where('districtid', "$district")->first()->name  . '-' . Province::where('provinceid', "$province")->first()->name  . ', ' . $dataOrder['address'];
-
-        $bill->payment = "Thanh toán qua ví Vnpay";
+        $bill->payment = "Đã thanh toán bằng ví Vnpay";
         $bill->total_price = 0;
         $bill->status = 0;
         if (session('codeVoucher')) {
@@ -183,21 +178,27 @@ class CheckoutController extends Controller
             $detail_bill->save();
         }
 
-
-        // destroy session
-        session()->pull('newPrice');
-        session()->pull('codeVoucher');
-        session()->pull('dataOrders');
-
-        return redirect()->route('client.result-checkout')->with('msg-suc', 'Đặt hàng thành công!');
+        return redirect(route('api.payment.vnpay') . "?amount=".$dataOrder['total']."&orderId=".$bill->id);
     }
 
     // display client.result-checkout
-    public function resultCheckout()
+    public function resultCheckout(Request $request)
     {
-        // xu li thanh cong het thi destroy
-        session()->pull('carts');
+        dd($request->all());
 
-        return view('client.pages.result-checkout');
+        // thanh toan thanh cong
+        if (session()->has('payment-success')) {
+
+            // destroy session
+            session()->pull('newPrice');
+            session()->pull('codeVoucher');
+            session()->pull('dataOrders');
+            session()->pull('carts');
+            return view('client.pages.result-checkout');
+        }
+
+        // thanh toan that bai
+        $urlPrev = cache('url_prev');
+        return redirect($urlPrev)->with('msg-er', 'Lỗi trong quá trình thanh toán phí dịch vụ');
     }
 }

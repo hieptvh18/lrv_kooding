@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreignId('porduct_id');
-            $table->foreign('porduct_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreignId('product_id');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->foreignId('color_id');
             $table->foreign('color_id')->references('id')->on('attr_values')->onDelete('cascade');
 

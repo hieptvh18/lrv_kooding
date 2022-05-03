@@ -58,7 +58,7 @@ Route::middleware(['all.checkExpiry'])->group(function () {
     // checkout
     Route::get('checkout', [CheckoutController::class, 'index'])->name('client.checkout')->middleware('auth');
     Route::get('dat-hang-thanh-cong', [CheckoutController::class, 'resultCheckout'])->name('client.result-checkout')->middleware('auth');
-    Route::post('checkout', [CheckoutController::class, 'handleCheckout'])->name('client.handleCheckout')->middleware('auth');
+    Route::post('checkout', [CheckoutController::class, 'postCheckout'])->name('client.handleCheckout')->middleware('auth');
 
     // profile
     Route::get('profile', [ProfileController::class, 'index'])->name('client.profile');
@@ -79,7 +79,7 @@ Route::middleware(['all.checkExpiry'])->group(function () {
     // vnpay
     Route::get('payment_vnpay', [VnpayController::class, 'create'])->name('api.payment.vnpay');
     Route::get('return-vnpay', [VnpayController::class, 'return'])->name('api.payment.return-vnpay');
-    
+
     Route::get('checkout/thanh-toan-thanh-cong', [CheckoutController::class, 'handlePaymentVnpay'])->name('payment.handleSave');
 
     // ===============ROUTE ADMIN===================

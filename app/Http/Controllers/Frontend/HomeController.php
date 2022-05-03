@@ -11,6 +11,7 @@ class HomeController extends Controller
 {
     //màn hình trang chủ
     public function index(){
+        
         // get data
         $productsTopView = Product::where('status','!=',0)->orderBy('view','desc')->limit(20)->get();
         $productsNew = Product::where('status','!=',0)->orderBy('created_at','desc')->limit(20)->get();

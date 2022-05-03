@@ -4,15 +4,18 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
+
 
 class VnpayController extends Controller
 {
     //trang thanh toasn
     public function create(Request $request)
     {
-        // session url
-        session(['url_prev' => url()->previous()]);
+        // chuyen doi sang luu vao cache || cookie de sau khi vnpay handle tra ve data va luu db
+        cache(['url_prev' => url()->previous()]);
+       
         // dd(session('dataOrders'),session('carts'));->oke
         $vnp_Url = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
         // page tra ve khi thanh toan tcong
@@ -28,7 +31,6 @@ class VnpayController extends Controller
         $vnp_IpAddr = request()->ip();
 
         //Add Params of 2.0.1 Version
-      
    
         $inputData = array(
             "vnp_Version" => "2.1.0",
@@ -44,7 +46,6 @@ class VnpayController extends Controller
             "vnp_ReturnUrl" => $vnp_Returnurl,
             "vnp_TxnRef" => $vnp_TxnRef,
         );
-
 
         //var_dump($inputData);
         ksort($inputData);
@@ -67,18 +68,21 @@ class VnpayController extends Controller
             $vnp_Url .= 'vnp_SecureHash=' . $vnpSecureHash;
         }
 
+        // gui kem order id de xử lí nếu thanh toán k thành công
+        $query .= "&orderId=".$request->orderId;
+
         return redirect($vnp_Url);
     }
 
     // trả về(kieerm tra tinh toan ven, thanh toan thanh cong hoac that bai)
     public function return(Request $request)
     {
-        $urlPrev = session('url_prev');
+
         if ($request->vnp_ResponseCode == "00") {
             // $this->apSer->thanhtoanonline(session('cost_id'));
-            return redirect(route('payment.handleSave'))->with('payment-success', 'Đã thanh toán phí dịch vụ');
+            return redirect(route('client.result-checkout'))->with('payment-success', 'Đã thanh toán phí dịch vụ');
         }
         // session()->forget('url_prev');
-        return redirect($urlPrev)->with('payment-error', 'Lỗi trong quá trình thanh toán phí dịch vụ');
+        return redirect(route('client.result-checkout')."?orderId=".$request->orderId)->with('payment-error', 'Lỗi trong quá trình thanh toán phí dịch vụ');
     }
 }

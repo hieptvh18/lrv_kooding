@@ -231,7 +231,7 @@
                             <label for="agree" class="error" style="display: none;"></label>
                         </div>
                         <div class="content__submitAll">
-                            <button type="submit" name="btn_order">Đặt hàng</button>
+                            <button type="submit" name="btn_payment_tt">Đặt hàng</button>
                         </div>
                     </div>
                 </div>

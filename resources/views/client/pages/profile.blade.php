@@ -37,10 +37,10 @@
                     </div>
                     <nav class="acc__allmenu show__menu">
                         <div class="acc__menu__item active">
-                            <a href="">Thông tin tài khoản</a>
+                            <a href="#account">Thông tin tài khoản</a>
                         </div>
                         <div class="acc__menu__item">
-                            <a href="">Đơn hàng</a>
+                            <a href="#order">Đơn hàng</a>
                         </div>
                         <div class="acc__line"></div>
                     </nav>

@@ -67,7 +67,7 @@
                         <span class="title-pop-user">Hồ sơ<i class="fa fa-angle-down ml-2"
                                 aria-hidden="true"></i></span>
                         <div class="pop-profile">
-                            <a href="{{route('client.profile')}}">Bảng điều khiển</a>
+                            <a href="{{ route('client.profile') }}">Bảng điều khiển</a>
 
                             <a href="{{ route('logout') }}" onclick="
                                     event.preventDefault()
@@ -207,13 +207,18 @@
                         <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                     </a>
                     <div class="notifi notifi-cart">
-                        @if (session('carts'))
-                            {{ count(session('carts')) }}
-                        @else
-                            0
+                    @if(Auth::check())
+                        {{count(\App\Models\Cart::all()->toArray())}}
+                    @elseif(!Auth::check())
+                        0
+                    @elseif (session('carts'))
+                        {{ count(session('carts')) }}
+                    @else
+                        0
                         @endif
                     </div>
                     <!-- start popup-cart -->
+                    {{--
                     <div class="pop-cart">
                         @if (session()->has('carts'))
                             <div class="pop-cart__top">
@@ -235,10 +240,10 @@
                             </div>
 
                             @php
-                                $total = 0;   
+                                $total = 0;
                             @endphp
                             @foreach (session('carts') as $key => $item)
-                            @php $thanhtien = ($item['price'] - $item['discount']) * $item['quantity'] @endphp
+                                @php $thanhtien = ($item['price'] - $item['discount']) * $item['quantity'] @endphp
                                 <div class="pop-cart__main row p-3">
                                     <div class="col-3 col-md-3">
                                         <a
@@ -257,12 +262,12 @@
                                         </div>
                                     </div>
                                     <div class="col-3 col-md-3 cart-option">
-                                        <div class="pro-price mb-5">{{number_format($thanhtien,0,',')}}đ</div>
+                                        <div class="pro-price mb-5">{{ number_format($thanhtien, 0, ',') }}đ</div>
                                         <a href="{{ route('client.cart.remove', $item['id']) }}" onclick="
                                                     event.preventDefault();
                                                     document.forms['formFakeRemoveCart'].submit();
                                                 " class="text-danger">Xóa</a>
-                                        {{-- form fake --}}
+                                        
                                         <form action="{{ route('client.cart.remove', $item['id']) }}"
                                             name="formFakeRemoveCart" method="post">
                                             @csrf
@@ -272,29 +277,30 @@
                                     </div>
                                 </div>
                                 @php
-                                    $total += $thanhtien;   
+                                    $total += $thanhtien;
                                 @endphp
                             @endforeach
-                            <input type="hidden" name="total" value="{{$total}}">
+                            <input type="hidden" name="total" value="{{ $total }}">
 
                             <div class="pop-cart__bottom">
-                                <a href="{{route('client.checkout')}}" class="text-white bg-secondary">Thanh toán</a>
-                                <a href="{{route('client.cart')}}" class="">Vào giỏ hàng</a>
+                                <a href="{{ route('client.checkout') }}" class="text-white bg-secondary">Thanh
+                                    toán</a>
+                                <a href="{{ route('client.cart') }}" class="">Vào giỏ hàng</a>
 
                             </div>
                         @else
                             <div class="DH__content__body">
                                 <div class="">
                                     <h3 class="" style="color:#FFBC7F;">Giỏ hàng của bạn đang rỗng!</h3>
-                                    <a href="{{route('client.shop')}}" class="text-primary text-center">Mua sắm
+                                    <a href="{{ route('client.shop') }}" class="text-primary text-center">Mua sắm
                                         ngay</a>
                                 </div>
                                 <div class="">
-                                    <img src="{{asset('assets')}}/images/layout/empty-orders.jpg" alt="">
+                                    <img src="{{ asset('assets') }}/images/layout/empty-orders.jpg" alt="">
                                 </div>
                             </div>
                         @endif
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
@@ -392,8 +398,8 @@
                 console.log(er);
             })
 
-            // inner total cart pop
-            $('.total-price-pop').html($('input[name="total"]').val())
+        // inner total cart pop
+        $('.total-price-pop').html($('input[name="total"]').val())
 
     })
 </script>
