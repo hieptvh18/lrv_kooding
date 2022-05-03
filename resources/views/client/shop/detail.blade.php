@@ -109,7 +109,7 @@
                         <div class="er"></div>
                         <div class="fav-forms-wrap">
                             <div class="animate-button-wrap pd-buttons">
-                                <button type="button"  id="checkout_0"
+                                <button type="button" id="checkout_0"
                                     class="pd-checkout animate black loader btnAddCart">Thêm vào giỏ
                                     hàng</button>
                                 <span onclick="showLove()" class=" btn_add_fa">
@@ -224,15 +224,15 @@
                 <div class="slider-album__content">
                     <!-- slider ảnh sp liên quan -->
                     @foreach ($relatePros as $item)
-                    <div class="image-item">
-                        <a href="{{route('client.shop.detail',['slug'=>$item->slug,'id'=>$item->id])}}">
-                            <div class="item__boxImg">
-                                <img src="{{asset('uploads')}}/{{$item->avatar}}" alt="">
-                            </div>
-                        </a>
-                        <p>{{$item->name}}</p>
-                        <span><b>{{ number_format($item->price - $item->discount, 0, ',') }} VND</b></span>
-                    </div>
+                        <div class="image-item">
+                            <a href="{{ route('client.shop.detail', ['slug' => $item->slug, 'id' => $item->id]) }}">
+                                <div class="item__boxImg">
+                                    <img src="{{ asset('uploads') }}/{{ $item->avatar }}" alt="">
+                                </div>
+                            </a>
+                            <p>{{ $item->name }}</p>
+                            <span><b>{{ number_format($item->price - $item->discount, 0, ',') }} VND</b></span>
+                        </div>
                     @endforeach
                 </div>
             </div>
@@ -305,6 +305,7 @@
             const id = "{{ $product_id }}";
             const apiProductUrl = "{{ route('api.product.findOne', $product_id) }}";
             const apiProductStockUrl = "{{ route('api.stock.all', $product_id) }}";
+            const isLogin = "{{ Auth::check() ? 1 : 0 }}";
 
             // get data api
             const productStockPending = async () => {
@@ -362,14 +363,16 @@
                                     },
                                     success: function(data) {
                                         showSuccess();
-                                            console.log(data);
-                                            $('.notifi-cart').html(data.length);
+                                        console.log(data);
+                                        $('.notifi-cart').html(data.length);
 
-                                            $('.btnAddCart').html('Đã thêm vào giỏ hàng!');
-                                            $('.btnAddCart').attr('disabled',true);
-                                            $('.btnAddCart').addClass('btn-exist-cart');
+                                        $('.btnAddCart').html(
+                                            'Đã thêm vào giỏ hàng!');
+                                        $('.btnAddCart').attr('disabled', true);
+                                        $('.btnAddCart').addClass(
+                                            'btn-exist-cart');
 
-                                            // window.location.reload();
+                                        // window.location.reload();
                                     },
                                     error: function(er) {
                                         console.log(er);
@@ -385,11 +388,13 @@
                 $('#color').change(function() {
                     if ($('#size').val()) {
                         displayQty($('#color').val(), $('#size').val());
+                        checkCartExist(id,$('#color').val(),$('#size').val());
                     }
                 });
                 $('#size').change(function() {
                     if ($('#color').val()) {
                         displayQty($('#color').val(), $('#size').val());
+                        checkCartExist(id,$('#color').val(),$('#size').val());
                     }
                 });
 
@@ -403,11 +408,36 @@
                         }
                     })
                 }
-            })
-            // console.log(productData);
-            // call api 
+
+                // handle check exist cart=> disable button add
+                // call api cart
+                if (isLogin == 1) {
+                    function checkCartExist(productId, colorId, sizeId) {
+                        const apiCartFindByUser = "{{ route('api.cart.findByUser', Auth::user()->id) }}";
+
+                        axios.get(apiCartFindByUser)
+                            .then((res) => {
+
+                                res.data.forEach((el, index) => {
+                                    if (el.product_id == productId && el.color_id == colorId &&
+                                        el.size_id == sizeId) {
+                                        $('.btnAddCart').html(
+                                            'Đã có trong giỏ hàng!');
+                                        $('.btnAddCart').attr('disabled', true);
+                                        $('.btnAddCart').addClass(
+                                            'btn-exist-cart');
+                                            return;
+                                    }
+                                })
+                            })
+                    }
+                } else {
+
+                    // check exist with session
+                }
 
 
+            });
 
 
         })

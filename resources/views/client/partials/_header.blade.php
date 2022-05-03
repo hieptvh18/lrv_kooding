@@ -208,7 +208,7 @@
                     </a>
                     <div class="notifi notifi-cart">
                     @if(Auth::check())
-                        {{count(\App\Models\Cart::all()->toArray())}}
+                        {{count(\App\Models\Cart::where('user_id',Auth::user()->id)->get()->toArray())}}
                     @elseif(!Auth::check())
                         0
                     @elseif (session('carts'))

@@ -14,9 +14,11 @@ use App\Models\Ward;
 use App\Models\PaymentVnPay;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Cart;
+use App\Models\Product;
 
 class CheckoutController extends Controller
 {
+    private $carts;
     public function __construct(Request $request)
     {
     }
@@ -24,15 +26,21 @@ class CheckoutController extends Controller
     // display checkout
     public function index()
     {
-        $cartUser = Cart::all();
-        if (!session('carts') || count(session('carts')) == 0 || !$cartUser) {
-            return redirect(route('client.home'));
+        if (Auth::check()) {
+            $cartUser = Cart::where('user_id', Auth::user()->id)->count();
+            if ($cartUser == 0) {
+                return redirect(route('client.home'));
+            }
         }
 
         // get data
         $provinces = Province::all();
+        $this->carts = Cart::where('user_id', Auth::user()->id)->get()->toArray();
 
-        return view('client.cart.checkout', compact('provinces'));
+        return view('client.cart.checkout-save-database', [
+            'provinces' => $provinces,
+            'carts' => $this->carts,
+        ]);
     }
 
     // handle checkout
@@ -54,6 +62,9 @@ class CheckoutController extends Controller
 
                 // handle giảm
                 $total = (int)$request->total;
+                if ($voucherExist->quantity == 0) {
+                    return back()->with('er-voucher', 'Mã giảm giá đã không còn hiệu lực hõặc đã được dùng hết!');
+                }
                 if ($voucherExist->category_code == 0) {
                     // %
                     $newPrice = round($total * ((100 -  $voucherExist->discount) / 100));
@@ -74,20 +85,6 @@ class CheckoutController extends Controller
             }
         }
 
-        // check used voucher
-        if (session('codeVoucher')) {
-            // luu tt vo voucherUser
-            $voucherExist = Voucher::where('code', session('codeVoucher'))->first();
-            VoucherUser::create([
-                "user_id" => Auth::user()->id,
-                "voucher_id" => $voucherExist->id,
-            ]);
-
-            // decrement qty voucher
-            $voucherExist->decrement('quantity', 1);
-        }
-
-        
         // ktra method payment & handle save
         return $this->payment($request);
     }
@@ -98,6 +95,8 @@ class CheckoutController extends Controller
         switch ($request->method) {
             case "0":
                 // tt khi nhan hàng
+                $this->carts = Cart::where('user_id', Auth::user()->id)->get()->toArray();
+
                 $bill = new Order();
                 $bill->phone = $request->phone;
                 $bill->user_id = Auth::user()->id;
@@ -112,17 +111,31 @@ class CheckoutController extends Controller
                 $bill->save();
 
                 // loop data & save to order detail
-                foreach (session('carts') as $item) {
+                foreach ($this->carts as $item) {
                     $detail_bill = new OrderDetail();
                     $detail_bill->fill($item);
                     $detail_bill->order_id = $bill->id;
+                    $detail_bill->price = Product::find($item['product_id'])->first()->price;
                     $detail_bill->save();
                 }
 
-                // destroy session
+                // check used voucher
+                if (session('codeVoucher')) {
+                    // luu tt vo voucherUser
+                    $voucherExist = Voucher::where('code', session('codeVoucher'))->first();
+                    VoucherUser::create([
+                        "user_id" => Auth::user()->id,
+                        "voucher_id" => $voucherExist->id,
+                    ]);
 
-                session()->pull('newPrice');
-                session()->pull('codeVoucher');
+                    // decrement qty voucher
+                    if ($voucherExist->quantity > 0) {
+                        $voucherExist->decrement('quantity', 1);
+                    }
+                    // destroy session
+                    session()->pull('codeVoucher');
+                    session()->pull('newPrice');
+                }
 
                 return redirect()->route('client.result-checkout')->with('msg-suc', 'Đặt hàng thành công!');
 
@@ -149,7 +162,7 @@ class CheckoutController extends Controller
     // handle payment & save db
     public function handlePaymentVnpay(Request $request)
     {
-        
+
         // save bill to db(total = 0)
         $dataOrder = session()->get('dataOrders');
         $province = $dataOrder['tinh'];
@@ -178,27 +191,28 @@ class CheckoutController extends Controller
             $detail_bill->save();
         }
 
-        return redirect(route('api.payment.vnpay') . "?amount=".$dataOrder['total']."&orderId=".$bill->id);
+        return redirect(route('api.payment.vnpay') . "?amount=" . $dataOrder['total'] . "&orderId=" . $bill->id);
     }
 
     // display client.result-checkout
     public function resultCheckout(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
 
         // thanh toan thanh cong
         if (session()->has('payment-success')) {
 
             // destroy session
-            session()->pull('newPrice');
-            session()->pull('codeVoucher');
-            session()->pull('dataOrders');
-            session()->pull('carts');
+            
             return view('client.pages.result-checkout');
-        }
 
-        // thanh toan that bai
-        $urlPrev = cache('url_prev');
-        return redirect($urlPrev)->with('msg-er', 'Lỗi trong quá trình thanh toán phí dịch vụ');
+        }else if(session()->has('payment-error')){
+            
+            // thanh toan that bai
+            $urlPrev = cache('url_prev');
+            return redirect($urlPrev)->with('msg-er', 'Lỗi trong quá trình thanh toán phí dịch vụ');
+        }
+        return view('client.pages.result-checkout');
+
     }
 }

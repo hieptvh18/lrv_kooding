@@ -60,7 +60,7 @@ class CartController extends Controller
                 'quantity' => $quantity
             ]);
 
-            return Cart::all()->toArray();
+            return Cart::where('user_id',Auth::user()->id)->get()->toArray();
         }
 
         // add to cart use session

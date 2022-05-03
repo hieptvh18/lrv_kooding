@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\VoucherController;
 use App\Http\Controllers\Api\ProductController;
 
 use App\Http\Controllers\Api\AjaxController;
+use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\StockController;
 use App\Http\Controllers\Api\VnpayController;
 use App\Models\Role;
@@ -45,6 +46,8 @@ Route::get('get-vouchers',[VoucherController::class,'index'])->name('api.voucher
 Route::get('find-one-product/{id}',[ProductController::class,'findOne'])->name('api.product.findOne');
 // stock
 Route::get('get-stocks/{productId}',[StockController::class,'getByProductId'])->name('api.stock.all');
+// cart
+Route::get('get-cart-user{userId}',[CartController::class,'findByUser'])->name('api.cart.findByUser');
 
 // render geography checkout
 Route::post('get-geography',[AjaxController::class,'renderGeography'])->name('api.renderGeography');

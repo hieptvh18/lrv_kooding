@@ -2711,6 +2711,7 @@ a{
 .btn-exist-cart{
     background: rgb(92, 167, 124) !important;
     color: rgb(255, 255, 255) !important;
+    cursor:not-allowed;
 }
 .btn-number{
     cursor: pointer;

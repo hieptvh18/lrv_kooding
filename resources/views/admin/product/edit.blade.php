@@ -142,7 +142,7 @@
                         @enderror
                     </div>
                     <button type="submit" class="btn btn-warning mr-2">Update</button>
-                    <button class="btn btn-light">Cancel</button>
+                    <a href="{{route('product.index')}}" class="btn btn-light">Cancel</a>
                 </form>
             </div>
         </div>

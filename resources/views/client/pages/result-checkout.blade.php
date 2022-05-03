@@ -5,10 +5,9 @@
 
 <main>
     <div class="d-flex jsutify-content-center align-items-center text-light p-3">
-        @if (session('msg-suc'))
-            <div class="bg-success text-light p-2">{{session('msg-suc')}}</div>
+       
+            <div class="bg-success text-light p-2">{{session('msg-suc')?session('msg-suc'):'Đặt hàng thành công!'}}</div>
             <a href="{{route('client.profile')}}">Theo dõi đơn của bạn!</a>
-        @endif
     </div>
 </main>
 
