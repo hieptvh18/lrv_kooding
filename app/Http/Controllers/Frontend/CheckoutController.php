@@ -15,6 +15,7 @@ use App\Models\PaymentVnPay;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Cart;
 use App\Models\Product;
+use COM;
 
 class CheckoutController extends Controller
 {
@@ -26,11 +27,9 @@ class CheckoutController extends Controller
     // display checkout
     public function index()
     {
-        if (Auth::check()) {
-            $cartUser = Cart::where('user_id', Auth::user()->id)->count();
-            if ($cartUser == 0) {
-                return redirect(route('client.home'));
-            }
+        $cartUser = Cart::where('user_id', Auth::user()->id)->count();
+        if ($cartUser == 0 ) {
+            return redirect(route('client.home'));
         }
 
         // get data
@@ -162,8 +161,9 @@ class CheckoutController extends Controller
     // handle payment & save db
     public function handlePaymentVnpay(Request $request)
     {
-
         // save bill to db(total = 0)
+        $cartUser = Cart::where('user_id', Auth::user()->id)->get()->toArray();
+
         $dataOrder = session()->get('dataOrders');
         $province = $dataOrder['tinh'];
         $district = $dataOrder['huyen'];
@@ -179,15 +179,17 @@ class CheckoutController extends Controller
         $bill->total_price = 0;
         $bill->status = 0;
         if (session('codeVoucher')) {
-            $bill->code_voucher = session('codeVoucher');
+            $bill->code_voucher = session()->pull('codeVoucher');
+            session()->pull('newPrice');
         }
         $bill->save();
 
         // loop data & save to order detail
-        foreach (session('carts') as $item) {
+        foreach ($cartUser as $item) {
             $detail_bill = new OrderDetail();
             $detail_bill->fill($item);
             $detail_bill->order_id = $bill->id;
+            $detail_bill->price = Product::find($item['id'])->price;
             $detail_bill->save();
         }
 
@@ -202,17 +204,20 @@ class CheckoutController extends Controller
         // thanh toan thanh cong
         if (session()->has('payment-success')) {
 
-            // destroy session
-            
+            // destroy cart
+            // ...
             return view('client.pages.result-checkout');
+        } else if (session()->has('payment-error')) {
 
-        }else if(session()->has('payment-error')){
-            
             // thanh toan that bai
             $urlPrev = cache('url_prev');
+
+            // un-save ordered
+            $lastedOrder = Order::orderBy('created_at', 'desc')->limit(1)->first();
+            Order::destroy($lastedOrder->id);
+
             return redirect($urlPrev)->with('msg-er', 'Lỗi trong quá trình thanh toán phí dịch vụ');
         }
         return view('client.pages.result-checkout');
-
     }
 }

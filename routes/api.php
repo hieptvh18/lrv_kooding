@@ -47,7 +47,8 @@ Route::get('find-one-product/{id}',[ProductController::class,'findOne'])->name('
 // stock
 Route::get('get-stocks/{productId}',[StockController::class,'getByProductId'])->name('api.stock.all');
 // cart
-Route::get('get-cart-user{userId}',[CartController::class,'findByUser'])->name('api.cart.findByUser');
+Route::get('get-cart-user/{userId}',[CartController::class,'findByUser'])->name('api.cart.findByUser');
+Route::get('get-cart-session',[CartController::class,'getSessionCart'])->name('api.cart.getSessionCart');
 
 // render geography checkout
 Route::post('get-geography',[AjaxController::class,'renderGeography'])->name('api.renderGeography');
@@ -59,8 +60,8 @@ Route::get('success-transaction-paypal', [PayPalController::class, 'successTrans
 Route::get('cancel-transaction-paypal', [PayPalController::class, 'cancelTransaction'])->name('cancelTransaction');
 
 // vnpay
-// Route::get('payment_vnpay', [VnpayController::class, 'create'])->name('api.payment.vnpay');
-// Route::get('return-vnpay', [VnpayController::class, 'return'])->name('api.payment.return-vnpay');
+Route::get('payment_vnpay', [VnpayController::class, 'create'])->name('api.payment.vnpay');
+Route::get('return-vnpay', [VnpayController::class, 'return'])->name('api.payment.return-vnpay');
 
 
 

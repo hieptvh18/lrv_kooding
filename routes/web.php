@@ -25,7 +25,7 @@ use App\Http\Controllers\Frontend\CartController;
 use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\ProfileController;
 
-use App\Http\Controllers\Frontend\VnpayController;
+use App\Http\Controllers\Api\VnpayController;
 
 // check hạn sử dụng voucher + slg sản phẩm -> status
 Route::middleware(['all.checkExpiry'])->group(function () {
@@ -51,6 +51,8 @@ Route::middleware(['all.checkExpiry'])->group(function () {
 
     // cart
     Route::get('cart', [CartController::class, 'index'])->name('client.cart');
+    // get data session cart
+    Route::get('get-cart-session',[CartController::class,'getSessionCart']);
     Route::post('add-to-cart', [CartController::class, 'add'])->name('client.cart.add');
     Route::delete('remove-cart/{id}', [CartController::class, 'remove'])->name('client.cart.remove');
     Route::put('update-cart', [CartController::class, 'update'])->name('client.cart.update');
@@ -77,10 +79,10 @@ Route::middleware(['all.checkExpiry'])->group(function () {
     // api
 
     // vnpay
-    Route::get('payment_vnpay', [VnpayController::class, 'create'])->name('api.payment.vnpay');
+    // Route::get('payment_vnpay', [VnpayController::class, 'create'])->name('api.payment.vnpay');
     Route::get('return-vnpay', [VnpayController::class, 'return'])->name('api.payment.return-vnpay');
 
-    Route::get('checkout/thanh-toan-thanh-cong', [CheckoutController::class, 'handlePaymentVnpay'])->name('payment.handleSave');
+    Route::get('checkout/thanh-toan', [CheckoutController::class, 'handlePaymentVnpay'])->name('payment.handleSave');
 
     // ===============ROUTE ADMIN===================
     Route::prefix('admin')->middleware(['auth', 'auth.admin'])->group(function () {

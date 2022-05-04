@@ -187,4 +187,12 @@ class CartController extends Controller
         return redirect(route('client.cart'))->with('msg-suc', 'Xóa thành công item khỏi giỏ hàng');
     }
 
+    // get data session cart
+    public function getSessionCart()
+    {
+        if(session('carts')){
+            return session('carts');
+        }
+        return 0;
+    }
 }

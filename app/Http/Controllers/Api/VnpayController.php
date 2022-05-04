@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Frontend;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
@@ -83,6 +84,8 @@ class VnpayController extends Controller
             return redirect(route('client.result-checkout'))->with('payment-success', 'Đã thanh toán phí dịch vụ');
         }
         // session()->forget('url_prev');
+
+        // that bai thi back ve checkout va xoa cache
         return redirect(route('client.result-checkout')."?orderId=".$request->orderId)->with('payment-error', 'Lỗi trong quá trình thanh toán phí dịch vụ');
     }
 }

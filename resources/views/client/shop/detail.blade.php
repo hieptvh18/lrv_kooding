@@ -305,7 +305,7 @@
             const id = "{{ $product_id }}";
             const apiProductUrl = "{{ route('api.product.findOne', $product_id) }}";
             const apiProductStockUrl = "{{ route('api.stock.all', $product_id) }}";
-            const isLogin = "{{ Auth::check() ? 1 : 0 }}";
+            const isLogin = "{{ Auth::check() ? Auth::user()->id : 0 }}";
 
             // get data api
             const productStockPending = async () => {
@@ -388,13 +388,13 @@
                 $('#color').change(function() {
                     if ($('#size').val()) {
                         displayQty($('#color').val(), $('#size').val());
-                        checkCartExist(id,$('#color').val(),$('#size').val());
+                        checkCartExist(id, $('#color').val(), $('#size').val());
                     }
                 });
                 $('#size').change(function() {
                     if ($('#color').val()) {
                         displayQty($('#color').val(), $('#size').val());
-                        checkCartExist(id,$('#color').val(),$('#size').val());
+                        checkCartExist(id, $('#color').val(), $('#size').val());
                     }
                 });
 
@@ -411,31 +411,29 @@
 
                 // handle check exist cart=> disable button add
                 // call api cart
-                if (isLogin == 1) {
-                    function checkCartExist(productId, colorId, sizeId) {
-                        const apiCartFindByUser = "{{ route('api.cart.findByUser', Auth::user()->id) }}";
-
-                        axios.get(apiCartFindByUser)
-                            .then((res) => {
-
-                                res.data.forEach((el, index) => {
-                                    if (el.product_id == productId && el.color_id == colorId &&
-                                        el.size_id == sizeId) {
-                                        $('.btnAddCart').html(
-                                            'Đã có trong giỏ hàng!');
-                                        $('.btnAddCart').attr('disabled', true);
-                                        $('.btnAddCart').addClass(
-                                            'btn-exist-cart');
-                                            return;
-                                    }
-                                })
-                            })
+                function checkCartExist(productId, colorId, sizeId) {
+                    // check neu login thi get data cart save db , neu k login thi get data session cart->handle
+                    if (isLogin != 0) {
+                         api = "/api/get-cart-user/" + isLogin;
+                    } else {
+                         api = "/get-cart-session";
                     }
-                } else {
-
-                    // check exist with session
+                        
+                    axios.get(api)
+                        .then((res) => {
+                            res.data.forEach((el, index) => {
+                                if (el.product_id == productId && el.color_id == colorId &&
+                                    el.size_id == sizeId) {
+                                    $('.btnAddCart').html(
+                                        'Đã có trong giỏ hàng!');
+                                    $('.btnAddCart').attr('disabled', true);
+                                    $('.btnAddCart').addClass(
+                                        'btn-exist-cart');
+                                    return;
+                                }
+                            })
+                        })
                 }
-
 
             });
 

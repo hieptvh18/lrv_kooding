@@ -13,4 +13,13 @@ class CartController extends Controller
     {
         return Cart::where('user_id',$id)->get();
     }
+
+    // get data session cart
+    public function getSessionCart()
+    {
+        if(session('carts')){
+            return session('carts');
+        }
+        return 0;
+    }
 }
