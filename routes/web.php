@@ -63,7 +63,7 @@ Route::middleware(['all.checkExpiry'])->group(function () {
     Route::post('checkout', [CheckoutController::class, 'postCheckout'])->name('client.handleCheckout')->middleware('auth');
 
     // profile
-    Route::get('profile', [ProfileController::class, 'index'])->name('client.profile');
+    Route::get('profile', [ProfileController::class, 'index'])->name('client.profile')->middleware('auth');
     Route::put('profile', [ProfileController::class, 'updateProfile'])->name('client.updateProfile');
     Route::post('change-password', [ProfileController::class, 'changePassword'])->name('client.changePassword');
 

@@ -16,6 +16,15 @@ class ProductController extends Controller
     // find one
     public function findOne($id){
         $product  = Product::find($id);
+
+        if(is_null($product)){
+            return response()->json([
+                'success'=>false,
+                'message'=>'Không tìm thấy sản phẩm trong kho',
+                'data'=>[]
+            ],200);
+        }
+        
         return $product;
     }
 }

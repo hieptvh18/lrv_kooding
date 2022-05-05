@@ -10,7 +10,10 @@ use App\Http\Controllers\Api\VoucherController;
 use App\Http\Controllers\Api\ProductController;
 
 use App\Http\Controllers\Api\AjaxController;
+use App\Http\Controllers\Api\AttributeValueController;
 use App\Http\Controllers\Api\CartController;
+use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\OrderDetailController;
 use App\Http\Controllers\Api\StockController;
 use App\Http\Controllers\Api\VnpayController;
 use App\Models\Role;
@@ -43,7 +46,7 @@ Route::get('get-categories',[CategoryController::class,'index'])->name('api.cate
 // vouchers 
 Route::get('get-vouchers',[VoucherController::class,'index'])->name('api.voucher.index');
 // products
-Route::get('find-one-product/{id}',[ProductController::class,'findOne'])->name('api.product.findOne');
+Route::get('product/{id}',[ProductController::class,'findOne'])->name('api.product.findOne');
 // stock
 Route::get('get-stocks/{productId}',[StockController::class,'getByProductId'])->name('api.stock.all');
 // cart
@@ -62,6 +65,16 @@ Route::get('cancel-transaction-paypal', [PayPalController::class, 'cancelTransac
 // vnpay
 Route::get('payment_vnpay', [VnpayController::class, 'create'])->name('api.payment.vnpay');
 Route::get('return-vnpay', [VnpayController::class, 'return'])->name('api.payment.return-vnpay');
+
+// order detail
+Route::get('order-detail/{id}',[OrderDetailController::class,'getOrderDetailByOrderId']);
+// order
+Route::get('order/{id}',[OrderController::class,'show']);
+
+// attr value
+Route::get('attribute-value/{id}',[AttributeValueController::class,'findOne']);
+
+
 
 
 

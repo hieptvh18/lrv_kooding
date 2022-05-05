@@ -16,7 +16,7 @@ class ProfileController extends Controller
     public function index()
     {
         // get orders
-        $orders = Order::where('user_id',Auth::user()->id)->orderBy('id','desc')->get();
+        $orders = Order::where('user_id',Auth::user()->id)->orderBy('id','desc')->paginate(15);
 
         return view('client.pages.profile',compact('orders'));
     }

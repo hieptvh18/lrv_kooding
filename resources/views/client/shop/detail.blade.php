@@ -303,7 +303,7 @@
         $(document).ready(function() {
 
             const id = "{{ $product_id }}";
-            const apiProductUrl = "{{ route('api.product.findOne', $product_id) }}";
+            const apiProductUrl = "/api/product/"+id;
             const apiProductStockUrl = "{{ route('api.stock.all', $product_id) }}";
             const isLogin = "{{ Auth::check() ? Auth::user()->id : 0 }}";
 

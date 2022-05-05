@@ -10,6 +10,16 @@ class StockController extends Controller
 {
     //get all
     public function getByProductId($productId){
-        return Stock::where('pro_id',$productId)->get();
-    }
+        $stock = Stock::where('pro_id',$productId)->get();
+
+        if(count($stock) == 0){
+            return response()->json([
+                'success'=>false,
+                'message'=>'Không tìm thấy biến thể sản phẩm trong kho',
+                'data'=>[]
+            ],200);
+        }
+        
+        return $stock;
+    }   
 }
