@@ -39,7 +39,7 @@ class CartController extends Controller
 
         // add cart save db
         if (Auth::check()) {
-            $cartExist = Cart::all();
+            $cartExist = Cart::where('user_id',Auth::user()->id)->get();
             foreach ($cartExist as $key => $item) {
                 if ($item->product_id == $product['id'] && $item->color_id == $color && $item->size_id == $size) {
 
@@ -47,7 +47,7 @@ class CartController extends Controller
                     $item->quantity = $item['quantity'] + $quantity;
                     $item->save();
 
-                    return Cart::all()->toArray();
+                    return Cart::where('user_id',Auth::user()->id)->get()->toArray();
                 }
             }
 

@@ -15,6 +15,7 @@ use App\Models\PaymentVnPay;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Cart;
 use App\Models\Product;
+use App\Models\Stock;
 use COM;
 
 class CheckoutController extends Controller
@@ -28,7 +29,7 @@ class CheckoutController extends Controller
     public function index()
     {
         $cartUser = Cart::where('user_id', Auth::user()->id)->count();
-        if ($cartUser == 0 ) {
+        if ($cartUser == 0) {
             return redirect(route('client.home'));
         }
 
@@ -116,6 +117,14 @@ class CheckoutController extends Controller
                     $detail_bill->order_id = $bill->id;
                     $detail_bill->price = Product::find($item['product_id'])->first()->price;
                     $detail_bill->save();
+
+                    // giam so luong bien the sp khi dat hang thanh cong
+                    Stock::where('pro_id', $item['product_id'])
+                        ->where('color_id', $item['color_id'])
+                        ->where('size_id', $item['size_id'])
+                        ->first()->decrement('quantity', $item['quantity']);
+                    
+                    Product::find($item['product_id'])->decrement('quantity', $item['quantity']);
                 }
 
                 // check used voucher
@@ -131,12 +140,14 @@ class CheckoutController extends Controller
                     if ($voucherExist->quantity > 0) {
                         $voucherExist->decrement('quantity', 1);
                     }
+
+
                     // destroy session
                     session()->pull('codeVoucher');
                     session()->pull('newPrice');
                 }
 
-                return redirect()->route('client.result-checkout')->with('msg-suc', 'Đặt hàng thành công!');
+                return redirect()->route('client.result-checkout')->with('payment-success', 'Đặt hàng thành công!');
 
                 break;
 
@@ -202,9 +213,11 @@ class CheckoutController extends Controller
         // dd($request->all());
 
         // thanh toan thanh cong
+        // destroy cart
+        Cart::where('user_id', Auth::user()->id)->delete();
+
         if (session()->has('payment-success')) {
 
-            // destroy cart
             // ...
             return view('client.pages.result-checkout');
         } else if (session()->has('payment-error')) {

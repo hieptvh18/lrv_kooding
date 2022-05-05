@@ -73,10 +73,10 @@
                                         @enderror
                                     </div>
                                     <!-- <div class="DH__form1">
-                                                    <label for="">Tên hiển thị <i>* Để nhận xét và nhận xét sản phẩm.</i></label>
-                                                    <input type="text" value="Trương Nghĩa">
-                                            
-                                                </div> -->
+                                                        <label for="">Tên hiển thị <i>* Để nhận xét và nhận xét sản phẩm.</i></label>
+                                                        <input type="text" value="Trương Nghĩa">
+                                                
+                                                    </div> -->
                                     <div class="DH__form1">
                                         <label for="">E-mail <i>* Nơi bạn nhận được thông tin đặt hàng.</i></label>
                                         <input type="email" name="email" disabled value="{{ Auth::user()->email }}">
@@ -188,8 +188,8 @@
                                         <thead>
                                             <tr>
                                                 <th>STT</th>
-                                                <th>ID </th>
-                                                <th>Tổng tiền hàng</th>
+                                                <th>Tổng tiền </th>
+                                                <th>Phương thức thanh toán</th>
                                                 <th>Số điện thoại</th>
                                                 <th>Ngày đặt hàng</th>
                                                 <th>Tình trạng đơn</th>
@@ -200,26 +200,28 @@
                                             @foreach ($orders as $key => $o)
                                                 <tr>
                                                     <td>{{ $key + 1 }}</td>
-                                                    <td><?= $o['id'] ?></td>
                                                     <td class="font-weight-bold">
                                                         {{ number_format($o->total_price, 0, ',') }}đ
                                                     </td>
+                                                    <td>{{$o->payment}}</td>
                                                     <td>{{ $o->phone }}</td>
                                                     <td>{{ $o->created_at }}</td>
                                                     <td class="font-weight-medium">
-                                                        {{-- <?php if ($o['status'] == 2) : ?>
-                                                        <div class="badge badge-success">Đã gửi hàng</div>
-                                                        <?php elseif ($o['status'] == 1) : ?>
-                                                        <div class="badge badge-warning">Đang xử lí</div>
-                                                        <?php elseif($o['status'] == 0) : ?>
-                                                        <div class="badge badge-danger">Chưa xác nhận</div>
-                                                        <?php else: ?>
-                                                        <div class="badge badge-danger">Đã bị hủy</div>
-                                                        <?php endif;?> --}}
+                                                        @if ($o->status == 2)
+                                                            <div class="badge badge-success">Đã gửi hàng</div>
+                                                        @elseif ($o->status == 1)
+                                                            <div class="badge badge-info">Đang xử lí</div>
+                                                        @elseif($o->status == 0)
+                                                            <div class="badge badge-warning">Chưa xác nhận</div>
+                                                        @else
+                                                            <div class="badge badge-danger">Đã hủy đơn</div>
+                                                        @endif
                                                     </td>
                                                     <td>
-                                                        <a href="" class="btn btn-primary text-light"><small>Đã nhận được hàng</small></a>
-                                                        <a href="" class="btn btn-outline-info btn"><i class="fa fa-eye" aria-hidden="true"></i>
+                                                        <a href="" class="btn btn-primary text-light"><small>Đã nhận được
+                                                                hàng</small></a>
+                                                        <a href="" class="btn btn-outline-info btn"><i
+                                                                class="fa fa-eye" aria-hidden="true"></i>
                                                         </a>
                                                     </td>
                                                 </tr>

@@ -109,9 +109,10 @@
                             <div class="order__bottom__item">
                                 <img src="{{ asset('uploads') }}/{{ $product['avatar'] }}" alt="" width="70px">
                                 <div class="order__info">
-                                    <div class="order__name">
+                                    <a
+                                    href="{{ route('client.shop.detail', ['slug' => $product['slug'], 'id' => $product['id']]) }}">
                                         <p>{{ \App\Models\Product::find($item['product_id'])->name }}</p>
-                                    </div>
+                                </a>
                                     <div class="order__text">
                                         <p> {{ \App\Models\AttributeValue::find($item['color_id'])->name }}</p>
                                         <p>|</p>

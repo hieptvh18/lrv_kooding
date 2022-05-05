@@ -20,14 +20,16 @@
           <tr>
             <th>ID </th>
             <th>Tên </th>
-            <th>Tổng tiền</th>
+            <th>Tổng tiền <a href="?_sort=true&column=total_price&type={{$type}}"><i class="fa fa-sort ml-2"
+              aria-hidden="true"></a></th>
             <th>Thanh toán</th>
             <th>Điện thoại</th>
-            <th>Đặt hàng <a href="?_sort=true&column=name&type=asc"><i class="fa fa-sort ml-2"
+            <th>Đặt hàng <a href="?_sort=true&column=created_at&type={{$type}}"><i class="fa fa-sort ml-2"
               aria-hidden="true"></a></th>
-            <th>Cập nhật <a href="?_sort=true&column=name&type=asc"><i class="fa fa-sort ml-2"
+            <th>Cập nhật <a href="?_sort=true&column=updated_at&type={{$type}}"><i class="fa fa-sort ml-2"
               aria-hidden="true"></a></th>
-            <th>Tình trạng</th>
+            <th>Tình trạng <a href="?_sort=true&column=status&type={{$type}}"><i class="fa fa-sort ml-2"
+              aria-hidden="true"></a></th>
             <th>#</th>
           </tr>
         </thead>
@@ -53,13 +55,16 @@
                   @endif
               </td>
               <td>
-                <a href="" class="btn btn-primary btn-sm"><i class="fa fa-eye" aria-hidden="true"></i>
+                <a href="{{route('admin.order.detail',$o['id'])}}" class="btn btn-primary btn-sm"><i class="fa fa-eye" aria-hidden="true"></i>
                 </a>
               </td>
             </tr>
           @endforeach
         </tbody>
       </table>
+      <div class="paginate">
+        {{ $orders->links() }}
+    </div>
     </div>
   </div>
 </div>

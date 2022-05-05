@@ -135,6 +135,8 @@ Route::middleware(['all.checkExpiry'])->group(function () {
 
         // order
         Route::get('orders', [OrderController::class, 'index'])->name('admin.order.index');
+        Route::get('orders/{id}', [OrderController::class, 'orderDetail'])->name('admin.order.detail');
+        Route::put('change-status/{id}', [OrderController::class, 'changeStatus'])->name('admin.order.changeStatus');
     });
 
     // ================errors================
