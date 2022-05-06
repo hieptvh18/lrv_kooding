@@ -46,12 +46,12 @@
 
         <div class="mt-2 d-flex justify-content-end">
             <a href="{{ route('products.export') }}" class="btn btn-sm btn-primary mr-3">Export excel
-                <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                <i class="far fa-file-export"></i>
             </a>
 
             <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modalImport">
                 Import excel
-                <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+                <i class="far fa-file-import"></i>
             </button>
 
             <!-- Modal -->
@@ -67,15 +67,14 @@
 
                         <!-- Modal body -->
                         <div class="modal-body">
-                            <form id="formImport" action="{{ route('voucher.store') }}" class="forms-sample"
+                            <form id="formImport" name="formImport" action="{{ route('products.import') }}" class="forms-sample"
                                 method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="input-group mb-3">
-                                    <input type="file" name="file" class="form-control form-control-sm">
-                                    <br>
-                                    <small class="er-file-import text-danger"></small>
+                                    <input type="file" name="file" id="file" class="form-control form-control-sm">
                                     <button class="btn btn-primary btn-sm" type="submit">Submit</button>
                                 </div>
+                                <small class="er-file-import text-danger"></small>
                             </form>
                         </div>
 
@@ -152,11 +151,11 @@
                                     </div>
                                     <div class="">
                                         <a href="{{ route('product.destroy', $val->id) }}" onclick="
-                                                    event.preventDefault();
-                                                     if(confirm('Bạn có chắc chắn xóa? Các mục liên quan cũng sẽ biến mất!')){
-                                                         document.querySelector('#formFakeRemovePro{{ $key }}').submit()
-                                                     }
-                                                    "><i class="fas fa-trash-alt text-danger fa-2x"></i></a>
+                                                                event.preventDefault();
+                                                                 if(confirm('Bạn có chắc chắn xóa? Các mục liên quan cũng sẽ biến mất!')){
+                                                                     document.querySelector('#formFakeRemovePro{{ $key }}').submit()
+                                                                 }
+                                                                "><i class="fas fa-trash-alt text-danger fa-2x"></i></a>
 
                                         {{-- form fake method remove --}}
                                         <form action="{{ route('product.destroy', $val->id) }}"
@@ -228,7 +227,7 @@
                             } else {
                                 alert(
                                     'Không thể thay đổi trạng thái active cho sản phẩm không tồn tại trong kho!'
-                                    );
+                                );
                             }
                         },
                         error: function(er) {
@@ -285,20 +284,20 @@
             formImport.submit(function(e) {
                 e.preventDefault();
 
-                const filePath = $('input[name="file"]').value;
-
-                // Allowing file type
-                const allowedExtensions =
-                    /(\.xlsx|\.csv)$/i;
-
-                if (!allowedExtensions.exec(filePath)) {
-                    $('.er-file-import').html('Chỉ chấp nhận file .csv hoặc xlsx');
-                    $('input[name="file"]').value = '';
-                    return false;
+                const input_element = $('#file');
+                var fileName = input_element.val();
+                var allowed_extensions = new Array("xlsx", "csv");
+                var file_extension = fileName.split('.').pop();
+                for (var i = 0; i < allowed_extensions.length; i++) {
+                    if (allowed_extensions[i] == file_extension) {
+                        // true 
+                        document.forms['formImport'].submit();
+                        return;
+                    }
                 }
 
-                // true 
-                formImport.submit();
+                // false
+                $('.er-file-import').html('Chỉ chấp nhận file .csv hoặc xlsx');
             })
         });
     </script>

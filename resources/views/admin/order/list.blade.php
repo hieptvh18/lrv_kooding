@@ -24,7 +24,7 @@
     </form>
     <div class="">
       <a href="{{route('orders.export')}}" class="btn btn-sm btn-primary">Export excel
-        <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+        <i class="far fa-file-export"></i>
       </a>
     </div>
     </div>

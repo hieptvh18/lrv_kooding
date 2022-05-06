@@ -290,6 +290,9 @@ class ProductController extends Controller
     // import file
     public function import(Request $request)
     {
+        $request->validate([
+            
+        ]);
         Excel::import(new ProductsImport,request()->file('file'));
 
         return redirect()->route('product.index')->with('msg-suc','Import danh sách sản phẩm thành công!');

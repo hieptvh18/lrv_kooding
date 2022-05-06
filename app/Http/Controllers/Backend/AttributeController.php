@@ -20,6 +20,7 @@ class AttributeController extends Controller
         $attributes = Attribute::all();
         $attributeValues = AttributeValue::select('attr_values.*','attributes.name as attr_name')
                                             ->join('attributes','attributes.id','attr_values.attr_id')
+                                            ->orderBy('id','desc')
                                             ->paginate(10);
         //check attributes > 0 => btn add attrValue disable? 
         $btnStatus = '';
