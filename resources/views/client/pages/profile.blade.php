@@ -300,7 +300,7 @@
                                     
                                 </tbody>
                                 <tr>
-                                    <th class="bg-light">Tổng tiền đơn hàng: <span class="info-order-total"></span></th>
+                                    <th class="bg-light">Tổng: <span class="info-order-total"></span></th>
                                     
                                 </tr>
                             </table>

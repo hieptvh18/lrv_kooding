@@ -377,7 +377,7 @@
                         childCategories.forEach(val => {
                             html += `
                             <div class="child-menu_item">
-                                    <div class="item-title"><a href="./cua-hang/${val.slug}">${val.name}</a></div>
+                                    <div class="item-title"><a href="/cua-hang/${val.slug}">${val.name}</a></div>
                                     <ul >
                                             <li><a href="">child 1</a></li>
                                         </ul>

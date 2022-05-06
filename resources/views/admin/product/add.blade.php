@@ -58,24 +58,31 @@
                     </div>
 
                     <div class="row">
-                        {{-- <div class="form-group col-4">
-                            <label for="" class="">Số lượng</label>
-                            <input type="number" name="quantity" class="form-control" value="{{ old('quantity') }}"
-                                placeholder="Số lượng sản phẩm">
-                            @error('quantity')
+                        <div class="form-group col-4">
+                            <label for="">Màu sắc</label>
+                            <select id="" name="color_id" class="form-control">
+                                <option selected disabled value="">---Chọn màu sắc---</option>
+                                @foreach (\App\Models\Attribute::find(1)->attributeValues as $val)
+                                    <option value="{{ $val->id }}"
+                                        {{ old('color_id') == $val->id ? 'selected' : '' }}>
+                                        {{ $val->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('color_id')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
-                        </div> --}}
+                        </div>
                         <div class="form-group col-4">
-                            <label for="" class="">Giam gia</label>
-                            <input type="number" name="discount" class="form-control" value="{{ old('discount') }}"
+                            <label for="" class="">Giảm giá</label>
+                            <input type="number" name="discount" class="form-control" value="{{ old('discount')? old('discount') : 0 }}"
                                 placeholder="Giá giảm">
                             @error('discount')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
                         <div class="form-group col-4">
-                            <label for="" class="">Thuong Hieu</label>
+                            <label for="" class="">Thương hiệu</label>
                             <select id="" name="brand_id" class="form-control">
                                 <option selected disabled value="">---chon thuong hieu---</option>
                                 @foreach ($brands as $val)
@@ -84,6 +91,53 @@
                                 @endforeach
                             </select>
                             @error('brand_id')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                    </div>
+                    <div class="row">
+                       
+
+                        <div class="form-group col-4">
+                            <label for="">Kích cỡ</label>
+
+                            <select id="" name="size_id" class="form-control">
+                                <option selected disabled value="">---Chọn kích cỡ---</option>
+                                @foreach (\App\Models\Attribute::find(2)->attributeValues as $val)
+                                    <option value="{{ $val->id }}"
+                                        {{ old('size_id') == $val->id ? 'selected' : '' }}>
+                                        {{ $val->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('size_id')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <div class="form-group col-4">
+                            <label for="">Chất liệu</label>
+
+                            <select id="" name="material_id" class="form-control">
+                                <option selected disabled value="">---Chọn Chất liệu---</option>
+                                @foreach (\App\Models\Attribute::find(3)->attributeValues as $val)
+                                    <option value="{{ $val->id }}"
+                                        {{ old('material_id') == $val->id ? 'selected' : '' }}>
+                                        {{ $val->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('material_id')
+                                <small class="text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        <div class="form-group col-4">
+                            <label for="">Số lượng</label>
+
+                            <input type="number" min="1" name="quantity" class="form-control" value="{{ old('quantity') }}"
+                                placeholder="Số lượng sản phẩm">
+                            @error('quantity')
                                 <small class="text-danger">{{ $message }}</small>
                             @enderror
                         </div>
@@ -116,7 +170,7 @@
                     </div>
                     <div class="form-group">
                         <label >Tình trạng:</label>
-                        <input type="checkbox" value="1" class="ml-3 mr-2" name="status" id="status" 
+                        <input checked type="checkbox" value="1" class="ml-3 mr-2" name="status" id="status" 
                         {{old('status') == '1' ?'checked':''}}><label for="status">Hoạt động</label>
                     </div>
 

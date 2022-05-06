@@ -18,7 +18,7 @@
                             {{ $receiver->created_at }} </p>
                     </div>
                     <div class="">
-                        <button class="btn btn-primary">Export</button>
+                        {{-- <button class="btn btn-primary">Export</button> --}}
                     </div>
                 </div>
 

@@ -8,6 +8,9 @@ use App\Models\OrderDetail;
 use Illuminate\Http\Request;
 use App\Models\Product;
 
+use App\Exports\OrdersExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 class OrderController extends Controller
 {
     // list order
@@ -15,6 +18,7 @@ class OrderController extends Controller
     {
         $type = 'asc';
         $orders = Order::select('*');
+        $title = null;
 
         // sort name
         if ($request->_sort) {
@@ -27,8 +31,19 @@ class OrderController extends Controller
             }
         }
 
+        // search
+        if($request->keyword){
+            $orders= $orders->where('id',$request->keyword);
+            if($orders->count() == 0){
+                $title = 'Không tìm thấy đơn hàng';
+            }else{
+                $title = 'Kết quả tìm kiếm';
+
+            }
+        }
+
         $orders = $orders->paginate(20);
-        return view('admin.order.list', compact('orders','type'));
+        return view('admin.order.list', compact('orders','type','title'));
     }
 
     // detail
@@ -59,4 +74,12 @@ class OrderController extends Controller
 
         return redirect(route('admin.order.detail',$id))->with('msg-suc','Cập nhật thành công tình trạng đơn hàng!');
     }
+
+
+    // export file 
+    public function export() 
+    {
+        return Excel::download(new OrdersExport(), 'donhang-kooding.xlsx');
+    }
+
 }

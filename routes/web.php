@@ -139,7 +139,12 @@ Route::middleware(['all.checkExpiry'])->group(function () {
         Route::put('change-status/{id}', [OrderController::class, 'changeStatus'])->name('admin.order.changeStatus');
     });
 
-    // ================errors================
+    // ==============Export import file============
+    Route::get('orders/export/', [OrderController::class, 'export'])->name('orders.export');
+    Route::post('products/import/', [ProductController::class, 'import'])->name('products.import');
+    Route::get('products/export/', [ProductController::class, 'export'])->name('products.export');
+
+    // ================errors======================
     Route::get('403', function () {
         return view('errors.403');
     })->name('403');

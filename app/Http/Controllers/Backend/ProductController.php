@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Exports\ProductsExport;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Backend\ProductRequest;
@@ -12,6 +13,9 @@ use App\Models\Category;
 use App\Models\Stock;
 use App\Models\ProductImage;
 use DB;
+use App\Imports\ProductsImport;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class ProductController extends Controller
 {
@@ -113,6 +117,13 @@ class ProductController extends Controller
             }
 
             // add stocks attr_value
+            $newStock = new Stock();
+            $newStock->fill($request->all());
+            $newStock->pro_id = $productNew->id;
+            $newStock->save();
+
+            // increase qty product
+            Product::find($productNew->id)->increment('quantity',$request->quantity);
             
         }
 
@@ -274,6 +285,20 @@ class ProductController extends Controller
         $idArray = explode(',',$request->pro_id);
        Product::whereIn('id',$idArray)->delete();
         return redirect(route('product.index'))->with('msg-suc','Xóa thành công!');
+    }
+
+    // import file
+    public function import(Request $request)
+    {
+        Excel::import(new ProductsImport,request()->file('file'));
+
+        return redirect()->route('product.index')->with('msg-suc','Import danh sách sản phẩm thành công!');
+    }
+
+    // export
+    public function export() 
+    {
+        return Excel::download(new ProductsExport(), 'sanpham-kooding.xlsx');
     }
 }
 

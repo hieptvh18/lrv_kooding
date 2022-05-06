@@ -17,7 +17,7 @@ class Stock extends Model
 
     protected $table = 'stocks'; //== pro_attributes old
 
-    protected $fillable = ['pro_id','name','color_id','size_id','material_id','quantity','sku'];
+    protected $fillable = ['pro_id','name','color_id','size_id','material_id','quantity'];
 
     // relationship
     public function products(){

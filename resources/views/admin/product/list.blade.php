@@ -25,7 +25,7 @@
                     <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
                         aria-labelledby="notificationDropdown">
                         @foreach ($listCategory as $key => $category)
-                            <a href="{{ route('product.index') }}?filterByCategory={{ $category['id']}}"
+                            <a href="{{ route('product.index') }}?filterByCategory={{ $category['id'] }}"
                                 class="dropdown-item">{{ str_repeat('---', $category['level']) }}{{ $category['name'] }}</a>
                         @endforeach
 
@@ -44,6 +44,47 @@
             </div>
         </div>
 
+        <div class="mt-2 d-flex justify-content-end">
+            <a href="{{ route('products.export') }}" class="btn btn-sm btn-primary mr-3">Export excel
+                <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+            </a>
+
+            <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#modalImport">
+                Import excel
+                <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+            </button>
+
+            <!-- Modal -->
+            <div class="modal" id="modalImport">
+                <div class="modal-dialog modal-md   ">
+                    <div class="modal-content">
+
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Nhập dữ liệu từ file </h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <form id="formImport" action="{{ route('voucher.store') }}" class="forms-sample"
+                                method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <div class="input-group mb-3">
+                                    <input type="file" name="file" class="form-control form-control-sm">
+                                    <br>
+                                    <small class="er-file-import text-danger"></small>
+                                    <button class="btn btn-primary btn-sm" type="submit">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
         <div class="title-search mt-4 mb-4">
             @if ($title)
                 <h4> {{ $title }}</h4>
@@ -58,19 +99,20 @@
                         <tr>
                             <th>Select</th>
                             <th>Tên
-                                <a href="{{ route('product.index') }}?_sort=true&column=name&type={{$type}}"><i
+                                <a href="{{ route('product.index') }}?_sort=true&column=name&type={{ $type }}"><i
                                         class="fas fa-sort"></i></a>
                             </th>
                             <th>Thương hiệu</th>
                             <th>Danh mục</th>
                             <th>Giá.
-                                <a href="{{ route('product.index') }}?_sort=true&column=price&type={{$type}}"><i
-                                    class="fas fa-sort"></i></a>
+                                <a href="{{ route('product.index') }}?_sort=true&column=price&type={{ $type }}"><i
+                                        class="fas fa-sort"></i></a>
                             </th>
                             <th>Ảnh</th>
                             <th>Số lượng
-                                <a href="{{ route('product.index') }}?_sort=true&column=quantity&type={{$type}}"><i
-                                    class="fas fa-sort"></i></a>
+                                <a
+                                    href="{{ route('product.index') }}?_sort=true&column=quantity&type={{ $type }}"><i
+                                        class="fas fa-sort"></i></a>
                             </th>
                             <th>Tình trạng</th>
                             <th>Chức năng</th>
@@ -80,7 +122,8 @@
                         @foreach ($products as $key => $val)
                             <tr>
                                 <td>
-                                    <input type="checkbox" data-id={{ $val->id }} name="proIds[]" value="{{ $val->id }}">
+                                    <input type="checkbox" data-id={{ $val->id }} name="proIds[]"
+                                        value="{{ $val->id }}">
                                 </td>
                                 <td>{{ $val->name }}</td>
                                 <td>{{ $val->brands->name }}</td>
@@ -90,28 +133,30 @@
                                 <td>{{ $val->quantity }}</td>
                                 <td>
                                     @if ($val->status == 0)
-                                        <button class="badge badge-danger status btn-status" data-status="1" data-id="{{$val->id}}">Ẩn</button>
+                                        <button class="badge badge-danger status btn-status" data-status="1"
+                                            data-id="{{ $val->id }}">Ẩn</button>
                                     @else
-                                        <button class="badge badge-success status btn-status" data-status="0" data-id="{{$val->id}}">Hiện</button></label>
+                                        <button class="badge badge-success status btn-status" data-status="0"
+                                            data-id="{{ $val->id }}">Hiện</button></label>
                                     @endif
                                 </td>
-                                <td>
-                                    <div class="mb-2">
+                                <td class="d-flex">
+                                    <div class="mr-2">
                                         <a href="{{ route('stock.create', $val->id) }}"><i
                                                 class="fa fa-plus text-info fa-2x" aria-hidden="true"></i>
                                         </a>
                                     </div>
-                                    <div class="mb-2">
+                                    <div class="mr-2">
                                         <a href="{{ route('product.edit', $val->id) }}"><i
                                                 class="fas fa-pen-square text-warning fa-2x "></i></a>
                                     </div>
                                     <div class="">
                                         <a href="{{ route('product.destroy', $val->id) }}" onclick="
-                                            event.preventDefault();
-                                             if(confirm('Bạn có chắc chắn xóa? Các mục liên quan cũng sẽ biến mất!')){
-                                                 document.querySelector('#formFakeRemovePro{{ $key }}').submit()
-                                             }
-                                            "><i class="fas fa-trash-alt text-danger fa-2x"></i></a>
+                                                    event.preventDefault();
+                                                     if(confirm('Bạn có chắc chắn xóa? Các mục liên quan cũng sẽ biến mất!')){
+                                                         document.querySelector('#formFakeRemovePro{{ $key }}').submit()
+                                                     }
+                                                    "><i class="fas fa-trash-alt text-danger fa-2x"></i></a>
 
                                         {{-- form fake method remove --}}
                                         <form action="{{ route('product.destroy', $val->id) }}"
@@ -153,49 +198,52 @@
         $(document).ready(function() {
             const proIdsEl = $('input[name="proIds[]"]');
             const btnChangeStatus = document.querySelectorAll('.btn-status');
+            const formImport = $('#formImport');
 
             // change status product
-            btnChangeStatus.forEach((val,index)=>{
+            btnChangeStatus.forEach((val, index) => {
                 const status = val.dataset.status;
                 const proId = val.dataset.id;
 
-                val.onclick = function(){
+                val.onclick = function() {
 
-                    if(!confirm('Bạn chắc chắn thay đổi trạng thái?')){
+                    if (!confirm('Bạn chắc chắn thay đổi trạng thái?')) {
                         return;
                     }
                     $.ajaxSetup({
-                        headers:{
+                        headers: {
                             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
                     })
                     $.ajax({
-                        url:'{{route('ajax.changeStatusProduct')}}',
-                        type:'POST',
-                        data:{
-                            proId:proId,
-                            status:status
+                        url: '{{ route('ajax.changeStatusProduct') }}',
+                        type: 'POST',
+                        data: {
+                            proId: proId,
+                            status: status
                         },
-                        success:function(data){
-                            if(data == 1){
+                        success: function(data) {
+                            if (data == 1) {
                                 window.location.reload();
-                            }else{
-                                alert('Không thể thay đổi trạng thái active cho sản phẩm không tồn tại trong kho!');
+                            } else {
+                                alert(
+                                    'Không thể thay đổi trạng thái active cho sản phẩm không tồn tại trong kho!'
+                                    );
                             }
                         },
-                        error:function(er){
+                        error: function(er) {
                             alert('Có lỗi xảy ra! vui lòng thử lại!');
                         }
                     })
                 }
             })
-            
+
             $("#btnCheckAll").click(function() {
                 $('input:checkbox').not(this).prop('checked', this.checked);
                 disabledCheckAll()
             });
 
-            proIdsEl.click(function(){
+            proIdsEl.click(function() {
                 disabledCheckAll()
             })
 
@@ -223,14 +271,35 @@
             })
 
             // count checked disabled checkall
-            function disabledCheckAll(){
-                if($('table input:checked').length !== $('table input:checkbox').length){
-                    $("#btnCheckAll").prop('checked',false)
-                }else{
-                    $("#btnCheckAll").prop('checked',true)
+            function disabledCheckAll() {
+                if ($('table input:checked').length !== $('table input:checkbox').length) {
+                    $("#btnCheckAll").prop('checked', false)
+                } else {
+                    $("#btnCheckAll").prop('checked', true)
 
                 }
             }
+
+
+            // validate form import
+            formImport.submit(function(e) {
+                e.preventDefault();
+
+                const filePath = $('input[name="file"]').value;
+
+                // Allowing file type
+                const allowedExtensions =
+                    /(\.xlsx|\.csv)$/i;
+
+                if (!allowedExtensions.exec(filePath)) {
+                    $('.er-file-import').html('Chỉ chấp nhận file .csv hoặc xlsx');
+                    $('input[name="file"]').value = '';
+                    return false;
+                }
+
+                // true 
+                formImport.submit();
+            })
         });
     </script>
 @endsection

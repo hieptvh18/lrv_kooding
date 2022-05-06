@@ -183,6 +183,9 @@ return [
         // get current location
         Stevebauman\Location\LocationServiceProvider::class,
 
+        // handle file
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+
     ],
 
     /*
@@ -201,6 +204,9 @@ return [
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 
         'Location' => 'Stevebauman\Location\Facades\Location',
+
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+
 
     ])->toArray(),
 

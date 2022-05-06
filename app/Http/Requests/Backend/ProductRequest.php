@@ -64,6 +64,10 @@ class ProductRequest extends FormRequest
                     "brand_id" => "required",
                     "description" => "required|min:30|max:4000000",
                     "avatar" => "required|image|mimes:jpg,png,jpeg|max:2040",
+                    "quantity" => "required|integer",
+                    "color_id"=>"required",
+                    "size_id"=>"required",
+                    "material_id"=>"required",
                     
                 ];
                 break;

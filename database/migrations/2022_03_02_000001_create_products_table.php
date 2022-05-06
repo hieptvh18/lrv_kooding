@@ -27,7 +27,7 @@ return new class extends Migration
             $table->foreignId('brand_id');
             $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
 
-            $table->string('avatar',355);
+            $table->string('avatar',355)->nullable();
             $table->string('description',500);
             // note :quantity se la tong so luong cua bien the sp trong stock + lai
             $table->integer('quantity')->comment('save to stock')->nullable()->default(0);

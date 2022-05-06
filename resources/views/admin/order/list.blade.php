@@ -14,7 +14,23 @@
     @if (session('msg-er'))
         <div class="alert alert-danger">{{session('msg-er')}}</div>
     @endif
+    
     <div class="table-responsive">
+    <div class="d-flex justify-content-between">
+      <form action="" method="GET" class="mt-3">
+        <input type="search" value="{{ old('keyword') }}" name="keyword" placeholder="Enter Order ID"
+            class="form-control-sm" required style="height:33px;border:1px solid #ccc;border-radius:10px">
+        <button class="btn btn-outline-info btn-sm">Tìm kiếm</button>
+    </form>
+    <div class="">
+      <a href="{{route('orders.export')}}" class="btn btn-sm btn-primary">Export excel
+        <i class="fa fa-file-excel-o" aria-hidden="true"></i>
+      </a>
+    </div>
+    </div>
+    @if ($title)
+        <h4 class="text-center">{{$title}}</h4>
+    @endif
       <table class="table table-striped table-borderless">
         <thead>
           <tr>
