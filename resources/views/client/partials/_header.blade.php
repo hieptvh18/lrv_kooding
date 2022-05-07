@@ -331,7 +331,7 @@
                     </li>
                 @endif
 
-                <li><a href="newsClient"
+                <li><a href="{{route('client.news')}}"
                         class="{{ Route::currentRouteName() == 'client.news' ? 'menu-active' : '' }}">Tin tức</a>
                 </li>
                 <li><a href="{{ route('client.social') }}"

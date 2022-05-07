@@ -171,7 +171,7 @@
 
         <div class="slider-album pb-4">
             <div class="slide-title text-center pt-4 pb-2 text-light">
-                <h3>#render web name</h3>
+                <h3>#{{$settings->web_name}}</h3>
                 <p>Chia sẽ khoảnh khắc của bạn với KOODING TRÊN <i class="fab fa-instagram text-light"
                         aria-hidden="true"></i> hoặc <i class="fab fa-twitter text-light" aria-hidden="true"></i>
 

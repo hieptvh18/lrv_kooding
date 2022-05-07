@@ -90,8 +90,8 @@
             </a>
             <div class="collapse" id="news">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="news?action=list">Tổng hợp</a></li>
-                    <li class="nav-item"> <a class="nav-link" href="news?action=add">Thêm tin tức</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{route('news.index')}}">Tổng hợp</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{route('news.create')}}">Thêm tin tức</a></li>
                 </ul>
             </div>
         </li>

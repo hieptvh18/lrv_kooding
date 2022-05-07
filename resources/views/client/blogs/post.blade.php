@@ -1,27 +1,34 @@
+
+@extends('layouts.layout-client')
+
+@section('page-title', 'Tin tức | Kooding')
+@section('main')
+
 <main class="container">
     <div class="mainheading">
-        <h1 class="sitetitle concax"><a href="newsClient">Blog Kooding</a></h1>
+        <h1 class="sitetitle concax"><a href="{{route('client.news')}}">Blog Kooding</a></h1>
         <p class="lead">
-            <?= $data['news_detail']['shortdesc'] ?>
+            {{$post->short_desc}}
         </p>
     </div>
     <div class="conten_news">
-        <?= $data['news_detail']['content'] ?>
+        {{$post->content}}
     </div>
     <div class="graybg">
         <div class="container">
             <div class="row listrecent listrelated">
-                <?php foreach ($data['list_news_relate'] as $item) : ?>
+                @foreach ($postRelate as $item)
+                    
                     <!-- begin post -->
                     <div class="col-md-4">
                         <div class="card">
                             <a class="post_link_img" href="post.html">
-                                <img class="img-fluid img-thumb" src="./public/images/upload/<?= $item['image'] ?>" alt="">
+                                <img class="img-fluid img-thumb" src="{{asset('uploads')}}/{{$item->image}}" alt="">
                             </a>
                             <div class="card-block">
-                                <h2 class="card-title"><a href="post.html"><?= substr($item['title'],0,30) ?></a></h2>
+                                <h2 class="card-title"><a href="">{{ substr($item->title,0,30) }}</a></h2>
                                 <h4 class="card-text">
-                                <?= substr($item['shortdesc'],0,120) ?>...
+                                {{ substr($item->short_desc,0,120) }}...
                                 </h4>
                                 <div class="metafooter">
 
@@ -30,10 +37,12 @@
                         </div>
                     </div>
                     <!-- end post -->
-                <?php endforeach; ?>
+              @endforeach
 
 
             </div>
         </div>
     </div>
 </main>
+
+@endsection

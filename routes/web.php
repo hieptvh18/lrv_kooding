@@ -26,7 +26,9 @@ use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\ProfileController;
 
 use App\Http\Controllers\Api\VnpayController;
+use App\Http\Controllers\Backend\NewsController;
 use App\Http\Controllers\Backend\WebSettingController;
+use App\Http\Controllers\Frontend\NewsController as FrontendNewsController;
 
 // check hạn sử dụng voucher + slg sản phẩm -> status
 Route::middleware(['all.checkExpiry'])->group(function () {
@@ -77,8 +79,9 @@ Route::middleware(['all.checkExpiry'])->group(function () {
         return view('client.pages.termsofuse');
     })->name('client.termsofuse');
 
-    // api
-
+    // news
+    Route::get('blogs',[FrontendNewsController::class,'index'])->name('client.news');
+    Route::get('blogs/{id}',[FrontendNewsController::class,'post'])->name('client.post');
     // vnpay
     // Route::get('payment_vnpay', [VnpayController::class, 'create'])->name('api.payment.vnpay');
     Route::get('return-vnpay', [VnpayController::class, 'return'])->name('api.payment.return-vnpay');
@@ -138,6 +141,9 @@ Route::middleware(['all.checkExpiry'])->group(function () {
         Route::get('orders', [OrderController::class, 'index'])->name('admin.order.index');
         Route::get('orders/{id}', [OrderController::class, 'orderDetail'])->name('admin.order.detail');
         Route::put('change-status/{id}', [OrderController::class, 'changeStatus'])->name('admin.order.changeStatus');
+
+        // news
+        Route::resource('news', NewsController::class);
 
         // web setting
         Route::get('settings',[WebSettingController::class,'edit'])->name('websettings.edit');
