@@ -157,13 +157,13 @@
         <!-- end trending -->
         <div class="about-us" id="introduce">
             <div class="title text-center">
-                <h5>render title</h5>
+                <h5>{{$settings->intro_title}}</h5>
             </div>
             <div id="times" class="btn__times">+</div>
             <div id="minus" class="btn__minus none">-</div>
             <div class="background__overlay"></div>
             <div class="site__intro show1">
-                render intro
+                {{$settings->intro_content}}
             </div>
         </div>
 

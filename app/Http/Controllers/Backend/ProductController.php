@@ -187,7 +187,7 @@ class ProductController extends Controller
         if($request->file('avatar')){
             $avatarName = uniqid() . '-product' . time() . '.' . $request->avatar->extension();
             // unlink img old
-            if(file_exists(public_path('uploads/'.$productNew->avatar))){
+            if($productNew->avatar && file_exists(public_path('uploads/'.$productNew->avatar))){
                 unlink(public_path('uploads/'.$productNew->avatar));
             }
         }else{

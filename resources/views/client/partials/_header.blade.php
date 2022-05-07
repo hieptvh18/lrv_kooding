@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <a href="{{ route('client.home') }}" class="logo">
-                    <img src="{{ asset('assets/images/layout/logo-main.png') }}" alt="" class="logo-img">
+                    <img src="{{ asset('uploads') }}/{{\App\Models\WebSetting::first()->logo}}" alt="" class="logo-img">
                 </a>
             </div>
 

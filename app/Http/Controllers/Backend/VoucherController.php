@@ -13,12 +13,25 @@ class VoucherController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //get data
-        $vouchers = Voucher::all();
+        $vouchers = Voucher::select('*');
 
-        return view('admin.vouchers.list',compact('vouchers'));
+        $type = 'asc';
+         // sort name
+         if($request->_sort){
+            if($request->type == 'asc'){
+                $vouchers = $vouchers->orderBy($request->column,$request->type);
+                $type = 'desc';
+            }else{
+                $vouchers = $vouchers->orderBy($request->column,$request->type);
+                $type = 'asc';
+            }
+        }
+        $vouchers = $vouchers->get();
+
+        return view('admin.vouchers.list',compact('vouchers','type'));
     }
 
     /**
@@ -80,7 +93,8 @@ class VoucherController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // 
+        
     }
 
     /**

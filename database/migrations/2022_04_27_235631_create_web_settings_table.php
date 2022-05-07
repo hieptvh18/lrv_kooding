@@ -16,13 +16,13 @@ return new class extends Migration
         Schema::create('web_settings', function (Blueprint $table) {
             $table->id();
             $table->string('web_name');
-            $table->string('intro_title');
-            $table->text('intro_content');
+            $table->string('intro_title')->nullable();
+            $table->text('intro_content')->nullable();
             $table->string('logo');
-            $table->string('fb_url');
-            $table->string('insta_url');
-            $table->string('twitter_url');
-            $table->string('pinterest_url');
+            $table->string('fb_url')->nullable();
+            $table->string('insta_url')->nullable();
+            $table->string('twitter_url')->nullable();
+            $table->string('pinterest_url')->nullable();
 
             $table->timestamps();
         });

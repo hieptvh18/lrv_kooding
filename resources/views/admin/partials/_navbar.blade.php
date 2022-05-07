@@ -1,7 +1,7 @@
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
   <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-    <a class="navbar-brand brand-logo mr-5" href="{{route('client.home')}}"><img src="{{asset('assets/images/layout/logo-main.png')}}" class="mr-2" alt="logo" width="70%"/></a>
-    <a class="navbar-brand brand-logo-mini" href="index.html"><img src="{{asset('assets/images/layout/logo-main.png')}}" alt="logo" width="30%"/></a>
+    <a class="navbar-brand brand-logo mr-5" href="{{route('client.home')}}"><img src="{{asset('uploads')}}/{{\App\Models\WebSetting::first()->logo}}" class="mr-2" alt="logo" width="70%"/></a>
+    <a class="navbar-brand brand-logo-mini" href="index.html"><img src="{{asset('uploads')}}/{{\App\Models\WebSetting::first()->logo}}" alt="logo" width="30%"/></a>
   </div>
   <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
     <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">

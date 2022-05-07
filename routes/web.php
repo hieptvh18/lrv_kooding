@@ -26,6 +26,7 @@ use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\ProfileController;
 
 use App\Http\Controllers\Api\VnpayController;
+use App\Http\Controllers\Backend\WebSettingController;
 
 // check hạn sử dụng voucher + slg sản phẩm -> status
 Route::middleware(['all.checkExpiry'])->group(function () {
@@ -137,6 +138,10 @@ Route::middleware(['all.checkExpiry'])->group(function () {
         Route::get('orders', [OrderController::class, 'index'])->name('admin.order.index');
         Route::get('orders/{id}', [OrderController::class, 'orderDetail'])->name('admin.order.detail');
         Route::put('change-status/{id}', [OrderController::class, 'changeStatus'])->name('admin.order.changeStatus');
+
+        // web setting
+        Route::get('settings',[WebSettingController::class,'edit'])->name('websettings.edit');
+        Route::put('settings',[WebSettingController::class,'update'])->name('websettings.update');
     });
 
     // ==============Export import file============

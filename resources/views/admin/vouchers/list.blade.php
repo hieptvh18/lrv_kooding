@@ -8,7 +8,8 @@
 
         <div class="" style="display: flex; align-items:center;">
             <!-- Button to Open the Modal -->
-            <button type="button" class="btn btn-outline-primary btnAddVoucher mr-3" data-toggle="modal" data-target="#modalFormVoucher">
+            <button type="button" class="btn btn-outline-primary btnAddVoucher mr-3" data-toggle="modal"
+                data-target="#modalFormVoucher">
                 Thêm mới+
             </button>
 
@@ -111,15 +112,16 @@
                         <th>Mã code</th>
                         <th>Loại</th>
                         <th>Số lượng hiện tại
-                            <a href="?_sort=true&column=name&type=asc"><i
-                                class="fas fa-sort"></i></a>
+                            <a href="?_sort=true&column=quantity&type={{ $type }}"><i
+                                    class="fas fa-sort"></i></a>
                         </th>
-                        <th>Ngày tạo 
-                             <a href=""><i
-                            class="fas fa-sort"></i></a></th>
+                        <th>Ngày tạo
+                            <a href="?_sort=true&column=created_at&type={{ $type }}"><i
+                                    class="fas fa-sort"></i></a>
+                        </th>
                         <th>Ngày hết hạn
-                            <a href="?_sort=true&column=name&type=asc"><i
-                                class="fas fa-sort"></i></a>
+                            <a href="?_sort=true&column=expired_date&type={{ $type }}"><i
+                                    class="fas fa-sort"></i></a>
                         </th>
                         <th>Tình trạng</th>
                         <th>Chức năng</th>
@@ -146,11 +148,11 @@
 
                             <td>
                                 <a href="" onclick="
-                                                    event.preventDefault()
-                                                        if(confirm('Bạn chắc chắn xóa voucher?')){
-                                                            document.querySelector('#formFakeRemoveVoucher{{ $key }}').submit();
-                                                        }
-                                                    "><i class="fas fa-trash-alt text-danger fa-2x"></i></a>
+                                                        event.preventDefault()
+                                                            if(confirm('Bạn chắc chắn xóa voucher?')){
+                                                                document.querySelector('#formFakeRemoveVoucher{{ $key }}').submit();
+                                                            }
+                                                        "><i class="fas fa-trash-alt text-danger fa-2x"></i></a>
 
                                 <a href="" class="btnOpenModalEdit" data-id="{{ $voucher->id }}"><i
                                         class="fas fa-pen-square text-warning fa-2x "></i></a>
@@ -178,117 +180,121 @@
     <script>
         const erCodeEl = $('.er-code');
 
-        $("#formVoucher").validate({
-            rules: {
-                name: {
-                    required: true,
-                    minlength: 6,
-                    maxlength: 30,
+        function validateAddVoucher() {
+            $("#formVoucher").validate({
+                rules: {
+                    name: {
+                        required: true,
+                        minlength: 6,
+                        maxlength: 30,
 
-                },
-                code: {
-                    required: true,
-                    minlength: 6,
-                    voucher: true
-                },
-                quantity: {
-                    required: true,
-                    number: true,
-                    min: 1
-                },
-                expired_date: {
-                    required: true,
-                    date: true,
-                    dateValidate: true
-                },
-                discount: {
-                    required: true,
-                }
-            },
-
-            messages: {
-                name: {
-                    required: "Vui lòng nhập tên mã giảm giá !",
-                    minlength: "Tên mã giảm giá ít nhất 6 kí tự!",
-                    maxlength: "Tên giảm không dài quá 30 kí tự!",
-                },
-                code: {
-                    required: "Vui lòng nhập mã code !",
-                    minlength: "Mã code tối thiểu 6 ký tự",
-                },
-                quantity: {
-                    required: "Vui lòng nhập số lượng",
-                    number: "Vui lòng nhập chữ số",
-                    min: "Vui lòng nhập giá trị lớn hơn 0"
-                },
-                expired_date: {
-                    required: "Vui lòng nhập ngày hết hạn",
-                    date: "Vui lòng nhập định dạng ngày tháng"
-                },
-                discount: {
-                    required: "Vui lòng nhập giá giảm",
-                    maxlength: "Vui lòng nhập giá giảm theo % từ 1-99%"
-                }
-            },
-            submitHandler: function(form, event) {
-                event.preventDefault();
-                const code = $('input[name="code"]').val();
-                // check exist = ajax
-                $.ajaxSetup({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-                $.ajax({
-
-                    url: "{{ route('ajax.voucherExist') }}",
-                    type: "POST",
-                    data: {
-                        "code": code
                     },
-                    success: function(data) {
-                        if (data == 'not-exist') {
-                            form.submit();
-                        } else {
-                            erCodeEl.html('Mã code đã tồn tại!')
+                    code: {
+                        required: true,
+                        minlength: 6,
+                        voucher: true
+                    },
+                    quantity: {
+                        required: true,
+                        number: true,
+                        min: 1
+                    },
+                    expired_date: {
+                        required: true,
+                        date: true,
+                        dateValidate: true
+                    },
+                    discount: {
+                        required: true,
+                    }
+                },
+
+                messages: {
+                    name: {
+                        required: "Vui lòng nhập tên mã giảm giá !",
+                        minlength: "Tên mã giảm giá ít nhất 6 kí tự!",
+                        maxlength: "Tên giảm không dài quá 30 kí tự!",
+                    },
+                    code: {
+                        required: "Vui lòng nhập mã code !",
+                        minlength: "Mã code tối thiểu 6 ký tự",
+                    },
+                    quantity: {
+                        required: "Vui lòng nhập số lượng",
+                        number: "Vui lòng nhập chữ số",
+                        min: "Vui lòng nhập giá trị lớn hơn 0"
+                    },
+                    expired_date: {
+                        required: "Vui lòng nhập ngày hết hạn",
+                        date: "Vui lòng nhập định dạng ngày tháng"
+                    },
+                    discount: {
+                        required: "Vui lòng nhập giá giảm",
+                        maxlength: "Vui lòng nhập giá giảm theo % từ 1-99%"
+                    }
+                },
+                submitHandler: function(form, event) {
+                    event.preventDefault();
+                    const code = $('input[name="code"]').val();
+                    // check exist = ajax
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                         }
-                    },
-                    error: function(error) {
-                        console.error(error);
-                    }
-                })
-            }
-        });
+                    });
+                    $.ajax({
 
-        // add method validate
+                        url: "{{ route('ajax.voucherExist') }}",
+                        type: "POST",
+                        data: {
+                            "code": code
+                        },
+                        success: function(data) {
+                            if (data == 'not-exist') {
+                                form.submit();
+                            } else {
+                                erCodeEl.html('Mã code đã tồn tại!')
+                            }
+                        },
+                        error: function(error) {
+                            console.error(error);
+                        }
+                    })
+                }
+            });
 
-        // check voucher hợp lệ
-        $.validator.addMethod("voucher", function(value, element) {
-            return this.optional(element) || /^(?=.*[A-Za-z\d])[A-Za-z\d]{6,}$/.test(value);
-        }, "Vui lòng nhập Vourcher không chứa ký tự đặc biệt");
+            // add method validate
 
-        // check date > now date
-        const today = new Date();
-        // const dateNow = new date();
-        $.validator.addMethod("dateValidate", function(value) {
-            let values = new Date(value);
-            if (values < today) {
-                return false
-            }
-            return true
-        }, "Vui lòng nhập ngày lớn hơn hiện tại !");
+            // check voucher hợp lệ
+            $.validator.addMethod("voucher", function(value, element) {
+                return this.optional(element) || /^(?=.*[A-Za-z\d])[A-Za-z\d]{6,}$/.test(value);
+            }, "Vui lòng nhập Vourcher không chứa ký tự đặc biệt");
+
+            // check date > now date
+            const today = new Date();
+            // const dateNow = new date();
+            $.validator.addMethod("dateValidate", function(value) {
+                let values = new Date(value);
+                if (values < today) {
+                    return false
+                }
+                return true
+            }, "Vui lòng nhập ngày lớn hơn hiện tại !");
 
 
-        // check cate & discount
-        $("#category_code").change(function() {
-            var category = $(this).children("option:selected").val();
-            if (category == "0") {
-                $('input[name="discount"]').prop('maxlength', "2");
-            } else if (category == "1") {
-                $('input[name="discount"]').removeAttr('maxlength', "2");
+            // check cate & discount
+            $("#category_code").change(function() {
+                var category = $(this).children("option:selected").val();
+                if (category == "0") {
+                    $('input[name="discount"]').prop('maxlength', "2");
+                } else if (category == "1") {
+                    $('input[name="discount"]').removeAttr('maxlength', "2");
 
-            }
-        });
+                }
+            });
+        }
+
+        validateAddVoucher();
     </script>
 
     {{-- update voucher use modal boostrap --}}
@@ -301,16 +307,19 @@
         const titleModal = document.querySelector('.modal-title')
 
         // reset value khi an add
-        btnAddVoucher.onclick = function(){
-            formVoucher.action = '{{route('voucher.store')}}';
+        btnAddVoucher.onclick = function() {
+            formVoucher.action = '{{ route('voucher.store') }}';
+            formVoucher.removeAttribute('id');
+            formVoucher.setAttribute('id', 'formVoucher');
+
             document.querySelector('input[name="name"]').value = ''
-            // document.querySelector('input[name="category_code"]').value = ''
             document.querySelector('input[name="code"]').value = ''
             document.querySelector('input[name="discount"]').value = ''
             document.querySelector('input[name="quantity"]').value = ''
             document.querySelector('input[name="expired_date"]').value = '';
         }
 
+        // get data update voucher
         const dataVoucher = axios.get(apiVoucher)
             .then(res => {
 
@@ -324,6 +333,10 @@
                         voucher = res.data.find(data => data.id == voucherId)
                         // open modal & render data
                         renderUpdate(voucher);
+
+                        // handle update
+                        
+
                     }
                 });
             })
@@ -333,12 +346,20 @@
         function renderUpdate(data) {
             titleModal.innerHTML = 'Chỉnh sửa mã giảm giá!';
             formVoucher.action = '';
-            
+            formVoucher.removeAttribute('id');
+            formVoucher.setAttribute('id', 'formVoucherUpdate');
+            elCateCode = document.querySelector('#category_code');
+
             // render data to modal
             let expired_date = new Date(data.expired_date);
 
             document.querySelector('input[name="name"]').value = data.name
-            // document.querySelector('input[name="category_code"]').value = data.category_code
+
+            elCateCode.innerHTML = `
+                <option value="0" ${data.category_code == 0 ?'selected':''}>Giảm theo %</option>
+                <option value="1" ${data.category_code == 1 ?'selected':''}>Giảm tiền trực tiếp</option>
+            `;
+
             document.querySelector('input[name="code"]').value = data.code
             document.querySelector('input[name="discount"]').value = data.discount
             document.querySelector('input[name="quantity"]').value = data.quantity

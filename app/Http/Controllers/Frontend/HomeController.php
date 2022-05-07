@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\WebSetting;
 
 class HomeController extends Controller
 {
@@ -16,7 +17,8 @@ class HomeController extends Controller
         $productsNew = Product::where('status','!=',0)->orderBy('created_at','desc')->limit(20)->get();
         $categoryRandom = Category::inRandomOrder()->limit(4)->get();
         $categoryTop = Category::inRandomOrder()->limit(3)->get();
+        $settings = WebSetting::first();
 
-        return view('client.homepage.index',compact('productsTopView','productsNew','categoryRandom','categoryTop'));
+        return view('client.homepage.index',compact('productsTopView','productsNew','categoryRandom','categoryTop','settings'));
     }
 }
