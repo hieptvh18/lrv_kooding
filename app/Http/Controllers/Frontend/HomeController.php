@@ -7,6 +7,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\WebSetting;
+use App\Models\News;
 
 class HomeController extends Controller
 {
@@ -18,7 +19,9 @@ class HomeController extends Controller
         $categoryRandom = Category::inRandomOrder()->limit(4)->get();
         $categoryTop = Category::inRandomOrder()->limit(3)->get();
         $settings = WebSetting::first();
+        $blogs = News::orderBy('id','desc')->limit(2)->get();
+        $blogTop = News::orderBy('id','asc')->take(1)->first();
 
-        return view('client.homepage.index',compact('productsTopView','productsNew','categoryRandom','categoryTop','settings'));
+        return view('client.homepage.index',compact('productsTopView','productsNew','categoryRandom','categoryTop','settings','blogs','blogTop'));
     }
 }

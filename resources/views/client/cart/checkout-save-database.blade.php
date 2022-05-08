@@ -104,7 +104,7 @@
                         @foreach ($carts as $item)
                             @php
                                 $product = \App\Models\Product::find($item['product_id'])->toArray();
-                                $tt = $product['price'] - $product['discount'] * $item['quantity'];
+                                $tt = ($product['price'] - $product['discount']) * $item['quantity'];
                             @endphp
                             <div class="order__bottom__item">
                                 <img src="{{ asset('uploads') }}/{{ $product['avatar'] }}" alt="" width="70px">

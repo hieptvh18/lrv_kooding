@@ -16,7 +16,7 @@ class OrderController extends Controller
     // list order
     public function index(Request $request)
     {
-        $type = 'asc';
+        $type = 'desc';
         $orders = Order::select('*');
         $title = null;
 
@@ -29,6 +29,8 @@ class OrderController extends Controller
                 $orders = $orders->orderBy($request->column, $request->type);
                 $type = 'asc';
             }
+        }else{
+            $orders = $orders->orderBy('id',$type);
         }
 
         // search

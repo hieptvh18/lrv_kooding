@@ -124,10 +124,14 @@
             $('#formUpdateStatusOrder').submit(function(e){
                 e.preventDefault();
 
-                if(confirm('Bạn chắc chắn hủy đơn? đơn hàng sẽ không thể xử lí nữa!')){
-                    document.forms['formUpdateStatusOrder'].submit();
+                if($('input[name="statu"]').val() == 3){
+                    if(confirm('Bạn chắc chắn hủy đơn? đơn hàng sẽ không thể xử lí nữa!')){
+                        document.forms['formUpdateStatusOrder'].submit();
+                    }
+                    return;
                 }
-                return;
+                document.forms['formUpdateStatusOrder'].submit();
+
             })
         })
     </script>

@@ -3,15 +3,18 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Stevebauman\Location\Facades\Location;
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Carbon;
+use App\Models\Product;
 
 
 class DashboardController extends Controller
 {
-    // mdư
+
     public function __construct()
     {
         // dd(Auth::user());
@@ -21,9 +24,23 @@ class DashboardController extends Controller
     }
     // màn hình dashboard
     public function index(Request $request){
-        // get data
+        // get location
         $currentLocation = $this->getLocation($request);
-        return view('admin.dashboard.index',compact('currentLocation'));
+
+        // lay du lieu thong ke do ra bieu do
+        $year = date('Y');
+
+        if( $request->_year){
+            $year = $request->_year;
+        }
+        $doanhThuThang = DB::select('select sum(total_price) as doanhthu,month(updated_at) as thang,year(updated_at) as nam from orders where status = 2 and year(updated_at) = '.$year.' group by thang,nam') ;
+
+        $totalOrder = Order::where(DB::raw('year(updated_at)'),$year)->count();
+        $donChuaXuLi = Order::where(DB::raw('year(updated_at)'),$year)->where('status',0)->count();
+        $tongDoanhThuNam= DB::select('select sum(total_price) as dt from orders where year(updated_at)= '.$year.' group by year(updated_at)');
+        $totalProduct = Product::count();
+
+        return view('admin.dashboard.index',compact('currentLocation','doanhThuThang','totalOrder','donChuaXuLi','tongDoanhThuNam','totalProduct'));
     }
 
     // get current location admin

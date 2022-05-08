@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('phone',15);
             $table->string('name',225);
             $table->integer('total_price');
+            $table->integer('payment_amount');
             $table->longText('address');
             $table->string('payment');
             $table->string('note')->nullable();

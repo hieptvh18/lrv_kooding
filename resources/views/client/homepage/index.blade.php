@@ -8,12 +8,14 @@
         <div class="banner single-item">
             <div class="banner-item">
                 <div class="banner_imgBox">
-                    <img src="{{asset('assets/images/categories/5f3c3ce98d1c4e3e07ab5ebc4126a3cbdb33aadb.jpg')}}" alt="" width="100%">
+                    <img src="{{ asset('assets/images/categories/5f3c3ce98d1c4e3e07ab5ebc4126a3cbdb33aadb.jpg') }}" alt=""
+                        width="100%">
                 </div>
             </div>
             <div class="banner-item">
                 <div class="banner_imgBox">
-                    <img src="{{asset('assets/images/categories/f832067d261414c34f337dd8765c9fa539649c82.jpg')}}" alt="" width="100%">
+                    <img src="{{ asset('assets/images/categories/f832067d261414c34f337dd8765c9fa539649c82.jpg') }}" alt=""
+                        width="100%">
                 </div>
             </div>
         </div>
@@ -30,13 +32,14 @@
             @foreach ($categoryTop as $category)
                 <div class="theme-hot__item">
                     <div class="box-img">
-                        <img src="{{asset('uploads')}}/{{$category->avatar}}" alt="">
+                        <img src="{{ asset('uploads') }}/{{ $category->avatar }}" alt="">
                     </div>
                     <div class="theme-hot__title mt-3">
-                        {{$category->name}}
+                        {{ $category->name }}
                     </div>
                     <span>Bộ sưu tập hàng cao cấp</span>
-                    <a href="{{ route('client.shop.category', $category->slug) }}" class="btn-theme">Khám phá ngay</a>
+                    <a href="{{ route('client.shop.category', $category->slug) }}" class="btn-theme">Khám phá
+                        ngay</a>
                 </div>
             @endforeach
         </div>
@@ -47,13 +50,13 @@
                     mới: 10+ sản phẩm mới hàng ngày
                 </div>
                 <!-- <div class="toggle-filter " style="display: flex;align-items: center;">
-                            <span class="pb-2 pr-3">Nam</span>
-                            <div class="ckbx-style-8">
-                                <input type="checkbox" id="filter_new" value="0" name="ckbx-style-8">
-                                <label for="filter_new"></label>
-                            </div>
-                            <span class="pb-2 pl-4">Nữ</span>
-                        </div> -->
+                                <span class="pb-2 pr-3">Nam</span>
+                                <div class="ckbx-style-8">
+                                    <input type="checkbox" id="filter_new" value="0" name="ckbx-style-8">
+                                    <label for="filter_new"></label>
+                                </div>
+                                <span class="pb-2 pl-4">Nữ</span>
+                            </div> -->
             </div>
             <div class="slick__slider">
 
@@ -83,36 +86,39 @@
             <div class="col-news left">
 
                 {{-- loop --}}
-                <div class="news-item mb-4">
-                    <a href="newsClient?action=viewDetail&id=" class="box-img">
-                        <div class="box_newsImg">
-                            <!-- <img src="public/images/layout/188906b2571586bae5d3dd009b56647f019b6145.jpg" alt=""> -->
-                            <img src="./public/images/upload/" alt="">
-                        </div>
+                @foreach ($blogs as $blog)
+                    <div class="news-item mb-4">
+                        <a href="{{route('client.post',$blog->id)}}" class="box-img">
+                            <div class="box_newsImg">
+                                <!-- <img src="public/images/layout/188906b2571586bae5d3dd009b56647f019b6145.jpg" alt=""> -->
+                                <img src="{{asset('uploads')}}/{{$blog->image}}" alt="">
+                            </div>
 
-                    </a>
-                    <div class="pro-name">
-                        pro name
+                        </a>
+                        <div class="pro-name">
+                            {{$blog->title}}
+                        </div>
+                        <span>{{ substr($blog->short_desc, 0, 50) }}</span>
+                        <a href="{{route('client.post',$blog->id)}}" class="btn-discover mt-2">
+                            KHÁM PHÁ
+                        </a>
                     </div>
-                    <span><?= substr('bl abl short desc', 0, 200) ?></span>
-                    <a href="newsClient?action=viewDetail&id=" class="btn-discover mt-2">
-                        KHÁM PHÁ
-                    </a>
-                </div>
+                @endforeach
+
             </div>
             <div class="col-news right">
                 <div class="news-item">
-                    <a href="newsClient?action=viewDetail&id=" class="box-img">
+                    <a href="{{route('client.post',$blogTop->id)}}" class="box-img">
                         <div class="box_newsImg ss2">
                             <!-- <img src="public/images/layout/261d0a0ba82f5e1c2b6b03fb85b850b687c0e93f.jpg" alt=""> -->
-                            <img src="./public/images/upload/" alt="">
+                            <img src="{{asset('uploads')}}/{{$blogTop->image}}" alt="">
                         </div>
                     </a>
                     <div class="pro-name">
-                        pro name
+                        {{$blogTop->title}}
                     </div>
-                    <span><?= substr('short desc bla bla', 0, 200) ?></span>
-                    <a href="newsClient?action=viewDetail&id=" class="btn-discover mt-2">
+                    <span>{{ substr($blogTop->short_desc, 0, 50) }}</span>
+                    <a href="{{route('client.post',$blogTop->id)}}" class="btn-discover mt-2">
                         KHÁM PHÁ
                     </a>
                 </div>
@@ -125,13 +131,13 @@
                     Đang là xu hướng
                 </div>
                 <!-- <div class="toggle-filter " style="display: flex;align-items: center;">
-                            <span class="pb-2 pr-3">Nam</span>
-                            <div class="ckbx-style-8">
-                                <input type="checkbox" id="trending" value="0" name="ckbx-style-8">
-                                <label for="trending"></label>
-                            </div>
-                            <span class="pb-2 pl-4">Nữ</span>
-                        </div> -->
+                                <span class="pb-2 pr-3">Nam</span>
+                                <div class="ckbx-style-8">
+                                    <input type="checkbox" id="trending" value="0" name="ckbx-style-8">
+                                    <label for="trending"></label>
+                                </div>
+                                <span class="pb-2 pl-4">Nữ</span>
+                            </div> -->
             </div>
             <!-- xu hướng -->
             <div class="slick__slider">
@@ -157,13 +163,13 @@
         <!-- end trending -->
         <div class="about-us" id="introduce">
             <div class="title text-center">
-                <h5>{{$settings->intro_title}}</h5>
+                <h5>{{ $settings->intro_title }}</h5>
             </div>
             <div id="times" class="btn__times">+</div>
             <div id="minus" class="btn__minus none">-</div>
             <div class="background__overlay"></div>
             <div class="site__intro show1">
-                {{$settings->intro_content}}
+                {{ $settings->intro_content }}
             </div>
         </div>
 
@@ -171,7 +177,7 @@
 
         <div class="slider-album pb-4">
             <div class="slide-title text-center pt-4 pb-2 text-light">
-                <h3>#{{$settings->web_name}}</h3>
+                <h3>#{{ $settings->web_name }}</h3>
                 <p>Chia sẽ khoảnh khắc của bạn với KOODING TRÊN <i class="fab fa-instagram text-light"
                         aria-hidden="true"></i> hoặc <i class="fab fa-twitter text-light" aria-hidden="true"></i>
 

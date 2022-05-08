@@ -104,6 +104,7 @@ class CheckoutController extends Controller
                 $bill->address = Ward::where('wardid', "$request->xa")->first()->name . '-' . District::where('districtid', "$request->huyen")->first()->name  . '-' . Province::where('provinceid', "$request->tinh")->first()->name  . ', ' . $request->address;
                 $bill->payment = "Thanh toán khi nhận hàng";
                 $bill->total_price = $request->total;
+                $bill->payment_amount = $request->total;
                 $bill->status = 0;
                 if (session('codeVoucher')) {
                     $bill->code_voucher = session('codeVoucher');
@@ -187,7 +188,9 @@ class CheckoutController extends Controller
 
         $bill->address = Ward::where('wardid', "$ward")->first()->name . '-' . District::where('districtid', "$district")->first()->name  . '-' . Province::where('provinceid', "$province")->first()->name  . ', ' . $dataOrder['address'];
         $bill->payment = "Đã thanh toán bằng ví Vnpay";
-        $bill->total_price = 0;
+        $bill->total_price = $dataOrder['total_price'];
+        $bill->payment_amount = 0;
+
         $bill->status = 0;
         if (session('codeVoucher')) {
             $bill->code_voucher = session()->pull('codeVoucher');
