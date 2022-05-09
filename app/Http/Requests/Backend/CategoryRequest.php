@@ -49,8 +49,24 @@ class CategoryRequest extends FormRequest
                 break;
                 
                 default:
+
+                // xu li validate khi add danh muc con unique voi danh muc cap 0, con lai ignore
+                $categoryUnique = Category::where('parent_id',0)->get()->toArray();
+                $arrCategoryUniqueId = array();
+                foreach($categoryUnique as $item){
+                    array_push($arrCategoryUniqueId,$item['id']);
+                }
+
+                if($request->parent_id == 0){
+
+                    $nameRules= ["required","max:30",'unique:categories'];
+                }
+                else{
+                    $nameRules= ["required","max:30"];
+                }
+                
                 $rules = [
-                    "name" => ["required","unique:categories","max:30"],
+                    "name" => $nameRules,
                     "avatar" => "required|image|mimes:jpg,png,jpeg|max:2040",
                 ];
                 break;
@@ -80,12 +96,12 @@ class CategoryRequest extends FormRequest
     }
 
      // chuan bi truoc khi validate
-     protected function prepareForValidation()
-     {
-         $this->merge([
-             'slug' => Str::slug($this->name),
-         ]);
-     }
+    //  protected function prepareForValidation()
+    //  {
+    //      $this->merge([
+    //          'slug' => Str::slug($this->name),
+    //      ]);
+    //  }
 
     // sau khi validate 
     // public function withValidator($validator){

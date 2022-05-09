@@ -68,19 +68,7 @@
                 </ul>
             </div>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#comment" aria-expanded="false"
-                aria-controls="ui-basic">
-                <i class="far fa-comments menu-icon"></i>
-                <span class="menu-title">Phản hồi</span>
-                <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="comment">
-                <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"> <a class="nav-link" href="comment">Tổng hợp</a></li>
-                </ul>
-            </div>
-        </li>
+        
         <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#news" aria-expanded="false"
                 aria-controls="ui-basic">
@@ -105,7 +93,19 @@
 
         </li>
 
-
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#comment" aria-expanded="false"
+                aria-controls="ui-basic">
+                <i class="far fa-comments menu-icon"></i>
+                <span class="menu-title">Phản hồi</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="comment">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="comment">Tổng hợp</a></li>
+                </ul>
+            </div>
+        </li>
 
     </ul>
 </nav>

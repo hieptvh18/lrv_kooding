@@ -9,6 +9,7 @@ use App\Models\Attribute;
 use App\Models\CateAttribute;
 use App\Models\Category;
 use App\Models\CategoryAttribute;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -80,6 +81,17 @@ class CategoryController extends Controller
         $category = new Category();
         $category->fill($categoryRequest->all());
         $category->avatar = $fileName;
+
+        // neu ten category trung thi them chuoi time vao slug(unique)
+        $categoryExist = Category::where('name',$categoryRequest->name);
+
+        if($categoryExist){
+            $category->slug = Str::slug($categoryRequest->name).'-'.time();
+        }else{
+            $category->slug = Str::slug($categoryRequest->name);
+        }
+
+
         $category->save();
 
         return redirect(route('categories.create'))->with('msg-suc', 'Them thanh cong danh muc moi');

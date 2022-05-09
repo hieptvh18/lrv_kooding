@@ -125,34 +125,8 @@
         </div>
 
         <div class="row">
-            <div class="col-md-6 grid-margin stretch-card">
-                <div class="card">
-                    <div class="card-body">
-                        <p class="card-title">Tổng đơn hàng bán ra trong năm </p>
-                        <p class="font-weight-500">Tổng đơn hàng bán ra trong năm <?= date('Y') ?></p>
-                        <!-- <div class="d-flex flex-wrap mb-5">
-                                            <div class="mr-5 mt-3">
-                                              <p class="text-muted">Order value</p>
-                                              <h3 class="text-primary fs-30 font-weight-medium">12.3k</h3>
-                                            </div>
-                                            <div class="mr-5 mt-3">
-                                              <p class="text-muted">Orders</p>
-                                              <h3 class="text-primary fs-30 font-weight-medium">14k</h3>
-                                            </div>
-                                            <div class="mr-5 mt-3">
-                                              <p class="text-muted">Users</p>
-                                              <h3 class="text-primary fs-30 font-weight-medium">71.56%</h3>
-                                            </div>
-                                            <div class="mt-3">
-                                              <p class="text-muted">Downloads</p>
-                                              <h3 class="text-primary fs-30 font-weight-medium">34040</h3>
-                                            </div>
-                                          </div> -->
-                        <canvas id="spbanra" width="400" height="250"></canvas>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 grid-margin stretch-card">
+            
+            <div class="col-md-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
                         <div class="d-flex justify-content-between">
@@ -161,7 +135,7 @@
                         </div>
                         <p class="font-weight-500">Tất cả số lượng hàng hóa theo danh mục hiện có </p>
                         <div id="sales-legend" class="chartjs-legend mt-4 mb-2"></div>
-                        <canvas id="soluonghang" width="400" height="235"></canvas>
+                        <canvas id="soluonghang" width="500" height="180"></canvas>
 
                     </div>
                 </div>
@@ -177,23 +151,23 @@
                     <div class="d-flex flex-wrap mb-5">
                         <div class="mr-5 mt-3">
                             <p class="text-muted">Tổng đơn hàng</p>
-                            <h3 class="text-primary fs-30 font-weight-medium">1</h3>
+                            <h3 class="text-primary fs-30 font-weight-medium">{{$totalOrder}}</h3>
                         </div>
                         <div class="mr-5 mt-3">
                             <p class="text-muted">Đơn đã hủy</p>
-                            <h3 class="text-primary fs-30 font-weight-medium">1</h3>
+                            <h3 class="text-primary fs-30 font-weight-medium">{{$cancel_order}}</h3>
                         </div>
                         <div class="mr-5 mt-3">
                             <p class="text-muted">Đơn chờ xác nhận</p>
-                            <h3 class="text-primary fs-30 font-weight-medium">1</h3>
+                            <h3 class="text-primary fs-30 font-weight-medium">{{$unprocess_order}}</h3>
                         </div>
                         <div class="mr-5 mt-3">
                             <p class="text-muted">Đơn đang xử lí</p>
-                            <h3 class="text-primary fs-30 font-weight-medium">1</h3>
+                            <h3 class="text-primary fs-30 font-weight-medium">{{$processing_order}}</h3>
                         </div>
                         <div class="mt-3">
                             <p class="text-muted">Đơn đã gửi đi</p>
-                            <h3 class="text-primary fs-30 font-weight-medium">1</h3>
+                            <h3 class="text-primary fs-30 font-weight-medium">{{$sent_order}}</h3>
                         </div>
                     </div>
                     <canvas id="donhang" width="400" height="100"></canvas>
@@ -211,6 +185,7 @@
             urlYear = new URLSearchParams(window.location.search).get('_year');
             const dateNow = new Date();
             urlYear = urlYear ?? dateNow.getFullYear();
+            console.log(urlYear);
 
             axios.get('/api/get-doanh-thu-tung-thang-trong-nam')
                 .then(res => {
@@ -219,7 +194,7 @@
 
                         res.data.data.map(val => {
                             let arrDate = val.ngay.split('-');
-                            if (arrDate.includes(urlYear)) {
+                            if (arrDate.includes(`${urlYear}`)) {
                                 labels.push(val.ngay)
                             }
                         });
@@ -227,7 +202,7 @@
                         let dataRow = [];
                         res.data.data.map(val => {
                             let arrDate = val.ngay.split('-');
-                            if (arrDate.includes(urlYear)) {
+                            if (arrDate.includes(`${urlYear}`)) {
                                 dataRow.push(val.doanhthu)
                             }
                         });
@@ -253,18 +228,12 @@
 
                         let labels = [];
                         labelData.map(val => {
-                            let arrDate = val.ngay.split('-');
-                            if (arrDate.includes(urlYear)) {
-                                labels.push(val.ngay)
-                            }
+                            labels.push(val.ngay)
                         });
 
                         let dataRow = [];
                         labelData.map(val => {
-                            let arrDate = val.ngay.split('-');
-                            if (arrDate.includes(urlYear)) {
-                                dataRow.push(val.doanhthu)
-                            }
+                            dataRow.push(val.doanhthu)
                         });
                         chartDoanhThu(labels, dataRow)
                     }
@@ -313,43 +282,61 @@
         <!-- số lg hàng theo danh mục -->
         <script>
             const slhang = document.getElementById('soluonghang').getContext('2d');
+            axios.get('/api/get-so-luong-hang-hoa-theo-danh-muc')
+                .then(res => {
+                    if (res.statusText == 'OK') {
+                        let labels = [];
 
+                        res.data.data.map(val => {
+                            labels.push(val.category_name)
+                        });
 
+                        let dataRow = [];
+                        res.data.data.map(val => {
+                            dataRow.push(val.qty)
+                        });
 
-            const myChart_slhang = new Chart(slhang, {
-                type: 'bar',
-                data: {
-                    labels: [],
-                    datasets: [{
-                        label: 'Số lượng',
-                        data: [],
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                            'rgba(255, 159, 64, 0.2)'
-                        ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
+                        myChart_slhang(labels,dataRow)
+                    }
+                    // ...
+                })
+
+            const myChart_slhang = (labels, dataRow) => {
+                new Chart(slhang, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Số lượng',
+                            data: dataRow,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
                         }
                     }
-                }
-            });
+                });
+            }
         </script>
 
         {{-- slg hang ban ra tung thang --}}
@@ -401,7 +388,7 @@
                     labels: ['Đơn đã hủy', 'Đơn chưa xác nhận', 'Đơn đang xử lí', 'Đơn đã gửi đi'],
                     datasets: [{
                         label: 'Số sản phẩm',
-                        data: [],
+                        data: [{{$cancel_order}},{{$unprocess_order}},{{$processing_order}},{{$sent_order}}],
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',
                             'rgba(75, 192, 192, 0.2)',

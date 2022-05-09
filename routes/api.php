@@ -78,6 +78,9 @@ Route::get('attribute-value/{id}',[AttributeValueController::class,'findOne']);
 
 // so lieu thong ke (dashboard)
 Route::get('get-doanh-thu-tung-thang-trong-nam',[StatistalController::class,'getDoangThuTungThang']);
+// slg hang hoa theo danh muc
+Route::get('get-so-luong-hang-hoa-theo-danh-muc',[StatistalController::class,'getQtyByCategory']);
+
 
 
 

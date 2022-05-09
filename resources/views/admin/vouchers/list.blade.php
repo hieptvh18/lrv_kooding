@@ -148,11 +148,11 @@
 
                             <td>
                                 <a href="" onclick="
-                                                        event.preventDefault()
-                                                            if(confirm('Bạn chắc chắn xóa voucher?')){
-                                                                document.querySelector('#formFakeRemoveVoucher{{ $key }}').submit();
-                                                            }
-                                                        "><i class="fas fa-trash-alt text-danger fa-2x"></i></a>
+                                                    event.preventDefault()
+                                                                if(confirm('Bạn chắc chắn xóa voucher?')){
+                                                                    document.querySelector('#formFakeRemoveVoucher{{ $key }}').submit();
+                                                                }
+                                                            "><i class="fas fa-trash-alt text-danger fa-2x"></i></a>
 
                                 <a href="" class="btnOpenModalEdit" data-id="{{ $voucher->id }}"><i
                                         class="fas fa-pen-square text-warning fa-2x "></i></a>
@@ -302,7 +302,7 @@
         const modal = document.getElementById('modalFormVoucher')
         const formVoucher = document.getElementById('formVoucher')
         const btnEditModal = document.querySelectorAll('.btnOpenModalEdit');
-        const apiVoucher = 'api/vouchers';
+        const apiVoucher = '/api/vouchers';
         const btnAddVoucher = document.querySelector('.btnAddVoucher');
         const titleModal = document.querySelector('.modal-title')
 
@@ -335,12 +335,12 @@
                         renderUpdate(voucher);
 
                         // handle update
-                        
+
 
                     }
                 });
             })
-            .catch(er => console.error(er))
+            .catch(er => console.log(er))
 
         // render
         function renderUpdate(data) {

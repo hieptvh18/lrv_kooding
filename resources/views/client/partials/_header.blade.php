@@ -357,7 +357,7 @@
         const childMenuEl = document.querySelector('.header-menu__child-menu');
 
         // use axios get data tu api category
-        axios.get('api/categories')
+        axios.get('/api/categories')
             .then(res => {
                 const dataCategories = res.data;
                 const childCategories = [];
@@ -375,12 +375,11 @@
                         // map + inner html childCate
                         html = '';
                         childCategories.forEach(val => {
+
                             html += `
                             <div class="child-menu_item">
                                     <div class="item-title"><a href="/cua-hang/${val.slug}">${val.name}</a></div>
-                                    <ul >
-                                            <li><a href="">child 1</a></li>
-                                        </ul>
+                                   
                                 </div>
                         `;
                         });
