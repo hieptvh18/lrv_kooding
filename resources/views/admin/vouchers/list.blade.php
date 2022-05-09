@@ -302,7 +302,7 @@
         const modal = document.getElementById('modalFormVoucher')
         const formVoucher = document.getElementById('formVoucher')
         const btnEditModal = document.querySelectorAll('.btnOpenModalEdit');
-        const apiVoucher = '{{ route('api.voucher.index') }}';
+        const apiVoucher = 'api/vouchers';
         const btnAddVoucher = document.querySelector('.btnAddVoucher');
         const titleModal = document.querySelector('.modal-title')
 

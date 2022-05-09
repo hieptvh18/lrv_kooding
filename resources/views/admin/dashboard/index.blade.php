@@ -67,11 +67,13 @@
                             <div class="card-body">
                                 <p class="mb-4">Đơn hàng chưa xử lí</p>
                                 <p class="fs-30 mb-2">{{ $donChuaXuLi }}</p>
-                                <p>@php if($totalOrder > 0 ){
-                                  echo ($donChuaXuLi / $totalOrder) * 100;
-                                }else{
-                                  echo 0;
-                                } @endphp % (Tổng đơn hàng)</p>
+                                <p>
+                                    @if ($totalOrder > 0)
+                                        {{ ($donChuaXuLi / $totalOrder) * 100 }}
+                                    @else
+                                        0
+                                    @endif % (Tổng đơn hàng)
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -81,7 +83,10 @@
                         <div class="card card-light-blue">
                             <div class="card-body">
                                 <p class="mb-4">Tổng doanh thu (năm <?= date('Y') ?>)</p>
-                                <p class="fs-30 mb-2">{{number_format(count($tongDoanhThuNam) > 0 ? $tongDoanhThuNam[0]->dt : 0, 0, ',')}}  đ</p>
+                                <p class="fs-30 mb-2">
+                                    {{ number_format(count($tongDoanhThuNam) > 0 ? $tongDoanhThuNam[0]->dt : 0, 0, ',') }}
+                                    đ
+                                </p>
                                 <!-- <p>2.00% (30 days)</p> -->
                             </div>
                         </div>
@@ -90,7 +95,7 @@
                         <div class="card card-light-danger">
                             <div class="card-body">
                                 <p class="mb-4">Số lượng sản phẩm</p>
-                                <p class="fs-30 mb-2">{{$totalProduct}}</p>
+                                <p class="fs-30 mb-2">{{ $totalProduct }}</p>
                                 <!-- <p>0.22% (30 days)</p> -->
                             </div>
                         </div>
@@ -105,7 +110,15 @@
                 <div class="card-body">
                     <p class="card-title">Doanh thu bán hàng</p>
                     <p class="font-weight-500">Tổng số doanh thu bán ra theo từng tháng trong năm <?= date('Y') ?></p>
-
+                    <form action="" method="post">
+                        <div class="form-group d-flex align-items-center col-6">
+                            <span class="mr-2">Từ</span>
+                            <input type="date" name="start_date" class="form-control form-control-sm mr-2" required>
+                            <span class="mr-2">Đến</span>
+                            <input type="date" name="end_date" class="form-control form-control-sm" required>
+                            <button type="button" id="btnFilter" class="btn btn-sm btn-secondary">Lọc</button>
+                        </div>
+                    </form>
                     <canvas id="doanhthu" width="400" height="150"></canvas>
                 </div>
             </div>
@@ -118,23 +131,23 @@
                         <p class="card-title">Tổng đơn hàng bán ra trong năm </p>
                         <p class="font-weight-500">Tổng đơn hàng bán ra trong năm <?= date('Y') ?></p>
                         <!-- <div class="d-flex flex-wrap mb-5">
-                        <div class="mr-5 mt-3">
-                          <p class="text-muted">Order value</p>
-                          <h3 class="text-primary fs-30 font-weight-medium">12.3k</h3>
-                        </div>
-                        <div class="mr-5 mt-3">
-                          <p class="text-muted">Orders</p>
-                          <h3 class="text-primary fs-30 font-weight-medium">14k</h3>
-                        </div>
-                        <div class="mr-5 mt-3">
-                          <p class="text-muted">Users</p>
-                          <h3 class="text-primary fs-30 font-weight-medium">71.56%</h3>
-                        </div>
-                        <div class="mt-3">
-                          <p class="text-muted">Downloads</p>
-                          <h3 class="text-primary fs-30 font-weight-medium">34040</h3>
-                        </div>
-                      </div> -->
+                                            <div class="mr-5 mt-3">
+                                              <p class="text-muted">Order value</p>
+                                              <h3 class="text-primary fs-30 font-weight-medium">12.3k</h3>
+                                            </div>
+                                            <div class="mr-5 mt-3">
+                                              <p class="text-muted">Orders</p>
+                                              <h3 class="text-primary fs-30 font-weight-medium">14k</h3>
+                                            </div>
+                                            <div class="mr-5 mt-3">
+                                              <p class="text-muted">Users</p>
+                                              <h3 class="text-primary fs-30 font-weight-medium">71.56%</h3>
+                                            </div>
+                                            <div class="mt-3">
+                                              <p class="text-muted">Downloads</p>
+                                              <h3 class="text-primary fs-30 font-weight-medium">34040</h3>
+                                            </div>
+                                          </div> -->
                         <canvas id="spbanra" width="400" height="250"></canvas>
                     </div>
                 </div>
@@ -193,29 +206,207 @@
     @endsection
     @section('plugin-script')
         <script>
-            // thong ke bang bieu do js
             // doanh thu theo từng tháng
             const doanhThu = document.getElementById('doanhthu').getContext('2d');
-            const myChart = new Chart(doanhThu, {
-                type: 'line',
+            urlYear = new URLSearchParams(window.location.search).get('_year');
+            const dateNow = new Date();
+            urlYear = urlYear ?? dateNow.getFullYear();
+
+            axios.get('/api/get-doanh-thu-tung-thang-trong-nam')
+                .then(res => {
+                    if (res.statusText == 'OK') {
+                        let labels = [];
+
+                        res.data.data.map(val => {
+                            let arrDate = val.ngay.split('-');
+                            if (arrDate.includes(urlYear)) {
+                                labels.push(val.ngay)
+                            }
+                        });
+
+                        let dataRow = [];
+                        res.data.data.map(val => {
+                            let arrDate = val.ngay.split('-');
+                            if (arrDate.includes(urlYear)) {
+                                dataRow.push(val.doanhthu)
+                            }
+                        });
+
+                        chartDoanhThu(labels, dataRow)
+                    }
+                    // return response.json({
+                    //     'message':'status fail'
+                    // })
+
+                    // filter theo date
+                    document.querySelector('#btnFilter').onclick = function() {
+                        const startDate = document.querySelector('input[name="start_date"]');
+                        const endDate = document.querySelector('input[name="end_date"]');
+
+                        if (!startDate.value || !endDate.value) {
+                            alert('Vui lòng chọn thời gian')
+                            return;
+                        }
+
+                        let labelData = res.data.data.filter(val => val.ngay >= startDate.value && val.ngay <= endDate
+                            .value)
+
+                        let labels = [];
+                        labelData.map(val => {
+                            let arrDate = val.ngay.split('-');
+                            if (arrDate.includes(urlYear)) {
+                                labels.push(val.ngay)
+                            }
+                        });
+
+                        let dataRow = [];
+                        labelData.map(val => {
+                            let arrDate = val.ngay.split('-');
+                            if (arrDate.includes(urlYear)) {
+                                dataRow.push(val.doanhthu)
+                            }
+                        });
+                        chartDoanhThu(labels, dataRow)
+                    }
+
+                })
+
+            // func render chart
+            const chartDoanhThu = function(labels, dataRow) {
+                new Chart(doanhThu, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Doanh thu',
+                            data: dataRow,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+        </script>
+
+        <!-- số lg hàng theo danh mục -->
+        <script>
+            const slhang = document.getElementById('soluonghang').getContext('2d');
+
+
+
+            const myChart_slhang = new Chart(slhang, {
+                type: 'bar',
                 data: {
-                    labels: [
-                        @php foreach ($doanhThuThang as $t) {
-                            echo "'" . $t->thang . '/' . $t->nam . "'" . ',';
-                        } @endphp
-                    ],
+                    labels: [],
                     datasets: [{
-                        label: 'Doanh thu',
-                        data: [
-                            @php foreach ($doanhThuThang as $t) {
-                                echo $t->doanhthu . ',';
-                            } @endphp
-                        ],
+                        label: 'Số lượng',
+                        data: [],
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',
                             'rgba(54, 162, 235, 0.2)',
                             'rgba(255, 206, 86, 0.2)',
                             'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        </script>
+
+        {{-- slg hang ban ra tung thang --}}
+        <script>
+            //<!-- dh bán ra hàng tháng -->
+            const spbanra = document.getElementById('spbanra').getContext('2d');
+            const myChart_spbanra = new Chart(spbanra, {
+                type: 'bar',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Số lượng đơn',
+                        data: [],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        </script>
+
+        <!-- tk đơn hàng -->
+        <script>
+            const donhang = document.getElementById('donhang').getContext('2d');
+            const myChart_donhang = new Chart(donhang, {
+                type: 'pie',
+                data: {
+                    labels: ['Đơn đã hủy', 'Đơn chưa xác nhận', 'Đơn đang xử lí', 'Đơn đã gửi đi'],
+                    datasets: [{
+                        label: 'Số sản phẩm',
+                        data: [],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
                             'rgba(153, 102, 255, 0.2)',
                             'rgba(255, 159, 64, 0.2)'
                         ],

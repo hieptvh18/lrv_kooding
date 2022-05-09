@@ -357,7 +357,7 @@
         const childMenuEl = document.querySelector('.header-menu__child-menu');
 
         // use axios get data tu api category
-        axios.get('{{ route('api.category') }}')
+        axios.get('api/categories')
             .then(res => {
                 const dataCategories = res.data;
                 const childCategories = [];

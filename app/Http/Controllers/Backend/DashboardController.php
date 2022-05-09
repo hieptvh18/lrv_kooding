@@ -33,14 +33,13 @@ class DashboardController extends Controller
         if( $request->_year){
             $year = $request->_year;
         }
-        $doanhThuThang = DB::select('select sum(total_price) as doanhthu,month(updated_at) as thang,year(updated_at) as nam from orders where status = 2 and year(updated_at) = '.$year.' group by thang,nam') ;
 
         $totalOrder = Order::where(DB::raw('year(updated_at)'),$year)->count();
         $donChuaXuLi = Order::where(DB::raw('year(updated_at)'),$year)->where('status',0)->count();
         $tongDoanhThuNam= DB::select('select sum(total_price) as dt from orders where year(updated_at)= '.$year.' group by year(updated_at)');
         $totalProduct = Product::count();
 
-        return view('admin.dashboard.index',compact('currentLocation','doanhThuThang','totalOrder','donChuaXuLi','tongDoanhThuNam','totalProduct'));
+        return view('admin.dashboard.index',compact('currentLocation','totalOrder','donChuaXuLi','tongDoanhThuNam','totalProduct'));
     }
 
     // get current location admin

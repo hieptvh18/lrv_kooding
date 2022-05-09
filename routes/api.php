@@ -14,8 +14,10 @@ use App\Http\Controllers\Api\AttributeValueController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\OrderDetailController;
+use App\Http\Controllers\Api\StatistalController;
 use App\Http\Controllers\Api\StockController;
 use App\Http\Controllers\Api\VnpayController;
+use App\Http\Controllers\Backend\DashboardController;
 use App\Models\Role;
 use App\Models\Stock;
 
@@ -42,13 +44,13 @@ Route::get('/facebook/callback',[FacebookController::class,'facebookCallback'])-
 Route::any('ajax/voucher-exist',[AjaxController::class,'voucherExist'])->name('ajax.voucherExist');
 
 // categories 
-Route::get('get-categories',[CategoryController::class,'index'])->name('api.category');
+Route::get('categories',[CategoryController::class,'index'])->name('api.category');
 // vouchers 
-Route::get('get-vouchers',[VoucherController::class,'index'])->name('api.voucher.index');
+Route::get('vouchers',[VoucherController::class,'index'])->name('api.voucher.index');
 // products
 Route::get('product/{id}',[ProductController::class,'findOne'])->name('api.product.findOne');
 // stock
-Route::get('get-stocks/{productId}',[StockController::class,'getByProductId'])->name('api.stock.all');
+Route::get('stocks/{productId}',[StockController::class,'getByProductId'])->name('api.stock.all');
 // cart
 Route::get('get-cart-user/{userId}',[CartController::class,'findByUser'])->name('api.cart.findByUser');
 Route::get('get-cart-session',[CartController::class,'getSessionCart'])->name('api.cart.getSessionCart');
@@ -73,6 +75,10 @@ Route::get('order/{id}',[OrderController::class,'show']);
 
 // attr value
 Route::get('attribute-value/{id}',[AttributeValueController::class,'findOne']);
+
+// so lieu thong ke (dashboard)
+Route::get('get-doanh-thu-tung-thang-trong-nam',[StatistalController::class,'getDoangThuTungThang']);
+
 
 
 

@@ -10,7 +10,19 @@ class ProductController extends Controller
 {
     //get all
     public function getAll(){
-        return Product::all();
+         $products =Product::all();
+        if($products){
+            return response()->json([
+                'success'=>true,
+                'message'=>'Tất cả sản phẩm',
+                'data'=>$products
+            ]);
+        }
+        return response()->json([
+            'success'=>false,
+            'message'=>'Không tìm thấy sản phẩm trong kho',
+            'data'=>[]
+        ]);
     }
 
     // find one

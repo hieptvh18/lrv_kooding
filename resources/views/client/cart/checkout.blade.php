@@ -103,7 +103,7 @@
                         @php $total = 0; @endphp
                         @foreach (session('carts') as $item)
                             @php
-                                $tt = $item['price'] - $item['discount'] * $item['quantity'];
+                                $tt = ($item['price'] - $item['discount']) * $item['quantity'];
                             @endphp
                             <div class="order__bottom__item">
                                 <img src="{{ asset('uploads') }}/{{ $item['avatar'] }}" alt="" width="70px">
