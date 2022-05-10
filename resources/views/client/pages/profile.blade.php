@@ -73,10 +73,10 @@
                                         @enderror
                                     </div>
                                     <!-- <div class="DH__form1">
-                                                                    <label for="">Tên hiển thị <i>* Để nhận xét và nhận xét sản phẩm.</i></label>
-                                                                    <input type="text" value="Trương Nghĩa">
-                                                            
-                                                                </div> -->
+                                                                                                <label for="">Tên hiển thị <i>* Để nhận xét và nhận xét sản phẩm.</i></label>
+                                                                                                <input type="text" value="Trương Nghĩa">
+                                                                                        
+                                                                                            </div> -->
                                     <div class="DH__form1">
                                         <label for="">E-mail <i>* Nơi bạn nhận được thông tin đặt hàng.</i></label>
                                         <input type="email" name="email" disabled value="{{ Auth::user()->email }}">
@@ -295,11 +295,11 @@
                                     </tr>
                                 </thead>
                                 <tbody class="bill-detail-data">
-                                    
+
                                 </tbody>
                                 <tr>
                                     <th class="bg-light">Tổng: <span class="info-order-total"></span></th>
-                                    
+
                                 </tr>
                             </table>
                         </div>
@@ -326,63 +326,81 @@
 
             modal.forEach((val, index) => {
                 val.onclick = function() {
-                    
+
                     const apiFindOrder = '/api/order/' + val.dataset.id;
                     const api = '/api/order-detail/' + val.dataset.id;
 
                     axios.get(apiFindOrder)
-                    .then(res=>{
-                        $('.createdAtOrder').html(res.data.data.created_at)
-                        $('.info-order-name').html(res.data.data.name)
-                        $('.info-order-phone').html(res.data.data.phone)
-                        $('.info-order-address').html(res.data.data.address)
-                        $('.info-order-total').html(res.data.data.total_price + 'đ')
+                        .then(res => {
+                            $('.createdAtOrder').html(res.data.data.created_at)
+                            $('.info-order-name').html(res.data.data.name)
+                            $('.info-order-phone').html(res.data.data.phone)
+                            $('.info-order-address').html(res.data.data.address)
+                            $('.info-order-total').html(res.data.data.total_price + 'đ')
 
-                        if(!res.data.data.note){
-                            $('.info-order-note').html('Không có ghi chú')
-                        }else{
-                            $('.info-order-note').html(res.data.data.note)
-                        }
-                    })
+                            if (!res.data.data.note) {
+                                $('.info-order-note').html('Không có ghi chú')
+                            } else {
+                                $('.info-order-note').html(res.data.data.note)
+                            }
+                        })
 
+                    // render order detail to modal
                     axios.get(api)
                         .then(res => {
 
-                            // render data to modal
                             html = '';
-                            res.data.forEach((val,index)=>{
+                            res.data.forEach((val, index) => {
+                                const order = val;
+                                const apiFindProduct = '/api/product/' + val.product_id;
 
-                                const apiFindProduct = '/api/product/'+val.product_id;
+                                var tmpDataColor = '';
+                                var tmpDataSize = '';
+
                                 axios.get(apiFindProduct)
-                                .then(res2=>{
+                                    .then(res => {
+                                        const product = res.data;
+                                        // get attribute
+                                        const apiFindColor = '/api/attribute-value/' +
+                                            val.color_id;
+                                        const apiFindSize = '/api/attribute-value/' +
+                                            val.size_id;
 
-                                    // get attribute
-                                    const apiFindColor = 'attribute-value/'+res.data.color_id;
-                                    const apiFindSize = 'attribute-value/'+res.data.size_id;
+                                            // get attribute name cua product = cach call api va gan cho bien global
+                                        axios.get(apiFindColor)
+                                            .then(res => {
+                                                // color
+                                                tmpDataColor = res.data.name
+                                            })
+                                            .then(() => {
 
-                                    // gan thuoc tinh kieu j ?
-
-                                    html += `
-                                        <tr>
-                                            <td>${index + 1}</td>
-                                            <td>${res2.data.name}</td>
-                                            <td><img src="/uploads/${res2.data.avatar}" alt="" width="50px"></td>
-                                            <td>${res2.data.price}</td>
-                                            <td>${val.quantity}</td>
-                                            <td></td>
-                                            <td></td>
-                                            </tr>
-                                    `;
-                                    $('.bill-detail-data').html(html)
-                                })
+                                                axios.get(apiFindSize)
+                                                    .then(res => {
+                                                        // color
+                                                        tmpDataSize = res.data.name
+                                                    })
+                                                    .then(() => {
+                                                        html += `
+                                                            <tr>
+                                                                <td>${index + 1}</td>
+                                                                <td>${product.name}</td>
+                                                                <td><img src="/uploads/${product.avatar}" alt="" width="50px"></td>
+                                                                <td>${product.price}</td>
+                                                                <td>${order.quantity}</td>
+                                                                <td>${tmpDataColor}</td>
+                                                                <td>${tmpDataSize}</td>
+                                                            </tr>
+                                                                `;
+                                                        $('.bill-detail-data')
+                                                            .html(html)
+                                                    })
+                                            })
+                                    })
 
                             })
 
                             $('#modalOrderDetail').modal('toggle');
-
                         })
-
-
                 }
             })
         })

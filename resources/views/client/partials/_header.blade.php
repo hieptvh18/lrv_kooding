@@ -319,7 +319,8 @@
                         </li>
                     @endforeach
                     <div class="header-menu-container__child-menu hidden">
-                        <div class="header-menu__child-menu">
+                        <div class="header-menu__child-menu" >
+                            <img src="{{asset('assets/images/layout/loading-dark.gif')}}" class="d-flex justify-content-center" width="20px" height="20px" alt="" style="margin: 0 auto;">
                         </div>
                     </div>
                 </div>
