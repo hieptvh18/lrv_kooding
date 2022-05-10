@@ -34,10 +34,8 @@ use App\Http\Controllers\Frontend\NewsController as FrontendNewsController;
 Route::middleware(['all.checkExpiry'])->group(function () {
 
     // =================auth======================
-    Route::prefix('auth')->group(function () {
 
-        Route::get('login', [LoginController::class, 'showLoginForm'])->name('auth.loginForm');
-    });
+        // Route::get('login', [LoginController::class, 'showLoginForm'])->name('auth.loginForm')->middleware('firstAccess');
 
     // =================ROUTE CLIENT===============
 

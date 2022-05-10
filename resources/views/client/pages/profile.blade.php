@@ -218,8 +218,6 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        <a href="" class="btn btn-primary text-light"><small>Đã nhận được
-                                                                hàng</small></a>
                                                         <button data-id="{{ $o->id }}"
                                                             class="btn btn-outline-info btn btnOpenModal"><i
                                                                 class="fa fa-eye" aria-hidden="true"></i>
