@@ -93,7 +93,7 @@ class DatabaseSeeder extends Seeder
                 'logo'=>'627636d057d69-logo1651914448.png',
                 'fb_url'=>'https://facebook.com',
                 'insta_url'=>'https://facebook.com',
-                'twitter'=>'https://facebook.com',
+                'twitter_url'=>'https://facebook.com',
                 'pinterest_url'=>'https://facebook.com',
                 "created_at"=> Carbon::now()->toDateTimeString(),
                 "updated_at"=> Carbon::now()->toDateTimeString()
