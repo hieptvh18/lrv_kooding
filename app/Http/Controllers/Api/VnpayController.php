@@ -85,7 +85,11 @@ class VnpayController extends Controller
         }
         // session()->forget('url_prev');
 
-        // that bai thi back ve checkout va xoa cache
+        // that bai thi back ve checkout va update status don chua thanh toan
+         // un-save ordered
+         $lastedOrder = Order::orderBy('created_at', 'desc')->limit(1)->first();
+         Order::destroy($lastedOrder->id);
+
         return redirect(route('client.result-checkout')."?orderId=".$request->orderId)->with('payment-error', 'Lỗi trong quá trình thanh toán phí dịch vụ');
     }
 }

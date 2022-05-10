@@ -139,22 +139,25 @@
                             <td>{{ $voucher->active_date }}</td>
                             <td>{{ $voucher->expired_date }}</td>
                             <td>
-                                @if ($voucher->status == 1)
-                                    <div class="badge badge-success">Còn hiệu lực</div>
+                                @if ($voucher->status == 0)
+                                    <button class="badge badge-danger status btn-status" data-status="1"
+                                        data-id="{{ $voucher->id }}">Ẩn</button>
                                 @else
-                                    <div class="badge badge-danger">Hết hiệu lực</div>
+                                    <button class="badge badge-success status btn-status" data-status="0"
+                                        data-id="{{ $voucher->id }}">Hiện</button></label>
                                 @endif
                             </td>
 
                             <td>
                                 <a href="" onclick="
-                                                    event.preventDefault()
-                                                                if(confirm('Bạn chắc chắn xóa voucher?')){
-                                                                    document.querySelector('#formFakeRemoveVoucher{{ $key }}').submit();
-                                                                }
-                                                            "><i class="fas fa-trash-alt text-danger fa-2x"></i></a>
+                                                        event.preventDefault()
+                                                                    if(confirm('Bạn chắc chắn xóa voucher?')){
+                                                                        document.querySelector('#formFakeRemoveVoucher{{ $key }}').submit();
+                                                                    }
+                                                                "><i class="fas fa-trash-alt text-danger fa-2x"></i></a>
 
-                                <a href="" class="btnOpenModalEdit" data-id="{{ $voucher->id }}"><i
+                                <a href="{{ route('voucher.edit', $voucher->id) }}" class="btnOpenModalEdit"
+                                    data-id="{{ $voucher->id }}"><i
                                         class="fas fa-pen-square text-warning fa-2x "></i></a>
 
                                 <form id="formFakeRemoveVoucher{{ $key }}"
@@ -297,7 +300,49 @@
         validateAddVoucher();
     </script>
 
-    {{-- update voucher use modal boostrap --}}
+    <script>
+        $(document).ready(function() {
+            const btnChangeStatus = document.querySelectorAll('.btn-status');
+            // change status product
+            btnChangeStatus.forEach((val, index) => {
+                const status = val.dataset.status;
+                const voucherId = val.dataset.id;
+
+                val.onclick = function() {
+
+                    if (!confirm('Bạn chắc chắn thay đổi trạng thái?')) {
+                        return;
+                    }
+                    $.ajaxSetup({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    })
+                    $.ajax({
+                        url: '/api/ajax/change-status-voucher/'+voucherId,
+                        type: 'POST',
+                        data: {
+                            status: status
+                        },
+                        success: function(data) {
+                            if (data.message == 'success') {
+                                window.location.reload();
+                            } else {
+                                alert(
+                                    'Không thể thay đổi trạng thái active cho sản phẩm không tồn tại trong kho!'
+                                );
+                            }
+                        },
+                        error: function(er) {
+                            alert('Có lỗi xảy ra! vui lòng thử lại!');
+                        }
+                    })
+                }
+            })
+        })
+    </script>
+
+    {{-- update voucher use modal boostrap
     <script>
         const modal = document.getElementById('modalFormVoucher')
         const formVoucher = document.getElementById('formVoucher')
@@ -366,5 +411,5 @@
             document.querySelector('input[name="expired_date"]').value = expired_date.toISOString().slice(0, 19);
             $('#modalFormVoucher').modal('toggle');
         }
-    </script>
+    </script> --}}
 @endsection

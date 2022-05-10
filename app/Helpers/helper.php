@@ -37,20 +37,6 @@ if(!function_exists('getChildCategories')){
     }
 }
 
-// show menu select muntiple category admin
-
-if(!function_exists('showSelectCategories')){
-    function showSelectCategories($list, $num){
-        $num++;
-        foreach(array_unique($list,SORT_REGULAR) as $item){
-            echo "<option value=".$item['id'].">".str_repeat("---",$num-1).$item['name']."</option>";
-            // var_dump($item);
-            if(!empty($item['child'])){
-                showSelectCategories($item['child'],$num);
-            }
-        }
-    }
-}
 
 // get info attr_value
 if(!function_exists('getAttributeValue')){

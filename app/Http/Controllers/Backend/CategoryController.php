@@ -35,6 +35,8 @@ class CategoryController extends Controller
      */
     public function create(Request $request)
     {
+        $cate = Category::where('parent_id',0)->with('childrenCategories')->get();
+        // dd($cate);
         //get data
         $categories = Category::select('*');
         $searchTitle = '';

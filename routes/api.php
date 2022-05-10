@@ -30,7 +30,7 @@ Route::any('ajax/get-attr-value-exist',[AjaxController::class,'attrValueExist'])
 Route::any('ajax/get-attr-of-category',[AjaxController::class,'getAttrOfCategory'])->name('ajax.get-attr-of-category');
 Route::any('ajax/get-child-category-by-parent-id',[AjaxController::class,'getChildCategoryByParentId'])->name('ajax.getChildCategoryByParentId');
 Route::post('ajax/change-status-product',[AjaxController::class,'changeStatusProduct'])->name('ajax.changeStatusProduct');
-
+Route::post('ajax/change-status-voucher/{id}',[AjaxController::class,'changeStatusVoucher'])->name('ajax.changeStatusVoucher');
 
 // // Google Sign In
 Route::get('/google',[GoogleController::class,'redirectToGoogle'])->name('login.google');
@@ -47,6 +47,7 @@ Route::any('ajax/voucher-exist',[AjaxController::class,'voucherExist'])->name('a
 Route::get('categories',[CategoryController::class,'index'])->name('api.category');
 // vouchers 
 Route::get('vouchers',[VoucherController::class,'index'])->name('api.voucher.index');
+Route::put('vouchers/{id}',[VoucherController::class,'update'])->name('api.voucher.update');
 // products
 Route::get('product/{id}',[ProductController::class,'findOne'])->name('api.product.findOne');
 // stock

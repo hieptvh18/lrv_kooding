@@ -175,7 +175,6 @@ class CheckoutController extends Controller
     {
         // save bill to db(total = 0)
         $cartUser = Cart::where('user_id', Auth::user()->id)->get()->toArray();
-
         $dataOrder = session()->get('dataOrders');
         $province = $dataOrder['tinh'];
         $district = $dataOrder['huyen'];
@@ -188,7 +187,7 @@ class CheckoutController extends Controller
 
         $bill->address = Ward::where('wardid', "$ward")->first()->name . '-' . District::where('districtid', "$district")->first()->name  . '-' . Province::where('provinceid', "$province")->first()->name  . ', ' . $dataOrder['address'];
         $bill->payment = "Đã thanh toán bằng ví Vnpay";
-        $bill->total_price = $dataOrder['total_price'];
+        $bill->total_price = $dataOrder['total'];
         $bill->payment_amount = 0;
 
         $bill->status = 0;
@@ -203,7 +202,7 @@ class CheckoutController extends Controller
             $detail_bill = new OrderDetail();
             $detail_bill->fill($item);
             $detail_bill->order_id = $bill->id;
-            $detail_bill->price = Product::find($item['id'])->price;
+            $detail_bill->price = Product::find($item['product_id'])->price;
             $detail_bill->save();
         }
 
@@ -213,27 +212,20 @@ class CheckoutController extends Controller
     // display client.result-checkout
     public function resultCheckout(Request $request)
     {
-        // dd($request->all());
 
         // thanh toan thanh cong
-        // destroy cart
-        Cart::where('user_id', Auth::user()->id)->delete();
-
+        
         if (session()->has('payment-success')) {
-
+            
             // ...
+            Cart::where('user_id', Auth::user()->id)->delete();
             return view('client.pages.result-checkout');
         } else if (session()->has('payment-error')) {
 
             // thanh toan that bai
             $urlPrev = cache('url_prev');
 
-            // un-save ordered
-            $lastedOrder = Order::orderBy('created_at', 'desc')->limit(1)->first();
-            Order::destroy($lastedOrder->id);
-
             return redirect($urlPrev)->with('msg-er', 'Lỗi trong quá trình thanh toán phí dịch vụ');
         }
-        return view('client.pages.result-checkout');
     }
 }

@@ -78,6 +78,27 @@ class AjaxController extends Controller
         }
     }
 
+    // change status voucher
+    public function changeStatusVoucher(Request $request,$id)
+    {
+        if ($request->ajax()) {
+            $voucher = Voucher::find($id);
+           
+            // check exist in stock
+            if (!$voucher) {
+                return response()->json([
+                    "message"=>"fail"
+                ]);
+            }
+
+            $voucher->status = $request->status;
+            $voucher->save();
+            return response()->json([
+                'message'=>'success'
+            ]);
+        }
+    }
+
     // render tinh thanh viet nam in checkout
     public function renderGeography(Request $request)
     {

@@ -132,7 +132,7 @@ Route::middleware(['all.checkExpiry'])->group(function () {
 
         // voucher
         Route::resource('voucher', VoucherController::class)->only([
-            'index', 'destroy', 'store', 'update'
+            'index', 'destroy', 'store', 'update','edit'
         ])->middleware(['auth.permission:admin']);
 
         // order

@@ -158,15 +158,14 @@
                             </div>
                         </div>
 
-                        <div class="order__bottom__item mt-3 d-flex align-items-center justify-content-between">
+                       {{-- <div class="order__bottom__item mt-3 d-flex align-items-center justify-content-between">
                             <span> <input type="radio" name="method" id="method2" value="1"> <label class="m-0 pl-3"
                                     for="method2">Thanh toán
                                     Paypal</label></span>
                             <div>
-                                {{-- <img src="{{ asset('assets/images/layout/paypal.png') }}" alt="" width="100px"> --}}
                                 <div id="paypal-button"></div>
                             </div>
-                        </div>
+                        </div>--}}
 
                     </div>
                 </div>

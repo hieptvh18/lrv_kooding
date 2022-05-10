@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Voucher;
+use Illuminate\Validation\Rule;
 
 class VoucherController extends Controller
 {
@@ -81,7 +82,13 @@ class VoucherController extends Controller
      */
     public function edit($id)
     {
-        //
+        //get voucher
+        $voucher = Voucher::find($id);
+        if(!$voucher){
+            return back()->with('msg-er','Không tìm thấy mã giảm giá');
+        }
+
+        return view('admin.vouchers.edit',compact('voucher'));
     }
 
     /**
@@ -93,7 +100,30 @@ class VoucherController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // 
+        if($request->category_code == 0){
+            $ruleDiscount = 'required|max:99|integer';
+        }else{
+            $ruleDiscount = 'required|integer';
+        }
+        // validate
+        $request->validate([
+            'name'=>'required|max:30|min:6',
+            'code'=>['required','max:30','min:5',Rule::unique('vouchers','code')->ignore($id)],
+            'quantity'=>'required|integer',
+            'discount'=> $ruleDiscount,
+            'expired_date'=>'required',
+
+        ]);
+
+        $voucher = Voucher::find($id);
+        if(!$voucher){
+            return back()->with('msg-er','Không tìm thấy mã giảm giá');
+        }
+
+        $voucher->fill($request->all());
+        $voucher->save();
+
+        return back()->with('msg-suc','Cập nhật thành công voucher');
         
     }
 
