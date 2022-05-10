@@ -1,4 +1,7 @@
 <head>
+    {{-- fixed content with content security policy # --}}
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
     {{-- token laravel --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- ico -->

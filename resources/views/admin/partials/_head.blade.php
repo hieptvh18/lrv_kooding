@@ -1,4 +1,6 @@
 <head>
+  {{-- fixed content with content security policy # --}}
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <!-- ico -->
     <link rel="shortcut icon" type="image/png" href="{{asset('assets/images/layout/kooding-app-icon.ico')}}" />
     <!-- fontawesome -->
