@@ -215,7 +215,7 @@
                         }
                     })
                     $.ajax({
-                        url: '{{ route('ajax.changeStatusProduct') }}',
+                        url: '/api/ajax/change-status-product',
                         type: 'POST',
                         data: {
                             proId: proId,
@@ -231,6 +231,7 @@
                             }
                         },
                         error: function(er) {
+                            console.log(er);
                             alert('Có lỗi xảy ra! vui lòng thử lại!');
                         }
                     })
