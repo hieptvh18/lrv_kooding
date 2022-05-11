@@ -247,7 +247,7 @@
                     });
                     $.ajax({
 
-                        url: "{{ route('ajax.voucherExist') }}",
+                        url: "/api/ajax/voucher-exist",
                         type: "POST",
                         data: {
                             "code": code

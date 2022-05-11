@@ -34,7 +34,7 @@
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
-                            <input type="text" name="slug" value="{{$myCategory->slug}}">
+                            <input type="hidden" name="slug" value="{{$myCategory->slug}}">
 
                             <div class="form-group">
                                 <label for="">Parent Categories</label>

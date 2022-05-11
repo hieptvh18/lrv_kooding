@@ -59,7 +59,7 @@ class CategoryController extends Controller
         }
 
         $categoryToArray = Category::all()->toArray();
-        $categories = $categories->orderByDesc('categories.id')->paginate(3);
+        $categories = $categories->orderByDesc('categories.id')->paginate(5);
 
         $listSelectSub = getChildCategories($categoryToArray);
 
