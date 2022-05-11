@@ -35,19 +35,19 @@ class DashboardController extends Controller
             $year = $request->_year;
         }
 
-        $totalOrder = Order::where(DB::raw('year(updated_at)'), $year)->count();
-        $donChuaXuLi = Order::where(DB::raw('year(updated_at)'), $year)->where('status', 0)->count();
-        $tongDoanhThuNam = DB::select('select sum(total_price) as dt from orders where year(updated_at)= ' . $year . ' group by year(updated_at)');
+        $totalOrder = Order::where(DB::raw('extract(year from "updated_at")'), $year)->count();
+        $donChuaXuLi = Order::where(DB::raw('extract(year from "updated_at")'), $year)->where('status', 0)->count();
+        $tongDoanhThuNam = DB::select('select sum(total_price) as dt from orders where extract(year from "updated_at")= ' . $year . ' group by year(updated_at)');
         $totalProduct = Product::count();
 
         // đơn bị hủy
-        $cancel_order = Order::where(DB::raw('year(updated_at)'),$year)->where('status',3)->count();
+        $cancel_order = Order::where(DB::raw('extract(year from "updated_at")'),$year)->where('status',3)->count();
         // số đơn hàng đang xử lí
-        $processing_order = Order::where(DB::raw('year(updated_at)'),$year)->where('status',1)->count();
+        $processing_order = Order::where(DB::raw('extract(year from "updated_at")'),$year)->where('status',1)->count();
         // số đơn hàng đang xử lí
-        $sent_order = Order::where(DB::raw('year(updated_at)'),$year)->where('status',2)->count();
+        $sent_order = Order::where(DB::raw('extract(year from "updated_at")'),$year)->where('status',2)->count();
         // số đơn hàng chưa xử lí
-        $unprocess_order = Order::where(DB::raw('year(updated_at)'),$year)->where('status',0)->count();
+        $unprocess_order = Order::where(DB::raw('extract(year from "updated_at")'),$year)->where('status',0)->count();
         // đơn chờ xn
 
         return view('admin.dashboard.index', compact('currentLocation', 'totalOrder', 'donChuaXuLi', 'tongDoanhThuNam', 'totalProduct','cancel_order','processing_order','sent_order','unprocess_order'));
