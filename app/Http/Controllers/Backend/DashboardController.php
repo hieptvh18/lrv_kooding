@@ -37,7 +37,7 @@ class DashboardController extends Controller
 
         $totalOrder = Order::where(DB::raw('extract(year from "updated_at")'), $year)->count();
         $donChuaXuLi = Order::where(DB::raw('extract(year from "updated_at")'), $year)->where('status', 0)->count();
-        $tongDoanhThuNam = DB::select('select sum(total_price) as dt from orders where extract(year from "updated_at")= ' . $year . ' group by year(updated_at)');
+        $tongDoanhThuNam = DB::select('select sum(total_price) as dt from orders where extract(year from "updated_at")= ' . $year . ' group by extract(year from "updated_at")');
         $totalProduct = Product::count();
 
         // đơn bị hủy
