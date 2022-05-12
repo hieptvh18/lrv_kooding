@@ -279,7 +279,7 @@
                     }
                 })
                 $.ajax({
-                    url: "{{ route('api.renderGeography') }}",
+                    url: "/api/get-geography",
                     method: "POST",
                     data: {
                         districtId: districtId
