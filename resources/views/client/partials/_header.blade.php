@@ -195,7 +195,7 @@
                     <img src="{{ asset('assets/images/layout/vietnam.png') }}" alt="">
                 </a>
                 <div class="box-favorite-pro pt-4 pb-4">
-                    <a href="productFavoriteClient" class="favorite-pro">
+                    <a href="san-pham-yeu-thich" class="favorite-pro">
                         <i class="fa fa-heart" aria-hidden="true"></i>
                     </a>
                     <div class="notifi">
