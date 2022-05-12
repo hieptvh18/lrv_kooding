@@ -302,43 +302,43 @@
         // acc login paypal: hiep18@gmail.com mk 0989581167hiep
 
 
-        paypal.Button.render({
-            // Configure environment
-            env: 'sandbox',
-            client: {
-                sandbox: 'AU-ccb20J5AMLn9ocWbg8hNouac6VeRno-ESrE0oSy4dbjecN3jycTVEaVY1uxyE_b9RPQp1O4td7fps',
-                production: 'demo_production_client_id'
-            },
-            // Customize button (optional)
-            locale: 'en_US',
-            style: {
-                size: 'small',
-                color: 'gold',
-                shape: 'pill',
-            },
+        // paypal.Button.render({
+        //     // Configure environment
+        //     env: 'sandbox',
+        //     client: {
+        //         sandbox: 'AU-ccb20J5AMLn9ocWbg8hNouac6VeRno-ESrE0oSy4dbjecN3jycTVEaVY1uxyE_b9RPQp1O4td7fps',
+        //         production: 'demo_production_client_id'
+        //     },
+        //     // Customize button (optional)
+        //     locale: 'en_US',
+        //     style: {
+        //         size: 'small',
+        //         color: 'gold',
+        //         shape: 'pill',
+        //     },
 
-            // Enable Pay Now checkout flow (optional)
-            commit: true,
+        //     // Enable Pay Now checkout flow (optional)
+        //     commit: true,
 
-            // Set up a payment
-            payment: function(data, actions) {
-                return actions.payment.create({
-                    transactions: [{
-                        amount: {
-                            total: '0.01',
-                            currency: 'USD'
-                        }
-                    }]
-                });
-            },
-            // Execute the payment
-            onAuthorize: function(data, actions) {
-                return actions.payment.execute().then(function() {
-                    // Show a confirmation message to the buyer
-                    window.alert('Thank you for your purchase!');
-                });
-            }
-        }, '#paypal-button');
+        //     // Set up a payment
+        //     payment: function(data, actions) {
+        //         return actions.payment.create({
+        //             transactions: [{
+        //                 amount: {
+        //                     total: '0.01',
+        //                     currency: 'USD'
+        //                 }
+        //             }]
+        //         });
+        //     },
+        //     // Execute the payment
+        //     onAuthorize: function(data, actions) {
+        //         return actions.payment.execute().then(function() {
+        //             // Show a confirmation message to the buyer
+        //             window.alert('Thank you for your purchase!');
+        //         });
+        //     }
+        // }, '#paypal-button');
     </script>
 
 @endsection

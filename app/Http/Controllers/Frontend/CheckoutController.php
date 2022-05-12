@@ -21,9 +21,6 @@ use COM;
 class CheckoutController extends Controller
 {
     private $carts;
-    public function __construct(Request $request)
-    {
-    }
 
     // display checkout
     public function index()
