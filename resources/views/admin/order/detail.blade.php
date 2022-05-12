@@ -77,9 +77,7 @@
                                     <td>{{ \App\Models\AttributeValue::find($item->color_id)->name }}</td>
                                     <td>{{ \App\Models\AttributeValue::find($item->size_id)->name }}</td>
                                 </tr>
-                                @php$n++;
-                                                                                                                    $total += $tt;
-                                                                                                        @endphp 
+                                @php $total += $tt; @endphp 
                             @endforeach
                             <tr>
                                 <th class="" colspan="">Tổng tiền đơn hàng:</th>
