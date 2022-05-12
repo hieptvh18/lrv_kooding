@@ -255,7 +255,7 @@
                     }
                 })
                 $.ajax({
-                    url: "{{ route('api.renderGeography') }}",
+                    url: "/api/get-geography",
                     method: "POST",
                     // mặc định dữ liệu luân chuyễn dưới dạng đối tg, nếu gửi DOM thì cho = fasle
                     data: {
