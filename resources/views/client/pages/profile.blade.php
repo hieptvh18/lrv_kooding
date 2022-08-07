@@ -8,6 +8,11 @@
         <div class="body__acc__header">
 
             <div class="body__acc__fist">
+                @if (session('msg-suc'))
+                    <div class="bg-success p-2 text-light">{{ session('msg-suc') }}</div>
+                @elseif (session('msg-er'))
+                    <div class="bg-danger p-2 text-light">{{ session('msg-er') }}</div>
+                @endif
 
                 <div class="body__acc__title">
                     <div class="acc__title__fist active">
@@ -21,11 +26,7 @@
                         <p>Chào mừng bạn trở lại {{ Auth::user()->name }}</p>
                     </div>
                 </div>
-                @if (session('msg-suc'))
-                    <div class="bg-success p-2 text-light">{{ session('msg-suc') }}</div>
-                @elseif (session('msg-er'))
-                    <div class="bg-danger p-2 text-light">{{ session('msg-er') }}</div>
-                @endif
+
                 <div class="body__acc__menu">
                     <div class="acc__show__menu" onclick="menu();">
                         <div class="show__menu__title">
@@ -72,17 +73,10 @@
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
-                                    <!-- <div class="DH__form1">
-                                                                                                <label for="">Tên hiển thị <i>* Để nhận xét và nhận xét sản phẩm.</i></label>
-                                                                                                <input type="text" value="Trương Nghĩa">
-                                                                                        
-                                                                                            </div> -->
+
                                     <div class="DH__form1">
                                         <label for="">E-mail <i>* Nơi bạn nhận được thông tin đặt hàng.</i></label>
                                         <input type="email" name="email" disabled value="{{ Auth::user()->email }}">
-                                        @error('email')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
 
                                     </div>
                                     <div class="DH__form1">
@@ -147,10 +141,13 @@
                                     <div class="DH__form1">
                                         <label for="">Mật khẩu mới</label>
                                         <input name="password_new" type="password" value="{{ old('password_new') }}">
+                                        @error('password_new')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <div class="DH__form1">
                                         <label for="">Xác nhận mật khẩu</label>
-                                        <input name="password_comfim" type="password">
+                                        <input name="password_confirm" type="password">
                                     </div>
                                     @error('password_confirm')
                                         <div class="text-danger">{{ $message }}</div>
@@ -366,7 +363,7 @@
                                         const apiFindSize = '/api/attribute-value/' +
                                             val.size_id;
 
-                                            // get attribute name cua product = cach call api va gan cho bien global
+                                        // get attribute name cua product = cach call api va gan cho bien global
                                         axios.get(apiFindColor)
                                             .then(res => {
                                                 // color
@@ -377,7 +374,8 @@
                                                 axios.get(apiFindSize)
                                                     .then(res => {
                                                         // color
-                                                        tmpDataSize = res.data.name
+                                                        tmpDataSize = res.data
+                                                            .name
                                                     })
                                                     .then(() => {
                                                         html += `

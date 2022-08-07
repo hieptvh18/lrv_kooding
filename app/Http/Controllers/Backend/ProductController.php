@@ -176,7 +176,6 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // dd($request->all());
         // check avatars detail
         if($request->file('avatars') && count($request->file('avatars')) > 5){
             return back()->with('err-avatars','Không được tải lên quá 5 ảnh!');

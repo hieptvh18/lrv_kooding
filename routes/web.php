@@ -26,6 +26,7 @@ use App\Http\Controllers\Frontend\CheckoutController;
 use App\Http\Controllers\Frontend\ProfileController;
 
 use App\Http\Controllers\Api\VnpayController;
+use App\Http\Controllers\Backend\AttributeController;
 use App\Http\Controllers\Backend\NewsController;
 use App\Http\Controllers\Backend\WebSettingController;
 use App\Http\Controllers\Frontend\NewsController as FrontendNewsController;
@@ -109,7 +110,7 @@ Route::middleware(['all.checkExpiry'])->group(function () {
         ]);
         // attribute
         Route::resource('attribute', 'App\Http\Controllers\Backend\AttributeController')->only([
-            'index'
+            'index','store'
         ]);
 
         //  attr value

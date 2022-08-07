@@ -6,12 +6,36 @@
 
     <div class="card-body">
 
-        {{-- danh ssach giá trị của thuộc tính --}}
-        <h4 class="card-title mt-3">Danh sách gía trị của thuộc tính.</h4>
-        <!-- Button to Open the Modal -->
-        <button type="button" {{$btnStatus}} class="btn btn-outline-primary" data-toggle="modal" data-target="#myModal">
-            Thêm mới+
-        </button>
+        <div class="d-flex justify-content-between">
+            <div class="attribute-values">
+                {{-- danh ssach giá trị của thuộc tính --}}
+                <h4 class="card-title mt-3">Danh sách gía trị của thuộc tính.</h4>
+                <!-- Button to Open the Modal -->
+                <button type="button" {{ $btnStatus }} class="btn btn-outline-primary" data-toggle="modal"
+                    data-target="#myModal">
+                    Thêm mới+
+                </button>
+            </div>
+            <div class="add-attribute">
+                <h4 class="card-title mt-3"> Thêm mới thuộc tính.</h4>
+
+                <form action="{{route('attribute.store')}}" method="post" class="d-flex">
+                    @csrf
+                    <div class="">
+                        <input type="text" name="name" class="form-control" placeholder="New attribute" required>
+                        @error('name')
+                            <small class="text-danger">{{$message}}</small>
+                        @enderror
+                        @if (session('msg-suc'))
+                            <small class="text-success">{{session('msg-suc')}}</small>
+                        @endif
+                    </div>
+                    <div class="">
+                        <button class="btn btn-secondary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
 
         <!-- The Modal -->
         <div class="modal" id="myModal">
@@ -52,8 +76,7 @@
                                 <span class="erName text-danger"></span>
                             </div>
 
-                            <button type="submit" class="btn btn-primary mr-2"
-                                id="btn-sb-form-attr-value">Submit</button>
+                            <button type="submit" class="btn btn-primary mr-2" id="btn-sb-form-attr-value">Submit</button>
                             <a href="" class="btn btn-light">Hủy</a>
                         </form>
                     </div>
@@ -89,12 +112,14 @@
                                 <td>{{ $item->name }}</td>
                                 <td>
 
-                                    <a href="{{ route('attributeValue.destroy', $item->id) }}" onclick="
+                                    <a href="{{ route('attributeValue.destroy', $item->id) }}"
+                                        onclick="
                                             event.preventDefault();
                                          if(confirm('Bạn có chắc chắn xóa? Các mục liên quan cũng sẽ biến mất!')){
                                              document.querySelector('#form-del-attr-value{{ $key }}').submit()
                                          }
-                                    "><i class="fas fa-trash-alt text-danger fa-2x"></i></a>
+                                    "><i
+                                            class="fas fa-trash-alt text-danger fa-2x"></i></a>
 
                                     <form id="form-del-attr-value{{ $key }}"
                                         action="{{ route('attributeValue.destroy', $item->id) }}" method="POST">
@@ -188,7 +213,7 @@
                             if (data == 0) {
                                 // ko tồn tại
                                 $('input[name="value_name"]').css('border',
-                                '2px solid #07E454');
+                                    '2px solid #07E454');
                                 $('.erValue').html('')
                                 $('#form-add-attr_value').submit();
                                 return;

@@ -49,10 +49,9 @@
                                 <div class="default-price"><span class="currency lc"></span><span
                                         class="number">
                                         {{ number_format($product->price - $product->discount) }}đ</span></div>
-
-                                @if ($product->discount > 0)
+                                @if ($product->discount)
                                     <div class="price__sale">
-                                        <span class="price__sale--fist">{{ $product->price }}đ</span>
+                                        <span class="price__sale--fist">{{ number_format($product->price) }}đ</span>
                                         <span
                                             class="price__sale--off">{{ number_format(($product->discount / $product->price) * 100, 0, ',', '.') }}%</span>
                                     </div>

@@ -22,7 +22,7 @@
                 <a href="#" class="swiper-slide slider-top2">Vận chuyển nhanh chóng và tin cậy 🚛</a>
             @else
                 {{-- default --}}
-                <a href="#" class="swiper-slide slider-top1">Cảm hứng thời trang vô tận với Kooding.</a>
+                <a href="#" class="swiper-slide slider-top1">Nội thất sang trọng cho cân nhà của bạn với Kooding.</a>
                 <a href="#" class="swiper-slide slider-top2">Vận chuyển nhanh chóng và tin cậy 🚛</a>
             @endif
         </div>

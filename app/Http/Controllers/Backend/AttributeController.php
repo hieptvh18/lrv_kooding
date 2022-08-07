@@ -30,5 +30,22 @@ class AttributeController extends Controller
         return view('admin.attribute.list', compact('attributes','attributeValues','btnStatus'));
     }
 
+    
+    // save attribute
+    public function store(Request $request){
+        $request->validate(['name'=>'required','name'=>'min:3|max:50']);
+        $attribute = new Attribute();
+
+        $attribute->name = $request->name;
+
+        try{
+            $attribute->save();
+            return redirect()->back()->with('msg-suc','Thêm thành công thuộc tính mới!');
+        }catch(\Throwable $e){
+            report($e);
+            return false;
+        }
+    }
+
    
 }

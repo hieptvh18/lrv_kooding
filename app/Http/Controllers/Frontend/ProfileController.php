@@ -22,14 +22,63 @@ class ProfileController extends Controller
     }
 
     // update profiel
-    public function updateProfile(UserRequest $request)
+    public function updateProfile(Request $request)
     {
-        
-    }
+        $request->validate([
+            'name'=>'required|min:6|max:60',
+            'phone'=>'required|numeric',
+            'gender'=>'required'
+        ]);
+
+        $user = User::where('email',Auth::user()->email);
+        $user->name = $request->name;
+        $user->phone = $request->phone;
+        $user->gender = $request->gender;
+
+        try{
+            $user->save();
+            return redirect()->back()->with('msg-succ','Cập nhật tài khoản thành công!');
+        }catch(\Throwable $e){
+            report($e);
+            return false;
+        }
+    }   
 
     // change pass
     public function changePassword(Request $request)
     {
+        $request->validate([
+            'password'=>'required',
+            'password_new'=>'required|min:6|max:30',
+            'password_confirm'=>'required'
+        ],[
+            'password.required'=>'Không được để trống trường này!',
+            'password_new.required'=>'Không được để trống trường này!',
+            'password_confirm.required'=>'Không được để trống trường này!',
+            'password_new.min'=>'Mật khẩu mới chấp nhận từ 6-30 kí tự!',
+            'password_new.max'=>'Mật khẩu mới chấp nhận từ 6-30 kí tự!',
+        ]);
+
+        $passwordOld = Auth::user()->password;
+        if(Auth::attempt([
+            'password'=>$passwordOld
+        ])){
+            
+            if($request->password_new == $request->password_confirm){
+                // success
+                $user = User::where('email',Auth::user()->email);
+                $user->password = bcrypt($request->password_new);
+                try{
+                    $user->save();
+                    return redirect()->back()->with('msg-succ','Cập nhật thành công mật khẩu mới!');
+                }catch(\Throwable $e){
+                    report($e);
+                    return false;
+                }
+            }
+            return redirect()->back()->with('msg-er','Mật khẩu mới không khớp');
+        }
+        return redirect()->back()->with('msg-er','Mật khẩu chưa chính xác!');
 
     }
 
