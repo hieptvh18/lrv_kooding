@@ -53,7 +53,7 @@
                                     <div class="price__sale">
                                         <span class="price__sale--fist">{{ number_format($product->price) }}đ</span>
                                         <span
-                                            class="price__sale--off">{{ number_format(($product->discount / $product->price) * 100, 0, ',', '.') }}%</span>
+                                            class="price__sale--off">{{ number_format(($product->discount / $product->price) * 100, 2, ',', '.') }}%</span>
                                     </div>
                                 @endif
                             </div>
@@ -237,18 +237,45 @@
             </div>
             <div class="sp-title">
                 <p class="vclll">Bình luận của khách hàng</p>
+                <div class="form__content">
+                    <div class="comment__itemAll">
+
+                        @if ($comments)
+                            @foreach($comments as $comment)
+                                <div class="comment-item">
+                                    <div>
+                                        {{$comment->content}}
+                                    </div>
+                                    <div>
+                                        <i>Date: {{$comment->created_at}}</i>
+                                        <h6>{{$comment->user->name}}</h6>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endif
+                    </div>
+                </div>
                 <div class="form__comment">
                     <div class="form__top" style="display:flex; align-items:center;">
-                        <form action="" method="POST" enctype="multipart/form-data">
+                        <form action="{{route('comment.post')}}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <input type="hidden" name="product_id" value="{{$product->id}}">
                             <div class="input__comment">
                                 <div class="avatar__comment">
                                     <img src="./public/images/album/ong1.jpg" alt="" width="100%">
                                 </div>
                                 <div class="input__keys">
-                                    <input type="text" name="content" placeholder="Bình luận của bạn">
+                                    <input type="text" name="content" placeholder="Bình luận của bạn" required>
                                     <div class="input__image">
-                                        <input type="file" name="image" value="📁">
+                                        <input type="file" name="image" value="📁" >
+                                        
                                     </div>
+                                    @error('content')
+                                            <small class="text-danger">{{$message}}</small>
+                                        @enderror
+                                        @error('image')
+                                            <small class="text-danger">{{$message}}</small>
+                                        @enderror
                                     <div class="sub__comment">
                                         <button name="btn_cmt" type="submit"><i class="fas fa-paper-plane"></i></button>
                                     </div>
@@ -257,12 +284,7 @@
                         </form>
                         {{-- err cmt --}}
                     </div>
-                    <div class="form__content">
-                        <div class="comment__itemAll">
-
-
-                        </div>
-                    </div>
+                    
                 </div>
                 <p class="vclll">Hình ảnh chi tiết</p>
                 <div class="full-images">

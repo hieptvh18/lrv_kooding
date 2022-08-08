@@ -66,11 +66,17 @@
                                 </td>
                                 <td>
 
+                                    {{-- check my account -> not delete --}}
                                     <a href="{{ route('attributeValue.destroy', $user->id) }}" onclick="
                                                 event.preventDefault();
-                                             if(confirm('Bạn có chắc chắn xóa? Các mục liên quan cũng sẽ biến mất!')){
-                                                 document.querySelector('#form-del-user{{ $key }}').submit()
-                                             }
+                                             @if($user->id != Auth::user()->id)
+                                                if(
+                                                    confirm('Bạn có chắc chắn xóa? Các mục liên quan cũng sẽ biến mất!')){
+                                                    document.querySelector('#form-del-user{{ $key }}').submit()
+                                                }
+                                             @else
+                                                alert('Bạn không có quyền xóa tài khoản này!')
+                                             @endif
                                         "><i class="fas fa-trash-alt text-danger fa-2x"></i></a>
                                         <a href="{{route('user.edit',$user->id)}}"><i class="fas fa-pen-square text-warning fa-2x "></i></a>
 

@@ -45,7 +45,7 @@ class ProductRequest extends FormRequest
                     "name" => ["required","max:30",Rule::unique('products','name')->ignore(request()->id)],
                     "slug" => [Rule::unique('products','name')->ignore(request()->id)],
                     "avatar" => $ruleAvatarEdit,
-                    "discount" => "nullable|integer|11",
+                    "discount" => "nullable|integer|max:11",
                     "price" => "required|integer|between:10000,10000000",
                     // "quantity" => "required|integer",
                     "description" => "required|min:30|max:4000000",

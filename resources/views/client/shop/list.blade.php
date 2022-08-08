@@ -12,7 +12,7 @@
                 <p>({{ $products->count() }} mặt hàng)</p>
             </div>
             <div class="proH__text2">
-                <p>Bạn đang tìm kiếm những sản phẩm hoàn hảo phù hợp với mọi thứ hay chiếc váy dễ thương nhất lấy cảm
+                <p>Bạn đang tìm kiếm những sản phẩm hoàn hảo phù hợp với mọi thứ hay chiếc bàn đẹp nhất lấy cảm
                     hứng từ
                     KOODING</p>
             </div>

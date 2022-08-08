@@ -29,6 +29,7 @@ use App\Http\Controllers\Api\VnpayController;
 use App\Http\Controllers\Backend\AttributeController;
 use App\Http\Controllers\Backend\NewsController;
 use App\Http\Controllers\Backend\WebSettingController;
+use App\Http\Controllers\Frontend\CommentController;
 use App\Http\Controllers\Frontend\NewsController as FrontendNewsController;
 
 // check hạn sử dụng voucher + slg sản phẩm -> status
@@ -49,6 +50,9 @@ Route::middleware(['all.checkExpiry'])->group(function () {
 
         Route::get('/{slug}', [ProductClientController::class, 'index'])->name('client.shop.category');
         Route::get('/{slug}/{id}', [ProductClientController::class, 'show'])->name('client.shop.detail');
+
+        // comment
+        Route::post('/comment',[CommentController::class,'postComment'])->name('comment.post');
     });
 
     // cart
@@ -86,6 +90,7 @@ Route::middleware(['all.checkExpiry'])->group(function () {
     Route::get('return-vnpay', [VnpayController::class, 'return'])->name('api.payment.return-vnpay');
 
     Route::get('checkout/thanh-toan', [CheckoutController::class, 'handlePaymentVnpay'])->name('payment.handleSave');
+
 
     // ===============ROUTE ADMIN===================
     Route::prefix('admin')->middleware(['auth', 'auth.admin'])->group(function () {

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Comment;
 
 class ProductController extends Controller
 {
@@ -52,7 +53,7 @@ class ProductController extends Controller
 
         // get by category
         $products = $products->where('products.status', '!=', '0')->orderBy('products.id', 'desc')->paginate(20);
-        // dd($products->lastPage());
+
         return view('client.shop.list', compact('products', 'pageTitle'));
     }
 
@@ -74,8 +75,15 @@ class ProductController extends Controller
 
             $product_id  = $product->id;
 
-            return view('client.shop.detail', compact('product', 'product_id','relatePros'));
+            $comments = Comment::select('*')->with('user')->get();
+            return view('client.shop.detail', compact('product', 'product_id','relatePros','comments'));
         }
         return redirect(route('404'));
+    }
+
+    // show comment in detail page
+    public function showComment()
+    {
+
     }
 }

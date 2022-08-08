@@ -48,13 +48,13 @@
                     mới: 10+ sản phẩm mới hàng ngày
                 </div>
                 <!-- <div class="toggle-filter " style="display: flex;align-items: center;">
-                                    <span class="pb-2 pr-3">Nam</span>
-                                    <div class="ckbx-style-8">
-                                        <input type="checkbox" id="filter_new" value="0" name="ckbx-style-8">
-                                        <label for="filter_new"></label>
-                                    </div>
-                                    <span class="pb-2 pl-4">Nữ</span>
-                                </div> -->
+                                            <span class="pb-2 pr-3">Nam</span>
+                                            <div class="ckbx-style-8">
+                                                <input type="checkbox" id="filter_new" value="0" name="ckbx-style-8">
+                                                <label for="filter_new"></label>
+                                            </div>
+                                            <span class="pb-2 pl-4">Nữ</span>
+                                        </div> -->
             </div>
             <div class="slick__slider">
 
@@ -85,42 +85,46 @@
             <div class="col-news left">
 
                 {{-- loop --}}
-                @foreach ($blogs as $blog)
-                    <div class="news-item mb-4">
-                        <a href="{{ route('client.post', $blog->id) }}" class="box-img">
-                            <div class="box_newsImg">
-                                <!-- <img src="public/images/layout/188906b2571586bae5d3dd009b56647f019b6145.jpg" alt=""> -->
-                                <img src="{{ asset('uploads') }}/{{ $blog->image }}" alt="">
-                            </div>
+                @if ($blogs)
+                    @foreach ($blogs as $blog)
+                        <div class="news-item mb-4">
+                            <a href="{{ route('client.post', $blog->id) }}" class="box-img">
+                                <div class="box_newsImg">
+                                    <!-- <img src="public/images/layout/188906b2571586bae5d3dd009b56647f019b6145.jpg" alt=""> -->
+                                    <img src="{{ asset('uploads') }}/{{ $blog->image }}" alt="">
+                                </div>
 
-                        </a>
-                        <div class="pro-name">
-                            {{ $blog->title }}
+                            </a>
+                            <div class="pro-name">
+                                {{ $blog->title }}
+                            </div>
+                            <span>{{ substr($blog->short_desc, 0, 50) }}</span>
+                            <a href="{{ route('client.post', $blog->id) }}" class="btn-discover mt-2">
+                                KHÁM PHÁ
+                            </a>
                         </div>
-                        <span>{{ substr($blog->short_desc, 0, 50) }}</span>
-                        <a href="{{ route('client.post', $blog->id) }}" class="btn-discover mt-2">
-                            KHÁM PHÁ
-                        </a>
-                    </div>
-                @endforeach
+                    @endforeach
+                @endif
 
             </div>
             <div class="col-news right">
-                <div class="news-item">
-                    <a href="{{ route('client.post', $blogTop->id) }}" class="box-img">
-                        <div class="box_newsImg ss2">
-                            <!-- <img src="public/images/layout/261d0a0ba82f5e1c2b6b03fb85b850b687c0e93f.jpg" alt=""> -->
-                            <img src="{{ asset('uploads') }}/{{ $blogTop->image }}" alt="">
+                @if ($blogTop)
+                    <div class="news-item">
+                        <a href="{{ route('client.post', $blogTop->id) }}" class="box-img">
+                            <div class="box_newsImg ss2">
+                                <!-- <img src="public/images/layout/261d0a0ba82f5e1c2b6b03fb85b850b687c0e93f.jpg" alt=""> -->
+                                <img src="{{ asset('uploads') }}/{{ $blogTop->image }}" alt="">
+                            </div>
+                        </a>
+                        <div class="pro-name">
+                            {{ $blogTop->title }}
                         </div>
-                    </a>
-                    <div class="pro-name">
-                        {{ $blogTop->title }}
+                        <span>{{ substr($blogTop->short_desc, 0, 50) }}</span>
+                        <a href="{{ route('client.post', $blogTop->id) }}" class="btn-discover mt-2">
+                            KHÁM PHÁ
+                        </a>
                     </div>
-                    <span>{{ substr($blogTop->short_desc, 0, 50) }}</span>
-                    <a href="{{ route('client.post', $blogTop->id) }}" class="btn-discover mt-2">
-                        KHÁM PHÁ
-                    </a>
-                </div>
+                @endif
             </div>
         </div>
         <!-- end new-main -->
@@ -130,13 +134,13 @@
                     Đang là xu hướng
                 </div>
                 <!-- <div class="toggle-filter " style="display: flex;align-items: center;">
-                                    <span class="pb-2 pr-3">Nam</span>
-                                    <div class="ckbx-style-8">
-                                        <input type="checkbox" id="trending" value="0" name="ckbx-style-8">
-                                        <label for="trending"></label>
-                                    </div>
-                                    <span class="pb-2 pl-4">Nữ</span>
-                                </div> -->
+                                            <span class="pb-2 pr-3">Nam</span>
+                                            <div class="ckbx-style-8">
+                                                <input type="checkbox" id="trending" value="0" name="ckbx-style-8">
+                                                <label for="trending"></label>
+                                            </div>
+                                            <span class="pb-2 pl-4">Nữ</span>
+                                        </div> -->
             </div>
             <!-- xu hướng -->
             <div class="slick__slider">
