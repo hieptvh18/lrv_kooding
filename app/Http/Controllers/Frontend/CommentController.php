@@ -10,28 +10,33 @@ use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
-    // show comment
-    public function index()
-    {
 
-    }
+    protected  $BAD_WORDS = array('shit','me','fuck','ba');
+
 
     // action comment
     public function postComment(CommentRequest $request)
     {
+        // handle bad words
+        $arrComment = explode(' ',$request->content);
+        foreach($arrComment as $key=>$comment){
+            if(in_array($comment, $this->BAD_WORDS)){
+                $arrComment[$key] = '***';
+            }
+        }
+        $stringComments = implode(' ',$arrComment);
         try{
             $comment = new Comment();
 
             $comment->user_id = Auth::user()->id;
             $comment->product_id = $request->product_id;
-            $comment->content = $request->content;
+            $comment->content = $stringComments;
 
             if($request->hasFile('image')){
                 $file = $request->file('image');
-                $fileName = $file->hasName();
+                $fileName = 'comment-'. uniqid().'.'.$file->extension();
 
-                $comment->image = $file->storeAs('uploads/comments/',$fileName);
-                
+                $comment->image = $file->storeAs('uploads/comments',$fileName);
             }
 
             $comment->save();

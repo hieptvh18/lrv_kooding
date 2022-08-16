@@ -27,6 +27,7 @@ use App\Http\Controllers\Frontend\ProfileController;
 
 use App\Http\Controllers\Api\VnpayController;
 use App\Http\Controllers\Backend\AttributeController;
+use App\Http\Controllers\Backend\CommentController as BackendCommentController;
 use App\Http\Controllers\Backend\NewsController;
 use App\Http\Controllers\Backend\WebSettingController;
 use App\Http\Controllers\Frontend\CommentController;
@@ -152,6 +153,12 @@ Route::middleware(['all.checkExpiry'])->group(function () {
         // web setting
         Route::get('settings',[WebSettingController::class,'edit'])->name('websettings.edit');
         Route::put('settings',[WebSettingController::class,'update'])->name('websettings.update');
+
+        // comment manage
+        Route::get('comment',[BackendCommentController::class,'index'])->name('comment.index');
+        Route::get('comment/list/{id}',[BackendCommentController::class,'detail'])->name('comment.detail');
+        Route::delete('comment/delete',[BackendCommentController::class,'delete'])->name('comment.delete');
+
     });
 
     // ==============Export import file============

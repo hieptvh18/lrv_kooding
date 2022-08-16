@@ -75,7 +75,11 @@ class ProductController extends Controller
 
             $product_id  = $product->id;
 
-            $comments = Comment::select('*')->with('user')->get();
+            $comments = Comment::select('*')
+            ->with('user')
+            ->where('product_id',$id)
+            ->orderByDesc('id')
+            ->limit(5)->get();
             return view('client.shop.detail', compact('product', 'product_id','relatePros','comments'));
         }
         return redirect(route('404'));

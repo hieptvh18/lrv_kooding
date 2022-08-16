@@ -17,7 +17,7 @@ class StatistalController extends Controller
             $year = $request->_year;
         }
 
-        $data = DB::select('select sum(total_price) as doanhthu,date(updated_at) as ngay from orders where status = 2 and extract(year from "updated_at") = '.$year.' group by ngay ORDER BY ngay asc');
+        $data = DB::select('select sum(total_price) as doanhthu,date(updated_at) as ngay from orders where status = 2 and year(updated_at) = '.$year.' group by ngay ORDER BY ngay asc');
 
         if($data){
             return response()->json([

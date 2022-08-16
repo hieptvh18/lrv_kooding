@@ -69,7 +69,7 @@
                                 <p class="fs-30 mb-2">{{ $donChuaXuLi }}</p>
                                 <p>
                                     @if ($totalOrder > 0)
-                                        {{ ($donChuaXuLi / $totalOrder) * 100 }}
+                                        {{ number_format(($donChuaXuLi / $totalOrder) * 100,2) }}
                                     @else
                                         0
                                     @endif % (Tổng đơn hàng)
@@ -82,9 +82,9 @@
                     <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
                         <div class="card card-light-blue">
                             <div class="card-body">
-                                <p class="mb-4">Tổng doanh thu (năm <?= date('Y') ?>)</p>
+                                <p class="mb-4">Tổng doanh thu (năm {{!empty($_GET['_year']) ? $_GET['_year'] : date('Y')}})</p>
                                 <p class="fs-30 mb-2">
-                                    {{ number_format(count($tongDoanhThuNam) > 0 ? $tongDoanhThuNam[0]->dt : 0, 0, ',') }}
+                                    {{ number_format($tongDoanhThuNam) }}
                                     đ
                                 </p>
                                 <!-- <p>2.00% (30 days)</p> -->
@@ -109,7 +109,7 @@
             <div class="card">
                 <div class="card-body">
                     <p class="card-title">Doanh thu bán hàng</p>
-                    <p class="font-weight-500">Tổng số doanh thu bán ra theo từng tháng trong năm <?= date('Y') ?></p>
+                    <p class="font-weight-500">Tổng số doanh thu bán ra theo từng tháng trong năm {{!empty($_GET['_year']) ? $_GET['_year'] : date('Y')}}</p>
                     <form action="" method="post">
                         <div class="form-group d-flex align-items-center col-6">
                             <span class="mr-2">Từ</span>
@@ -147,7 +147,7 @@
             <div class="card">
                 <div class="card-body">
                     <p class="card-title">Thống kê đơn hàng</p>
-                    <p class="font-weight-500">Thống kê đơn hàng trong năm <?= date('Y') ?></p>
+                    <p class="font-weight-500">Thống kê đơn hàng trong năm {{!empty($_GET['_year']) ? $_GET['_year'] : date('Y')}}</p>
                     <div class="d-flex flex-wrap mb-5">
                         <div class="mr-5 mt-3">
                             <p class="text-muted">Tổng đơn hàng</p>
@@ -185,15 +185,15 @@
             urlYear = new URLSearchParams(window.location.search).get('_year');
             const dateNow = new Date();
             urlYear = urlYear ?? dateNow.getFullYear();
-            console.log(urlYear);
 
             axios.get('/api/get-doanh-thu-tung-thang-trong-nam')
                 .then(res => {
-                    if (res.statusText == 'OK') {
+                    if (res.data.success) {
                         let labels = [];
 
                         res.data.data.map(val => {
                             let arrDate = val.ngay.split('-');
+                            console.log(arrDate);
                             if (arrDate.includes(`${urlYear}`)) {
                                 labels.push(val.ngay)
                             }

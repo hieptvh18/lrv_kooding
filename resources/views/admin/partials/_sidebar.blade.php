@@ -83,6 +83,20 @@
                 </ul>
             </div>
         </li>
+
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#comment" aria-expanded="false"
+                aria-controls="ui-basic">
+                <i class="far fa-newspaper menu-icon"></i>
+                <span class="menu-title">Bình luận</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="comment">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"> <a class="nav-link" href="{{route('comment.index')}}">Tổng hợp bình luận sản phẩm</a></li>
+                </ul>
+            </div>
+        </li>
         
 
         <li class="nav-item">
