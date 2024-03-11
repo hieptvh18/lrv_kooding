@@ -67,5 +67,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'all.checkExpiry' => \App\Http\Middleware\ExpiryCheck::class,
         'firstAccess'=>\App\Http\Middleware\FirstAccess::class,
+        'checkerCheckout'=>\App\Http\Middleware\CheckerCheckout::class,
     ];
 }

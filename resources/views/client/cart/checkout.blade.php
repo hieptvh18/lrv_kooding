@@ -27,10 +27,14 @@
                     </div>
                     <div class="address">
                         <label for="">Họ tên</label>
-                        <input name="fullname" type="text" name="fullname" value="{{ Auth::user()->name }}">
+                        <input name="fullname" id="fullname" type="text" value="{{ Auth::check() ?? Auth::user()->name }}">
                         <label for="fullname" class="error" style="display: none;"></label>
 
                     </div>
+                    {{-- <div class="address">
+                        <label for="">Email</label>
+                        <input name="email" id="email" type="text" value="{{ Auth::check() ?? Auth::user()->email }}">
+                    </div> --}}
 
                     <div class="address">
                         <label for="">Địa chỉ</label>

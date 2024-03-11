@@ -21,7 +21,7 @@
                     method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-
+                    <input type="hidden" name="id" value="{{$product->id}}">
                     <div class="row">
                         <div class="form-group col-4">
                             <label for="exampleInputName1">Tên </label>

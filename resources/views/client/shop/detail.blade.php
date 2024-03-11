@@ -125,7 +125,9 @@
                                 </div>
                                 <div class="info__body">
                                     <p>Mô tả</p>
-                                    {{ $product->description }}
+                                    <div class="body-content">
+                                        {!! $product->description !!}
+                                    </div>
                                 </div>
                             </div>
                             <div class="content__detail__info">

@@ -65,9 +65,9 @@ Route::middleware(['all.checkExpiry'])->group(function () {
     Route::put('update-cart', [CartController::class, 'update'])->name('client.cart.update');
 
     // checkout
-    Route::get('checkout', [CheckoutController::class, 'index'])->name('client.checkout')->middleware('auth');
+    Route::get('checkout', [CheckoutController::class, 'index'])->name('client.checkout')->middleware('checkerCheckout');
     Route::get('dat-hang-thanh-cong', [CheckoutController::class, 'resultCheckout'])->name('client.result-checkout')->middleware('auth');
-    Route::post('checkout', [CheckoutController::class, 'postCheckout'])->name('client.handleCheckout')->middleware('auth');
+    Route::post('checkout', [CheckoutController::class, 'postCheckout'])->name('client.handleCheckout');
 
     // profile
     Route::get('profile', [ProfileController::class, 'index'])->name('client.profile')->middleware('auth');

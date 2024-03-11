@@ -17,6 +17,7 @@ use App\Models\Cart;
 use App\Models\Product;
 use App\Models\Stock;
 use COM;
+use Illuminate\Support\Facades\Session;
 
 class CheckoutController extends Controller
 {
@@ -25,18 +26,21 @@ class CheckoutController extends Controller
     // display checkout
     public function index()
     {
-        $cartUser = Cart::where('user_id', Auth::user()->id)->count();
-        if ($cartUser == 0) {
-            return redirect(route('client.home'));
+        $cartData = Session::get('carts');
+        if(Auth::check()){
+            $cartData = Cart::where('user_id', Auth::user()->id)->count();
+        }
+        
+        if ($cartData == 0) {
+            return redirect(route('client.cart'));
         }
 
         // get data
         $provinces = Province::all();
-        $this->carts = Cart::where('user_id', Auth::user()->id)->get()->toArray();
 
-        return view('client.cart.checkout-save-database', [
+        return view('client.cart.checkout', [
             'provinces' => $provinces,
-            'carts' => $this->carts,
+            'carts' => $cartData,
         ]);
     }
 

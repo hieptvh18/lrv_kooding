@@ -54,12 +54,15 @@
         </div>
 
         <div class=" mb-0">
-            <div class=" offset-md-4">
+            <div class="">
                 <button type="submit" class="btn btn-primary">
                     {{ __('Login') }}
                 </button>
-
-
+                @if (array_key_exists('checkout',request()->all()))
+                    <a href="/checkout?customer=guest" class="btn btn-primary">
+                        <span>{{__('Payment now')}}</span> <i class="fa fa-credit-card" aria-hidden="true"></i>
+                    </a>
+                @endif
             </div>
         </div>
         <div class="d-flex justify-content-between">
